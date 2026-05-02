@@ -1,5 +1,6 @@
 import { LitElement, html, nothing, type TemplateResult, type PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+import { repeat } from "lit/directives/repeat.js";
 import type { HomeAssistant, LovelaceCard, LovelaceCardEditor } from "./ha-types.js";
 
 import { CARD_TAG, CARD_VERSION, DEFAULT_CONFIG, EDITOR_TAG } from "./const.js";
@@ -270,11 +271,23 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
       return html`<div class="sl-empty">${cfg.empty_message}</div>`;
     }
 
+    // Keyed lists: Lit's `repeat` directive uses `item.uid` to track each
+    // row across re-renders. Without it Lit recycles DOM nodes positionally,
+    // which lets stale DOM state (e.g. an `<input>` the user just toggled
+    // before it moved buckets) bleed into the new item that takes its slot.
     return html`
       <ul class="sl-list">
-        ${mainItems.map((i) => this._renderItem(i))}
+        ${repeat(
+          mainItems,
+          (i) => i.uid,
+          (i) => this._renderItem(i),
+        )}
         ${showCollapseToggle ? this._renderCompletedToggle(completed.length) : nothing}
-        ${trailingCompleted.map((i) => this._renderItem(i))}
+        ${repeat(
+          trailingCompleted,
+          (i) => i.uid,
+          (i) => this._renderItem(i),
+        )}
       </ul>
     `;
   }
