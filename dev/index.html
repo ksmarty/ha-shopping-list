@@ -303,7 +303,7 @@
           title: "Shopping List",
           icon: "mdi:cart",
           show_header: true,
-          show_completed: false,
+          completed: "bottom",
           show_add_input: true,
           add_button_label: "Add",
           empty_message: "Nothing on the list",
@@ -314,13 +314,27 @@
           entity: "todo.shopping_list",
           show_header: false,
         },
-        "Show completed + alpha sort": {
+        "Completed: inline + alpha sort": {
           type: "custom:shopping-list-card",
           entity: "todo.shopping_list",
           title: "All items",
           icon: "mdi:cart",
-          show_completed: true,
+          completed: "inline",
           sort: "alpha",
+        },
+        "Completed: collapsed section": {
+          type: "custom:shopping-list-card",
+          entity: "todo.shopping_list",
+          title: "Groceries",
+          icon: "mdi:basket",
+          completed: "collapse",
+        },
+        "Completed: hidden": {
+          type: "custom:shopping-list-card",
+          entity: "todo.shopping_list",
+          title: "To buy",
+          icon: "mdi:cart",
+          completed: "hide",
         },
         "Read-only (no add input)": {
           type: "custom:shopping-list-card",
@@ -341,6 +355,13 @@
   border: 1px solid rgba(var(--rgb-primary-text-color), 0.08);
 }
           `.trim(),
+        },
+        "Legacy show_completed: true": {
+          type: "custom:shopping-list-card",
+          entity: "todo.shopping_list",
+          title: "Legacy config",
+          icon: "mdi:cart",
+          show_completed: true,
         },
         "No entity selected": {
           type: "custom:shopping-list-card",

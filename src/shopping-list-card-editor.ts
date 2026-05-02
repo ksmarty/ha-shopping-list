@@ -3,7 +3,7 @@ import { customElement, property, state } from "lit/decorators.js";
 import type { HomeAssistant, LovelaceCardEditor } from "./ha-types.js";
 
 import { EDITOR_TAG } from "./const.js";
-import type { ShoppingListCardConfig, SortMode } from "./types.js";
+import type { CompletedDisplay, ShoppingListCardConfig, SortMode } from "./types.js";
 
 interface SchemaItem {
   name: string;
@@ -16,7 +16,21 @@ const SCHEMA: SchemaItem[] = [
   { name: "title", selector: { text: {} } },
   { name: "icon", selector: { icon: {} } },
   { name: "show_header", selector: { boolean: {} } },
-  { name: "show_completed", selector: { boolean: {} } },
+  {
+    name: "completed",
+    selector: {
+      select: {
+        mode: "dropdown",
+        options: [
+          { value: "bottom", label: "At the bottom of the list" },
+          { value: "inline", label: "Mixed with active items" },
+          { value: "collapse", label: "Collapsible section" },
+          { value: "hide", label: "Hide completed items" },
+        ],
+      },
+    },
+  },
+  { name: "completed_label", selector: { text: {} } },
   { name: "show_add_input", selector: { boolean: {} } },
   { name: "add_button_label", selector: { text: {} } },
   { name: "empty_message", selector: { text: {} } },
@@ -90,7 +104,8 @@ export class ShoppingListCardEditor extends LitElement implements LovelaceCardEd
       title: "Title",
       icon: "Icon",
       show_header: "Show header",
-      show_completed: "Show completed items",
+      completed: "Completed items",
+      completed_label: "Completed group label",
       show_add_input: "Show add-item input",
       add_button_label: "Add button label",
       empty_message: "Empty list message",
@@ -102,8 +117,14 @@ export class ShoppingListCardEditor extends LitElement implements LovelaceCardEd
   private _formValueChanged(ev: CustomEvent): void {
     ev.stopPropagation();
     if (!this._config) return;
-    const data = ev.detail.value as Partial<ShoppingListCardConfig> & { sort?: SortMode };
-    const newConfig = { ...this._config, ...data };
+    const data = ev.detail.value as Partial<ShoppingListCardConfig> & {
+      sort?: SortMode;
+      completed?: CompletedDisplay;
+    };
+    const newConfig: ShoppingListCardConfig = { ...this._config, ...data };
+    // Drop the deprecated boolean once the user touches the editor so we
+    // don't keep two sources of truth in the saved YAML.
+    if ("show_completed" in newConfig) delete newConfig.show_completed;
     this._fireChange(newConfig);
   }
 

@@ -45,6 +45,10 @@ import { css } from "lit";
  *   .sl-add-row             — bottom add-item row
  *   .sl-input               — add-item text input
  *   .sl-add-button          — add-item submit button
+ *   .sl-completed-toggle    — "Completed (N)" expandable header row
+ *     .sl-completed-toggle--expanded — modifier when section is open
+ *   .sl-completed-toggle-icon  — chevron icon inside the toggle row
+ *   .sl-completed-toggle-label — text label inside the toggle row
  */
 export const cardStyles = css`
   /* ─── Tokens ─────────────────────────────────────────────────── */
@@ -90,6 +94,17 @@ export const cardStyles = css`
     /* Completed items */
     --shopping-list-completed-fg: var(--disabled-text-color, #bdbdbd);
     --shopping-list-completed-decoration: line-through;
+
+    /* Completed-section toggle (collapse mode) */
+    --shopping-list-completed-toggle-bg: transparent;
+    --shopping-list-completed-toggle-bg-hover: var(--shopping-list-pill-bg);
+    --shopping-list-completed-toggle-fg: var(--shopping-list-muted);
+    --shopping-list-completed-toggle-padding: 6px 10px;
+    --shopping-list-completed-toggle-radius: var(--shopping-list-inner-radius);
+    --shopping-list-completed-toggle-font-size: 0.85rem;
+    --shopping-list-completed-toggle-font-weight: 500;
+    --shopping-list-completed-toggle-icon-size: 18px;
+    --shopping-list-completed-toggle-margin: 6px 0 0;
 
     /* Input */
     --shopping-list-input-bg: var(--shopping-list-pill-bg);
@@ -219,6 +234,37 @@ export const cardStyles = css`
   .sl-item:hover .sl-delete-button,
   .sl-item:focus-within .sl-delete-button {
     opacity: 1;
+  }
+
+  /* ─── Completed section toggle (collapse mode) ─────────────────── */
+  .sl-completed-toggle {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--shopping-list-item-gap);
+    padding: var(--shopping-list-completed-toggle-padding);
+    margin: var(--shopping-list-completed-toggle-margin);
+    border-radius: var(--shopping-list-completed-toggle-radius);
+    background: var(--shopping-list-completed-toggle-bg);
+    color: var(--shopping-list-completed-toggle-fg);
+    font-size: var(--shopping-list-completed-toggle-font-size);
+    font-weight: var(--shopping-list-completed-toggle-font-weight);
+    cursor: pointer;
+    user-select: none;
+    transition: background 120ms ease;
+  }
+  .sl-completed-toggle:hover,
+  .sl-completed-toggle:focus-visible {
+    background: var(--shopping-list-completed-toggle-bg-hover);
+    outline: none;
+  }
+  .sl-completed-toggle-icon {
+    --mdc-icon-size: var(--shopping-list-completed-toggle-icon-size);
+    color: currentColor;
+    flex-shrink: 0;
+  }
+  .sl-completed-toggle-label {
+    flex: 1;
   }
 
   /* ─── Add row (input + button) ────────────────────────────────── */

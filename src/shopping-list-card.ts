@@ -49,6 +49,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
   @state() private _loading = false;
   @state() private _error?: string;
   @state() private _draft = "";
+  @state() private _completedExpanded = false;
 
   private _unsub?: () => void;
   private _lastEntity?: string;
@@ -67,7 +68,16 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
 
   public setConfig(config: ShoppingListCardConfig): void {
     if (!config) throw new Error("Invalid configuration");
-    this._config = { ...DEFAULT_CONFIG, ...config };
+
+    // Migrate legacy `show_completed: boolean` → new `completed` enum.
+    // We only fill `completed` when it isn't already set, so explicit new
+    // configs always win over the deprecated flag.
+    const migrated: ShoppingListCardConfig = { ...config };
+    if (migrated.completed === undefined && migrated.show_completed !== undefined) {
+      migrated.completed = migrated.show_completed ? "inline" : "hide";
+    }
+
+    this._config = { ...DEFAULT_CONFIG, ...migrated };
   }
 
   public getCardSize(): number {
@@ -174,26 +184,27 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
 
   /* ─── Sorting / filtering ──────────────────────────────────────────── */
 
-  private _visibleItems(): TodoItem[] {
-    const cfg = this._config;
-    if (!cfg) return [];
-    let items = [...this._items];
-    if (!cfg.show_completed) {
-      items = items.filter((i) => i.status !== "completed");
+  private _sort(items: TodoItem[]): TodoItem[] {
+    const sortMode = this._config?.sort;
+    if (sortMode === "alpha") {
+      return [...items].sort((a, b) => a.summary.localeCompare(b.summary));
     }
-    switch (cfg.sort) {
-      case "alpha":
-        items.sort((a, b) => a.summary.localeCompare(b.summary));
-        break;
-      case "created":
-        // Items already arrive in creation order from HA.
-        break;
-      case "manual":
-      default:
-        // Preserve the user's manual order from HA.
-        break;
-    }
+    // "manual" / "created" / undefined → preserve HA's order.
     return items;
+  }
+
+  /**
+   * Split items into the two buckets used by every render mode, applying
+   * the configured sort to each bucket independently.
+   */
+  private _splitItems(): { active: TodoItem[]; completed: TodoItem[] } {
+    const active: TodoItem[] = [];
+    const completed: TodoItem[] = [];
+    for (const item of this._items) {
+      if (item.status === "completed") completed.push(item);
+      else active.push(item);
+    }
+    return { active: this._sort(active), completed: this._sort(completed) };
   }
 
   /* ─── Render ───────────────────────────────────────────────────────── */
@@ -202,23 +213,13 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     if (!this._config || !this.hass) return nothing;
 
     const cfg = this._config;
-    const items = this._visibleItems();
     const customStyle = this._extractCustomStyle();
 
     return html`
       <ha-card class="sl-card">
         ${cfg.show_header ? this._renderHeader() : nothing}
         ${this._error ? html`<div class="sl-error">${this._error}</div>` : nothing}
-        ${!cfg.entity
-          ? html`<div class="sl-empty">No todo entity selected. Open the editor to pick one.</div>`
-          : this._loading && this._items.length === 0
-            ? html`<div class="sl-empty">Loading…</div>`
-            : items.length === 0
-              ? html`<div class="sl-empty">${cfg.empty_message}</div>`
-              : html`<ul class="sl-list">
-                  ${items.map((i) => this._renderItem(i))}
-                </ul>`}
-        ${cfg.show_add_input && cfg.entity ? this._renderAddRow() : nothing}
+        ${this._renderBody()} ${cfg.show_add_input && cfg.entity ? this._renderAddRow() : nothing}
       </ha-card>
       ${customStyle
         ? html`<style>
@@ -227,6 +228,86 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
         : nothing}
     `;
   }
+
+  private _renderBody(): TemplateResult {
+    const cfg = this._config!;
+
+    if (!cfg.entity) {
+      return html`<div class="sl-empty">
+        No todo entity selected. Open the editor to pick one.
+      </div>`;
+    }
+
+    if (this._loading && this._items.length === 0) {
+      return html`<div class="sl-empty">Loading…</div>`;
+    }
+
+    const mode = cfg.completed ?? "bottom";
+    const { active, completed } = this._splitItems();
+
+    // Compute the items to render in the main list, plus whether we need
+    // a collapsed-toggle row at the end.
+    let mainItems: TodoItem[];
+    let trailingCompleted: TodoItem[] = [];
+    let showCollapseToggle = false;
+
+    if (mode === "hide") {
+      mainItems = active;
+    } else if (mode === "inline") {
+      // HA already gives us a single ordered stream; just sort the union.
+      mainItems = this._sort([...this._items]);
+    } else if (mode === "bottom") {
+      mainItems = active;
+      trailingCompleted = completed;
+    } else {
+      // collapse
+      mainItems = active;
+      showCollapseToggle = completed.length > 0;
+      if (this._completedExpanded) trailingCompleted = completed;
+    }
+
+    if (mainItems.length === 0 && trailingCompleted.length === 0 && !showCollapseToggle) {
+      return html`<div class="sl-empty">${cfg.empty_message}</div>`;
+    }
+
+    return html`
+      <ul class="sl-list">
+        ${mainItems.map((i) => this._renderItem(i))}
+        ${showCollapseToggle ? this._renderCompletedToggle(completed.length) : nothing}
+        ${trailingCompleted.map((i) => this._renderItem(i))}
+      </ul>
+    `;
+  }
+
+  private _renderCompletedToggle(count: number): TemplateResult {
+    const expanded = this._completedExpanded;
+    const label = this._config?.completed_label || "Completed";
+    return html`
+      <li
+        class="sl-completed-toggle ${expanded ? "sl-completed-toggle--expanded" : ""}"
+        role="button"
+        tabindex="0"
+        aria-expanded=${expanded ? "true" : "false"}
+        @click=${this._toggleCompletedExpanded}
+        @keydown=${(ev: KeyboardEvent) => {
+          if (ev.key === "Enter" || ev.key === " ") {
+            ev.preventDefault();
+            this._toggleCompletedExpanded();
+          }
+        }}
+      >
+        <ha-icon
+          class="sl-completed-toggle-icon"
+          .icon=${expanded ? "mdi:chevron-up" : "mdi:chevron-down"}
+        ></ha-icon>
+        <span class="sl-completed-toggle-label">${label} (${count})</span>
+      </li>
+    `;
+  }
+
+  private _toggleCompletedExpanded = (): void => {
+    this._completedExpanded = !this._completedExpanded;
+  };
 
   private _renderHeader(): TemplateResult {
     const cfg = this._config!;
