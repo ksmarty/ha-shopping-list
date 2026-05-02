@@ -213,8 +213,13 @@ customElements.define("mwc-button", MwcButton);
 
 /**
  * Extremely simplified `ha-form` stub.
- * Renders a basic <input> per schema item and dispatches `value-changed`
- * with the merged data when any field changes.
+ *
+ * Supports two schema item shapes:
+ *   - Leaf: `{ name, selector }` rendered as a labeled <input>/<select>.
+ *   - Group: `{ type: "expandable", title, schema }` rendered as <details>.
+ *
+ * On any change it emits a single `value-changed` event with the FLAT
+ * merged data, mirroring real ha-form when groups have `flatten: true`.
  */
 class HaForm extends HTMLElement {
   constructor() {
@@ -236,38 +241,84 @@ class HaForm extends HTMLElement {
     this._computeLabel = fn;
     this._render();
   }
+  _renderItem(item) {
+    if (item.type === "expandable") {
+      const inner = (item.schema || []).map((sub) => this._renderItem(sub)).join("");
+      const open = item.expanded ? "open" : "";
+      const title = item.title || item.name;
+      return `
+        <details class="group" ${open}>
+          <summary>
+            <span class="group-icon" aria-hidden="true">▸</span>
+            <span class="group-title">${title}</span>
+          </summary>
+          <div class="group-body">${inner}</div>
+        </details>
+      `;
+    }
+    const label = this._computeLabel ? this._computeLabel(item) : item.name;
+    const val = this._data?.[item.name] ?? "";
+    const sel = item.selector || {};
+    let input;
+    if (sel.boolean) {
+      input = `<input type="checkbox" data-name="${item.name}" ${val ? "checked" : ""} />`;
+    } else if (sel.select) {
+      const opts = (sel.select.options || [])
+        .map(
+          (o) =>
+            `<option value="${o.value}" ${o.value === val ? "selected" : ""}>${o.label}</option>`,
+        )
+        .join("");
+      input = `<select data-name="${item.name}">${opts}</select>`;
+    } else {
+      input = `<input type="text" data-name="${item.name}" value="${String(val).replace(/"/g, "&quot;")}" />`;
+    }
+    return `<label class="row">
+      <span class="row-label">${label}</span>
+      ${input}
+    </label>`;
+  }
   _render() {
     if (!this._schema) return;
-    const rows = this._schema
-      .map((item) => {
-        const label = this._computeLabel ? this._computeLabel(item) : item.name;
-        const val = this._data?.[item.name] ?? "";
-        const sel = item.selector || {};
-        let input;
-        if (sel.boolean) {
-          input = `<input type="checkbox" data-name="${item.name}" ${val ? "checked" : ""} />`;
-        } else if (sel.select) {
-          const opts = (sel.select.options || [])
-            .map(
-              (o) =>
-                `<option value="${o.value}" ${o.value === val ? "selected" : ""}>${o.label}</option>`,
-            )
-            .join("");
-          input = `<select data-name="${item.name}">${opts}</select>`;
-        } else {
-          input = `<input type="text" data-name="${item.name}" value="${String(val).replace(/"/g, "&quot;")}" />`;
-        }
-        return `<label style="display:flex;align-items:center;gap:8px;margin:6px 0;">
-          <span style="flex:0 0 180px;color:var(--secondary-text-color,#aaa);">${label}</span>
-          ${input}
-        </label>`;
-      })
-      .join("");
+    const body = this._schema.map((item) => this._renderItem(item)).join("");
     this.shadowRoot.innerHTML = `
       <style>
-        input[type=text], select { padding: 4px 8px; flex: 1; background: #2a2a2a; color: #e1e1e1; border: 1px solid #444; border-radius: 4px; }
+        :host { display: block; }
+        .row { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+        .row-label { flex: 0 0 160px; color: var(--secondary-text-color, #aaa); font-size: 13px; }
+        input[type=text], select {
+          padding: 5px 9px; flex: 1;
+          background: var(--card-background-color, #2a2a2a);
+          color: var(--primary-text-color, #e1e1e1);
+          border: 1px solid var(--divider-color, #444);
+          border-radius: 4px;
+          font: inherit;
+        }
+        .group {
+          margin: 8px 0;
+          border: 1px solid var(--divider-color, rgba(0,0,0,0.12));
+          border-radius: 8px;
+          background: var(--card-background-color, transparent);
+          overflow: hidden;
+        }
+        .group > summary {
+          display: flex; align-items: center; gap: 8px;
+          padding: 10px 14px; cursor: pointer; user-select: none;
+          font-weight: 500; list-style: none;
+          color: var(--primary-text-color);
+        }
+        .group > summary::-webkit-details-marker { display: none; }
+        .group-icon {
+          display: inline-block;
+          transition: transform 180ms ease;
+          color: var(--secondary-text-color);
+          font-size: 12px;
+          width: 12px; text-align: center;
+        }
+        .group[open] > summary > .group-icon { transform: rotate(90deg); }
+        .group-body { padding: 4px 14px 12px; }
       </style>
-      ${rows}
+      ${body}
     `;
     this.shadowRoot.querySelectorAll("[data-name]").forEach((el) => {
       el.addEventListener("change", () => this._fire());
