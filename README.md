@@ -28,6 +28,25 @@ npm run serve  # static dev server (project root) on :5173
 The dev harness (`dev/index.html`) loads the built card with a mock `hass`
 object so you can iterate on the card without running Home Assistant.
 
+### Built bundle is committed
+
+While the project is in early development, the production bundle
+`dist/ha-shopping-list-card.js` **is committed to git** so HACS can install
+the card directly from the default branch (no GitHub Releases needed yet).
+
+Workflow when you change source code:
+
+```bash
+# 1. Make your changes in src/
+npm run build        # regenerate dist/ha-shopping-list-card.js
+git add src/ dist/
+git commit -m "..."
+git push
+```
+
+The pre-push hook will rebuild and verify `dist/` matches `HEAD` — if you
+forgot to commit the rebuilt bundle, the push is aborted with instructions.
+
 ### Git hooks
 
 `npm install` automatically installs Git hooks (via
@@ -36,11 +55,10 @@ object so you can iterate on the card without running Home Assistant.
 | Hook | Runs | When |
 | ---- | ---- | ---- |
 | `pre-commit` | `tsc --noEmit` + `prettier --check` | every `git commit` |
-| `pre-push` | `npm run build` (full bundle) | every `git push` |
+| `pre-push` | `scripts/check-dist.sh` (rebuild + verify dist matches HEAD) | every `git push` |
 
-If anything fails, the action is aborted. Auto-fix formatting with `npm run
-format`. To bypass in an emergency: `git commit --no-verify` /
-`git push --no-verify`.
+Auto-fix formatting with `npm run format`. To bypass in an emergency:
+`git commit --no-verify` / `git push --no-verify`.
 
 ## License
 

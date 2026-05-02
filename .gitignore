@@ -1,8 +1,11 @@
 # Dependencies
 node_modules/
 
-# Build output (built fresh by CI on every release; not committed)
-dist/
+# Build output: we commit the production bundle so HACS can install
+# directly from the default branch (Option B during early dev).
+# Source maps and other dev-only artifacts stay ignored.
+dist/*
+!dist/ha-shopping-list-card.js
 
 # TypeScript incremental compile cache
 *.tsbuildinfo
