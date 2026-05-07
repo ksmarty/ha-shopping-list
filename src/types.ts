@@ -82,6 +82,12 @@ export interface ShoppingListCardConfig extends LovelaceCardConfig {
    * complete). Defaults to true.
    */
   category_check_all?: boolean;
+  /**
+   * Show an `(N)` badge on each category header counting items still to
+   * be checked off. The badge is hidden automatically when the category
+   * has no remaining active items. Defaults to true.
+   */
+  category_show_count?: boolean;
   /** Label for the bucket of items with no `[Category]` prefix. */
   general_category_label?: string;
   /**

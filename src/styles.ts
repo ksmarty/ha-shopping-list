@@ -69,6 +69,7 @@ import { css } from "lit";
  *   .sl-category-header     — header row of a category (checkbox + label + chevron)
  *   .sl-category-checkbox   — check-all checkbox in a category header
  *   .sl-category-name       — clickable [Category] label in the header
+ *   .sl-category-count      — `(N)` active-items badge in the header
  *   .sl-category-collapse   — chevron toggle in the header
  *   .sl-category-items      — <ul> of items inside a category
  *   .sl-category-prefix     — inline [Category] tag shown on flat-mode items
@@ -117,10 +118,16 @@ export const cardStyles = css`
     --shopping-list-item-gap: 12px;
     --shopping-list-list-gap: 4px;
 
-    /* Per-item actions (edit / delete / save / cancel) */
-    --shopping-list-actions-gap: 2px;
-    --shopping-list-action-size: 32px;
-    --shopping-list-action-icon-size: 18px;
+    /* Per-item actions (edit / delete / save / cancel).
+       Sized down from the original 32 px touch target so a row with
+       actions isn't visibly taller than one without. The negative
+       --shopping-list-action-margin below pulls the wrapper out of the
+       row's height calculation, so the surrounding text still drives
+       row height. */
+    --shopping-list-actions-gap: 0px;
+    --shopping-list-action-size: 28px;
+    --shopping-list-action-icon-size: 16px;
+    --shopping-list-action-margin: -4px 0;
 
     /* Quantity badge (display) */
     --shopping-list-quantity-badge-bg: rgba(var(--rgb-primary-color, 3, 169, 244), 0.14);
@@ -198,6 +205,9 @@ export const cardStyles = css`
     --shopping-list-category-header-font-size: 0.95rem;
     --shopping-list-category-header-font-weight: 600;
     --shopping-list-category-header-bg-hover: var(--shopping-list-pill-bg);
+    --shopping-list-category-count-color: var(--shopping-list-muted);
+    --shopping-list-category-count-font-weight: 500;
+    --shopping-list-category-count-margin: 0 0 0 6px;
     --shopping-list-category-collapse-size: 28px;
     --shopping-list-category-collapse-icon-size: 18px;
     --shopping-list-category-items-gap: var(--shopping-list-list-gap);
@@ -347,6 +357,10 @@ export const cardStyles = css`
     --mdc-icon-button-size: var(--shopping-list-action-size);
     --mdc-icon-size: var(--shopping-list-action-icon-size);
     color: var(--shopping-list-muted);
+    /* Negative vertical margin: the buttons render full-size visually
+       but contribute less height to the row's flex layout, so the row
+       is sized by the text/checkbox instead of the action buttons. */
+    margin: var(--shopping-list-action-margin);
   }
   .sl-save-button {
     color: var(--shopping-list-accent);
@@ -504,6 +518,17 @@ export const cardStyles = css`
   }
   .sl-category-name:hover:not(:disabled) {
     background: var(--shopping-list-category-header-bg-hover);
+  }
+
+  /* Active-item count rendered inside .sl-category-name. The cursor is
+     inherited from the parent button so clicking the count still
+     toggles the collapse, and the color is muted even when the parent
+     has a custom category color (the count is meta, not part of the
+     label). */
+  .sl-category-count {
+    color: var(--shopping-list-category-count-color);
+    font-weight: var(--shopping-list-category-count-font-weight);
+    margin: var(--shopping-list-category-count-margin);
   }
 
   .sl-category-collapse {

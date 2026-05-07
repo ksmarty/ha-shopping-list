@@ -21,6 +21,7 @@ export const DEFAULT_CONFIG = {
   group_by_category: true,
   category_collapsible: true,
   category_check_all: true,
+  category_show_count: true,
   general_category_label: "General",
   // Note: `category_colors` intentionally omitted from defaults —
   // including it as an empty object would reference-compare unequal

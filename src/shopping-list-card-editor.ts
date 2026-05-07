@@ -146,6 +146,7 @@ const CATEGORIES_SCHEMA: SchemaItem[] = [
   { name: "group_by_category", selector: { boolean: {} } },
   { name: "category_collapsible", selector: { boolean: {} } },
   { name: "category_check_all", selector: { boolean: {} } },
+  { name: "category_show_count", selector: { boolean: {} } },
   { name: "general_category_label", selector: { text: {} } },
 ];
 
@@ -324,6 +325,7 @@ export class ShoppingListCardEditor extends LitElement implements LovelaceCardEd
       group_by_category: "Group items by category",
       category_collapsible: "Allow collapsing categories",
       category_check_all: "Allow check-all on categories",
+      category_show_count: "Show item count on category headers",
       general_category_label: "Label for uncategorized items",
     };
     return map[schema.name] ?? schema.name;
