@@ -1,229 +1,4 @@
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise, SuppressedError, Symbol, Iterator */
-
-
-function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
-    var e = new Error(message);
-    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};
-
-/**
- * @license
- * Copyright 2019 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
-const t$4=globalThis,e$3=t$4.ShadowRoot&&(void 0===t$4.ShadyCSS||t$4.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,s$3=Symbol(),o$4=new WeakMap;let n$3 = class n{constructor(t,e,o){if(this._$cssResult$=true,o!==s$3)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e;}get styleSheet(){let t=this.o;const s=this.t;if(e$3&&void 0===t){const e=void 0!==s&&1===s.length;e&&(t=o$4.get(s)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),e&&o$4.set(s,t));}return t}toString(){return this.cssText}};const r$4=t=>new n$3("string"==typeof t?t:t+"",void 0,s$3),i$5=(t,...e)=>{const o=1===t.length?t[0]:e.reduce((e,s,o)=>e+(t=>{if(true===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(s)+t[o+1],t[0]);return new n$3(o,t,s$3)},S$1=(s,o)=>{if(e$3)s.adoptedStyleSheets=o.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const e of o){const o=document.createElement("style"),n=t$4.litNonce;void 0!==n&&o.setAttribute("nonce",n),o.textContent=e.cssText,s.appendChild(o);}},c$3=e$3?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const s of t.cssRules)e+=s.cssText;return r$4(e)})(t):t;
-
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */const{is:i$4,defineProperty:e$2,getOwnPropertyDescriptor:h$2,getOwnPropertyNames:r$3,getOwnPropertySymbols:o$3,getPrototypeOf:n$2}=Object,a$1=globalThis,c$2=a$1.trustedTypes,l$1=c$2?c$2.emptyScript:"",p$2=a$1.reactiveElementPolyfillSupport,d$1=(t,s)=>t,u$3={toAttribute(t,s){switch(s){case Boolean:t=t?l$1:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t);}return t},fromAttribute(t,s){let i=t;switch(s){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t);}catch(t){i=null;}}return i}},f$1=(t,s)=>!i$4(t,s),b$1={attribute:true,type:String,converter:u$3,reflect:false,useDefault:false,hasChanged:f$1};Symbol.metadata??=Symbol("metadata"),a$1.litPropertyMetadata??=new WeakMap;let y$1 = class y extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t);}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,s=b$1){if(s.state&&(s.attribute=false),this._$Ei(),this.prototype.hasOwnProperty(t)&&((s=Object.create(s)).wrapped=true),this.elementProperties.set(t,s),!s.noAccessor){const i=Symbol(),h=this.getPropertyDescriptor(t,i,s);void 0!==h&&e$2(this.prototype,t,h);}}static getPropertyDescriptor(t,s,i){const{get:e,set:r}=h$2(this.prototype,t)??{get(){return this[s]},set(t){this[s]=t;}};return {get:e,set(s){const h=e?.call(this);r?.call(this,s),this.requestUpdate(t,h,i);},configurable:true,enumerable:true}}static getPropertyOptions(t){return this.elementProperties.get(t)??b$1}static _$Ei(){if(this.hasOwnProperty(d$1("elementProperties")))return;const t=n$2(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties);}static finalize(){if(this.hasOwnProperty(d$1("finalized")))return;if(this.finalized=true,this._$Ei(),this.hasOwnProperty(d$1("properties"))){const t=this.properties,s=[...r$3(t),...o$3(t)];for(const i of s)this.createProperty(i,t[i]);}const t=this[Symbol.metadata];if(null!==t){const s=litPropertyMetadata.get(t);if(void 0!==s)for(const[t,i]of s)this.elementProperties.set(t,i);}this._$Eh=new Map;for(const[t,s]of this.elementProperties){const i=this._$Eu(t,s);void 0!==i&&this._$Eh.set(i,t);}this.elementStyles=this.finalizeStyles(this.styles);}static finalizeStyles(s){const i=[];if(Array.isArray(s)){const e=new Set(s.flat(1/0).reverse());for(const s of e)i.unshift(c$3(s));}else void 0!==s&&i.push(c$3(s));return i}static _$Eu(t,s){const i=s.attribute;return  false===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=false,this.hasUpdated=false,this._$Em=null,this._$Ev();}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this));}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.();}removeController(t){this._$EO?.delete(t);}_$E_(){const t=new Map,s=this.constructor.elementProperties;for(const i of s.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t);}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return S$1(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(true),this._$EO?.forEach(t=>t.hostConnected?.());}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.());}attributeChangedCallback(t,s,i){this._$AK(t,i);}_$ET(t,s){const i=this.constructor.elementProperties.get(t),e=this.constructor._$Eu(t,i);if(void 0!==e&&true===i.reflect){const h=(void 0!==i.converter?.toAttribute?i.converter:u$3).toAttribute(s,i.type);this._$Em=t,null==h?this.removeAttribute(e):this.setAttribute(e,h),this._$Em=null;}}_$AK(t,s){const i=this.constructor,e=i._$Eh.get(t);if(void 0!==e&&this._$Em!==e){const t=i.getPropertyOptions(e),h="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:u$3;this._$Em=e;const r=h.fromAttribute(s,t.type);this[e]=r??this._$Ej?.get(e)??r,this._$Em=null;}}requestUpdate(t,s,i,e=false,h){if(void 0!==t){const r=this.constructor;if(false===e&&(h=this[t]),i??=r.getPropertyOptions(t),!((i.hasChanged??f$1)(h,s)||i.useDefault&&i.reflect&&h===this._$Ej?.get(t)&&!this.hasAttribute(r._$Eu(t,i))))return;this.C(t,s,i);} false===this.isUpdatePending&&(this._$ES=this._$EP());}C(t,s,{useDefault:i,reflect:e,wrapped:h},r){i&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,r??s??this[t]),true!==h||void 0!==r)||(this._$AL.has(t)||(this.hasUpdated||i||(s=void 0),this._$AL.set(t,s)),true===e&&this._$Em!==t&&(this._$Eq??=new Set).add(t));}async _$EP(){this.isUpdatePending=true;try{await this._$ES;}catch(t){Promise.reject(t);}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,s]of this._$Ep)this[t]=s;this._$Ep=void 0;}const t=this.constructor.elementProperties;if(t.size>0)for(const[s,i]of t){const{wrapped:t}=i,e=this[s];true!==t||this._$AL.has(s)||void 0===e||this.C(s,void 0,i,e);}}let t=false;const s=this._$AL;try{t=this.shouldUpdate(s),t?(this.willUpdate(s),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(s)):this._$EM();}catch(s){throw t=false,this._$EM(),s}t&&this._$AE(s);}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=true,this.firstUpdated(t)),this.updated(t);}_$EM(){this._$AL=new Map,this.isUpdatePending=false;}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return  true}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM();}updated(t){}firstUpdated(t){}};y$1.elementStyles=[],y$1.shadowRootOptions={mode:"open"},y$1[d$1("elementProperties")]=new Map,y$1[d$1("finalized")]=new Map,p$2?.({ReactiveElement:y$1}),(a$1.reactiveElementVersions??=[]).push("2.1.2");
-
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
-const t$3=globalThis,i$3=t=>t,s$2=t$3.trustedTypes,e$1=s$2?s$2.createPolicy("lit-html",{createHTML:t=>t}):void 0,h$1="$lit$",o$2=`lit$${Math.random().toFixed(9).slice(2)}$`,n$1="?"+o$2,r$2=`<${n$1}>`,l=document,c$1=()=>l.createComment(""),a=t=>null===t||"object"!=typeof t&&"function"!=typeof t,u$2=Array.isArray,d=t=>u$2(t)||"function"==typeof t?.[Symbol.iterator],f="[ \t\n\f\r]",v$1=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,_=/-->/g,m$1=/>/g,p$1=RegExp(`>|${f}(?:([^\\s"'>=/]+)(${f}*=${f}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),g=/'/g,$=/"/g,y=/^(?:script|style|textarea|title)$/i,x=t=>(i,...s)=>({_$litType$:t,strings:i,values:s}),b=x(1),E=Symbol.for("lit-noChange"),A=Symbol.for("lit-nothing"),C=new WeakMap,P=l.createTreeWalker(l,129);function V(t,i){if(!u$2(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==e$1?e$1.createHTML(i):i}const N=(t,i)=>{const s=t.length-1,e=[];let n,l=2===i?"<svg>":3===i?"<math>":"",c=v$1;for(let i=0;i<s;i++){const s=t[i];let a,u,d=-1,f=0;for(;f<s.length&&(c.lastIndex=f,u=c.exec(s),null!==u);)f=c.lastIndex,c===v$1?"!--"===u[1]?c=_:void 0!==u[1]?c=m$1:void 0!==u[2]?(y.test(u[2])&&(n=RegExp("</"+u[2],"g")),c=p$1):void 0!==u[3]&&(c=p$1):c===p$1?">"===u[0]?(c=n??v$1,d=-1):void 0===u[1]?d=-2:(d=c.lastIndex-u[2].length,a=u[1],c=void 0===u[3]?p$1:'"'===u[3]?$:g):c===$||c===g?c=p$1:c===_||c===m$1?c=v$1:(c=p$1,n=void 0);const x=c===p$1&&t[i+1].startsWith("/>")?" ":"";l+=c===v$1?s+r$2:d>=0?(e.push(a),s.slice(0,d)+h$1+s.slice(d)+o$2+x):s+o$2+(-2===d?i:x);}return [V(t,l+(t[s]||"<?>")+(2===i?"</svg>":3===i?"</math>":"")),e]};class S{constructor({strings:t,_$litType$:i},e){let r;this.parts=[];let l=0,a=0;const u=t.length-1,d=this.parts,[f,v]=N(t,i);if(this.el=S.createElement(f,e),P.currentNode=this.el.content,2===i||3===i){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes);}for(;null!==(r=P.nextNode())&&d.length<u;){if(1===r.nodeType){if(r.hasAttributes())for(const t of r.getAttributeNames())if(t.endsWith(h$1)){const i=v[a++],s=r.getAttribute(t).split(o$2),e=/([.?@])?(.*)/.exec(i);d.push({type:1,index:l,name:e[2],strings:s,ctor:"."===e[1]?I:"?"===e[1]?L:"@"===e[1]?z:H}),r.removeAttribute(t);}else t.startsWith(o$2)&&(d.push({type:6,index:l}),r.removeAttribute(t));if(y.test(r.tagName)){const t=r.textContent.split(o$2),i=t.length-1;if(i>0){r.textContent=s$2?s$2.emptyScript:"";for(let s=0;s<i;s++)r.append(t[s],c$1()),P.nextNode(),d.push({type:2,index:++l});r.append(t[i],c$1());}}}else if(8===r.nodeType)if(r.data===n$1)d.push({type:2,index:l});else {let t=-1;for(;-1!==(t=r.data.indexOf(o$2,t+1));)d.push({type:7,index:l}),t+=o$2.length-1;}l++;}}static createElement(t,i){const s=l.createElement("template");return s.innerHTML=t,s}}function M$1(t,i,s=t,e){if(i===E)return i;let h=void 0!==e?s._$Co?.[e]:s._$Cl;const o=a(i)?void 0:i._$litDirective$;return h?.constructor!==o&&(h?._$AO?.(false),void 0===o?h=void 0:(h=new o(t),h._$AT(t,s,e)),void 0!==e?(s._$Co??=[])[e]=h:s._$Cl=h),void 0!==h&&(i=M$1(t,h._$AS(t,i.values),h,e)),i}class R{constructor(t,i){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=i;}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:i},parts:s}=this._$AD,e=(t?.creationScope??l).importNode(i,true);P.currentNode=e;let h=P.nextNode(),o=0,n=0,r=s[0];for(;void 0!==r;){if(o===r.index){let i;2===r.type?i=new k(h,h.nextSibling,this,t):1===r.type?i=new r.ctor(h,r.name,r.strings,this,t):6===r.type&&(i=new Z(h,this,t)),this._$AV.push(i),r=s[++n];}o!==r?.index&&(h=P.nextNode(),o++);}return P.currentNode=l,e}p(t){let i=0;for(const s of this._$AV) void 0!==s&&(void 0!==s.strings?(s._$AI(t,s,i),i+=s.strings.length-2):s._$AI(t[i])),i++;}}class k{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,i,s,e){this.type=2,this._$AH=A,this._$AN=void 0,this._$AA=t,this._$AB=i,this._$AM=s,this.options=e,this._$Cv=e?.isConnected??true;}get parentNode(){let t=this._$AA.parentNode;const i=this._$AM;return void 0!==i&&11===t?.nodeType&&(t=i.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,i=this){t=M$1(this,t,i),a(t)?t===A||null==t||""===t?(this._$AH!==A&&this._$AR(),this._$AH=A):t!==this._$AH&&t!==E&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):d(t)?this.k(t):this._(t);}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t));}_(t){this._$AH!==A&&a(this._$AH)?this._$AA.nextSibling.data=t:this.T(l.createTextNode(t)),this._$AH=t;}$(t){const{values:i,_$litType$:s}=t,e="number"==typeof s?this._$AC(t):(void 0===s.el&&(s.el=S.createElement(V(s.h,s.h[0]),this.options)),s);if(this._$AH?._$AD===e)this._$AH.p(i);else {const t=new R(e,this),s=t.u(this.options);t.p(i),this.T(s),this._$AH=t;}}_$AC(t){let i=C.get(t.strings);return void 0===i&&C.set(t.strings,i=new S(t)),i}k(t){u$2(this._$AH)||(this._$AH=[],this._$AR());const i=this._$AH;let s,e=0;for(const h of t)e===i.length?i.push(s=new k(this.O(c$1()),this.O(c$1()),this,this.options)):s=i[e],s._$AI(h),e++;e<i.length&&(this._$AR(s&&s._$AB.nextSibling,e),i.length=e);}_$AR(t=this._$AA.nextSibling,s){for(this._$AP?.(false,true,s);t!==this._$AB;){const s=i$3(t).nextSibling;i$3(t).remove(),t=s;}}setConnected(t){ void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t));}}class H{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,i,s,e,h){this.type=1,this._$AH=A,this._$AN=void 0,this.element=t,this.name=i,this._$AM=e,this.options=h,s.length>2||""!==s[0]||""!==s[1]?(this._$AH=Array(s.length-1).fill(new String),this.strings=s):this._$AH=A;}_$AI(t,i=this,s,e){const h=this.strings;let o=false;if(void 0===h)t=M$1(this,t,i,0),o=!a(t)||t!==this._$AH&&t!==E,o&&(this._$AH=t);else {const e=t;let n,r;for(t=h[0],n=0;n<h.length-1;n++)r=M$1(this,e[s+n],i,n),r===E&&(r=this._$AH[n]),o||=!a(r)||r!==this._$AH[n],r===A?t=A:t!==A&&(t+=(r??"")+h[n+1]),this._$AH[n]=r;}o&&!e&&this.j(t);}j(t){t===A?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"");}}class I extends H{constructor(){super(...arguments),this.type=3;}j(t){this.element[this.name]=t===A?void 0:t;}}class L extends H{constructor(){super(...arguments),this.type=4;}j(t){this.element.toggleAttribute(this.name,!!t&&t!==A);}}class z extends H{constructor(t,i,s,e,h){super(t,i,s,e,h),this.type=5;}_$AI(t,i=this){if((t=M$1(this,t,i,0)??A)===E)return;const s=this._$AH,e=t===A&&s!==A||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,h=t!==A&&(s===A||e);e&&this.element.removeEventListener(this.name,this,s),h&&this.element.addEventListener(this.name,this,t),this._$AH=t;}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t);}}class Z{constructor(t,i,s){this.element=t,this.type=6,this._$AN=void 0,this._$AM=i,this.options=s;}get _$AU(){return this._$AM._$AU}_$AI(t){M$1(this,t);}}const j={I:k},B=t$3.litHtmlPolyfillSupport;B?.(S,k),(t$3.litHtmlVersions??=[]).push("3.3.2");const D=(t,i,s)=>{const e=s?.renderBefore??i;let h=e._$litPart$;if(void 0===h){const t=s?.renderBefore??null;e._$litPart$=h=new k(i.insertBefore(c$1(),t),t,void 0,s??{});}return h._$AI(t),h};
-
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */const s$1=globalThis;let i$2 = class i extends y$1{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0;}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const r=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=D(r,this.renderRoot,this.renderOptions);}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(true);}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(false);}render(){return E}};i$2._$litElement$=true,i$2["finalized"]=true,s$1.litElementHydrateSupport?.({LitElement:i$2});const o$1=s$1.litElementPolyfillSupport;o$1?.({LitElement:i$2});(s$1.litElementVersions??=[]).push("4.2.2");
-
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
-const t$2=t=>(e,o)=>{ void 0!==o?o.addInitializer(()=>{customElements.define(t,e);}):customElements.define(t,e);};
-
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */const o={attribute:true,type:String,converter:u$3,reflect:false,hasChanged:f$1},r$1=(t=o,e,r)=>{const{kind:n,metadata:i}=r;let s=globalThis.litPropertyMetadata.get(i);if(void 0===s&&globalThis.litPropertyMetadata.set(i,s=new Map),"setter"===n&&((t=Object.create(t)).wrapped=true),s.set(r.name,t),"accessor"===n){const{name:o}=r;return {set(r){const n=e.get.call(this);e.set.call(this,r),this.requestUpdate(o,n,t,true,r);},init(e){return void 0!==e&&this.C(o,void 0,t,e),e}}}if("setter"===n){const{name:o}=r;return function(r){const n=this[o];e.call(this,r),this.requestUpdate(o,n,t,true,r);}}throw Error("Unsupported decorator location: "+n)};function n(t){return (e,o)=>"object"==typeof o?r$1(t,e,o):((t,e,o)=>{const r=e.hasOwnProperty(o);return e.constructor.createProperty(o,t),r?Object.getOwnPropertyDescriptor(e,o):void 0})(t,e,o)}
-
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */function r(r){return n({...r,state:true,attribute:false})}
-
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
-const t$1={CHILD:2},e=t=>(...e)=>({_$litDirective$:t,values:e});let i$1 = class i{constructor(t){}get _$AU(){return this._$AM._$AU}_$AT(t,e,i){this._$Ct=t,this._$AM=e,this._$Ci=i;}_$AS(t,e){return this.update(t,e)}update(t,e){return this.render(...e)}};
-
-/**
- * @license
- * Copyright 2020 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */const {I:t}=j,i=o=>o,s=()=>document.createComment(""),v=(o,n,e)=>{const l=o._$AA.parentNode,d=void 0===n?o._$AB:n._$AA;if(void 0===e){const i=l.insertBefore(s(),d),n=l.insertBefore(s(),d);e=new t(i,n,o,o.options);}else {const t=e._$AB.nextSibling,n=e._$AM,c=n!==o;if(c){let t;e._$AQ?.(o),e._$AM=o,void 0!==e._$AP&&(t=o._$AU)!==n._$AU&&e._$AP(t);}if(t!==d||c){let o=e._$AA;for(;o!==t;){const t=i(o).nextSibling;i(l).insertBefore(o,d),o=t;}}}return e},u$1=(o,t,i=o)=>(o._$AI(t,i),o),m={},p=(o,t=m)=>o._$AH=t,M=o=>o._$AH,h=o=>{o._$AR(),o._$AA.remove();};
-
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
-const u=(e,s,t)=>{const r=new Map;for(let l=s;l<=t;l++)r.set(e[l],l);return r},c=e(class extends i$1{constructor(e){if(super(e),e.type!==t$1.CHILD)throw Error("repeat() can only be used in text expressions")}dt(e,s,t){let r;void 0===t?t=s:void 0!==s&&(r=s);const l=[],o=[];let i=0;for(const s of e)l[i]=r?r(s,i):i,o[i]=t(s,i),i++;return {values:o,keys:l}}render(e,s,t){return this.dt(e,s,t).values}update(s,[t,r,c]){const d=M(s),{values:p$1,keys:a}=this.dt(t,r,c);if(!Array.isArray(d))return this.ut=a,p$1;const h$1=this.ut??=[],v$1=[];let m,y,x=0,j=d.length-1,k=0,w=p$1.length-1;for(;x<=j&&k<=w;)if(null===d[x])x++;else if(null===d[j])j--;else if(h$1[x]===a[k])v$1[k]=u$1(d[x],p$1[k]),x++,k++;else if(h$1[j]===a[w])v$1[w]=u$1(d[j],p$1[w]),j--,w--;else if(h$1[x]===a[w])v$1[w]=u$1(d[x],p$1[w]),v(s,v$1[w+1],d[x]),x++,w--;else if(h$1[j]===a[k])v$1[k]=u$1(d[j],p$1[k]),v(s,d[x],d[j]),j--,k++;else if(void 0===m&&(m=u(a,k,w),y=u(h$1,x,j)),m.has(h$1[x]))if(m.has(h$1[j])){const e=y.get(a[k]),t=void 0!==e?d[e]:null;if(null===t){const e=v(s,d[x]);u$1(e,p$1[k]),v$1[k]=e;}else v$1[k]=u$1(t,p$1[k]),v(s,d[x],t),d[e]=null;k++;}else h(d[j]),j--;else h(d[x]),x++;for(;k<=w;){const e=v(s,v$1[w+1]);u$1(e,p$1[k]),v$1[k++]=e;}for(;x<=j;){const e=d[x++];null!==e&&h(e);}return this.ut=a,p(s,v$1),E}});
-
-const CARD_VERSION = "0.1.0";
-const CARD_TAG = "shopping-list-card";
-const EDITOR_TAG = "shopping-list-card-editor";
-const DEFAULT_CONFIG = {
-    type: `custom:${CARD_TAG}`,
-    title: "Shopping List",
-    show_header: true,
-    completed: "bottom",
-    completed_label: "Completed",
-    show_add_input: true,
-    add_input_position: "bottom",
-    add_button_label: "Add",
-    enable_edit: true,
-    enable_remove: true,
-    enable_quantity: false,
-    quantity_max: 0,
-    empty_message: "Nothing on the list",
-    sort: "manual",
-};
-
-/**
- * Quantity is encoded into the item summary as a `<quantity: N>` marker.
- * Encoding it in plain text keeps the data portable:
- *
- *   - Survives a roundtrip through HA's todo API untouched.
- *   - Power users can edit YAML or use HA's UI directly without losing it.
- *   - When the quantity feature is disabled, the marker is just visible
- *     text — no data migration needed to toggle the feature on/off.
- *
- * On parse we are deliberately tolerant:
- *   - The marker can appear anywhere in the summary (we still strip it).
- *   - Multiple markers are accepted; the last numeric value wins.
- *   - Whitespace around the colon and inside the brackets is allowed.
- *
- * On format we are strict and canonical: always written at the end of the
- * summary as `<name> <quantity: N>`. When N == 1 we omit the marker so
- * single-quantity items stay clean in the underlying todo list.
- */
-const MARKER_RE = /<quantity:\s*(\d+)\s*>/gi;
-function parseQuantity(summary) {
-    let last = null;
-    for (const m of summary.matchAll(MARKER_RE)) {
-        const n = Number.parseInt(m[1], 10);
-        if (Number.isFinite(n) && n > 0)
-            last = n;
-    }
-    const name = summary.replace(MARKER_RE, "").replace(/\s+/g, " ").trim();
-    return { name, quantity: last ?? 1 };
-}
-function formatQuantity(name, quantity) {
-    const trimmed = name.trim();
-    if (quantity <= 1)
-        return trimmed;
-    return `${trimmed} <quantity: ${quantity}>`;
-}
-/**
- * Snap a quantity into the [1, max] range. `max <= 0` means unlimited.
- * Non-finite or fractional inputs are floored and clamped at 1.
- */
-function clampQuantity(quantity, max) {
-    const floored = Math.floor(Number(quantity) || 1);
-    const min1 = Math.max(1, floored);
-    if (max && max > 0)
-        return Math.min(min1, max);
-    return min1;
-}
-
-/**
- * ════════════════════════════════════════════════════════════════════════
- *  Shopping List Card · Styles
- * ════════════════════════════════════════════════════════════════════════
- *
- * Every visual property is routed through a CSS custom property so the
- * card can be restyled via:
- *   - HA themes (theme YAML)
- *   - the `style:` config option
- *   - `card_mod:` style block
- *   - parent cards (Bubble Card "custom" slot, etc.)
- *
- * ── Light / dark mode strategy ────────────────────────────────────────
- *
- * We never hard-code colors. Instead we lean on HA's `--rgb-*` theme
- * variables (e.g. `--rgb-primary-text-color`) and alpha-blend them. The
- * same rule reads as "subtle white tint" in dark mode and "subtle black
- * tint" in light mode automatically:
- *
- *     background: rgba(var(--rgb-primary-text-color), 0.05);
- *
- * ── Class namespace ───────────────────────────────────────────────────
- *
- * Every targetable element has an `sl-*` class so users can write:
- *
- *     style: |
- *       .sl-item { ... }
- *       .sl-input:focus { ... }
- *
- * Class list:
- *   .sl-card                — root <ha-card>
- *   .sl-header              — header row
- *   .sl-icon                — header icon
- *   .sl-title               — header title text
- *   .sl-error               — error message banner
- *   .sl-empty               — empty / loading message
- *   .sl-list                — <ul> wrapping items
- *   .sl-item                — single item row
- *   .sl-item--completed     — modifier on completed items
- *   .sl-item--editing       — modifier on item being inline-edited
- *   .sl-checkbox            — item checkbox
- *   .sl-summary             — item label text (read-only mode)
- *   .sl-edit-input          — inline rename input (edit mode)
- *   .sl-actions             — wrapper for per-item action buttons
- *   .sl-edit-button         — pencil button to enter edit mode
- *   .sl-delete-button       — per-item delete button
- *   .sl-save-button         — confirm rename (edit mode)
- *   .sl-cancel-button       — abort rename (edit mode)
- *   .sl-quantity-badge      — "×N" badge shown on items with quantity > 1
- *   .sl-quantity-stepper    — −/N/+ wrapper shown in edit mode
- *     .sl-quantity-stepper--add — modifier when used in the add row
- *   .sl-quantity-step       — single − or + button in the stepper
- *     .sl-quantity-step--minus / --plus
- *   .sl-quantity-value      — the numeric label between the −/+ buttons
- *   .sl-add-row             — add-item row (with position modifier)
- *     .sl-add-row--top      — modifier when rendered above the list
- *     .sl-add-row--bottom   — modifier when rendered below the list
- *   .sl-input               — add-item text input
- *   .sl-add-button          — add-item submit button
- *   .sl-completed-toggle    — "Completed (N)" expandable header row
- *     .sl-completed-toggle--expanded — modifier when section is open
- *   .sl-completed-toggle-icon  — chevron icon inside the toggle row
- *   .sl-completed-toggle-label — text label inside the toggle row
- */
-const cardStyles = i$5 `
+function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPropertyDescriptor(e,i):s;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(t,e,i,s);else for(var r=t.length-1;r>=0;r--)(o=t[r])&&(a=(n<3?o(a):n>3?o(e,i,a):o(e,i))||a);return n>3&&a&&Object.defineProperty(e,i,a),a}"function"==typeof SuppressedError&&SuppressedError;const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,s=Symbol(),o=new WeakMap;let n=class{constructor(t,e,i){if(this._$cssResult$=!0,i!==s)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(i&&void 0===t){const i=void 0!==e&&1===e.length;i&&(t=o.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),i&&o.set(e,t))}return t}toString(){return this.cssText}};const a=(t,...e)=>{const i=1===t.length?t[0]:e.reduce((e,i,s)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[s+1],t[0]);return new n(i,t,s)},r=i?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return(t=>new n("string"==typeof t?t:t+"",void 0,s))(e)})(t):t,{is:l,defineProperty:p,getOwnPropertyDescriptor:d,getOwnPropertyNames:c,getOwnPropertySymbols:h,getPrototypeOf:u}=Object,g=globalThis,m=g.trustedTypes,_=m?m.emptyScript:"",f=g.reactiveElementPolyfillSupport,b=(t,e)=>t,y={toAttribute(t,e){switch(e){case Boolean:t=t?_:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},v=(t,e)=>!l(t,e),$={attribute:!0,type:String,converter:y,reflect:!1,useDefault:!1,hasChanged:v};Symbol.metadata??=Symbol("metadata"),g.litPropertyMetadata??=new WeakMap;let x=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=$){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){const i=Symbol(),s=this.getPropertyDescriptor(t,i,e);void 0!==s&&p(this.prototype,t,s)}}static getPropertyDescriptor(t,e,i){const{get:s,set:o}=d(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get:s,set(e){const n=s?.call(this);o?.call(this,e),this.requestUpdate(t,n,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??$}static _$Ei(){if(this.hasOwnProperty(b("elementProperties")))return;const t=u(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(b("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(b("properties"))){const t=this.properties,e=[...c(t),...h(t)];for(const i of e)this.createProperty(i,t[i])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,i]of e)this.elementProperties.set(t,i)}this._$Eh=new Map;for(const[t,e]of this.elementProperties){const i=this._$Eu(t,e);void 0!==i&&this._$Eh.set(i,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(r(t))}else void 0!==t&&e.push(r(t));return e}static _$Eu(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=new Map,e=this.constructor.elementProperties;for(const i of e.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((t,s)=>{if(i)t.adoptedStyleSheets=s.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const i of s){const s=document.createElement("style"),o=e.litNonce;void 0!==o&&s.setAttribute("nonce",o),s.textContent=i.cssText,t.appendChild(s)}})(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$ET(t,e){const i=this.constructor.elementProperties.get(t),s=this.constructor._$Eu(t,i);if(void 0!==s&&!0===i.reflect){const o=(void 0!==i.converter?.toAttribute?i.converter:y).toAttribute(e,i.type);this._$Em=t,null==o?this.removeAttribute(s):this.setAttribute(s,o),this._$Em=null}}_$AK(t,e){const i=this.constructor,s=i._$Eh.get(t);if(void 0!==s&&this._$Em!==s){const t=i.getPropertyOptions(s),o="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:y;this._$Em=s;const n=o.fromAttribute(e,t.type);this[s]=n??this._$Ej?.get(s)??n,this._$Em=null}}requestUpdate(t,e,i,s=!1,o){if(void 0!==t){const n=this.constructor;if(!1===s&&(o=this[t]),i??=n.getPropertyOptions(t),!((i.hasChanged??v)(o,e)||i.useDefault&&i.reflect&&o===this._$Ej?.get(t)&&!this.hasAttribute(n._$Eu(t,i))))return;this.C(t,e,i)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(t,e,{useDefault:i,reflect:s,wrapped:o},n){i&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,n??e??this[t]),!0!==o||void 0!==n)||(this._$AL.has(t)||(this.hasUpdated||i||(e=void 0),this._$AL.set(t,e)),!0===s&&this._$Em!==t&&(this._$Eq??=new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,i]of t){const{wrapped:t}=i,s=this[e];!0!==t||this._$AL.has(e)||void 0===s||this.C(e,void 0,i,s)}}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(e)):this._$EM()}catch(e){throw t=!1,this._$EM(),e}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM()}updated(t){}firstUpdated(t){}};x.elementStyles=[],x.shadowRootOptions={mode:"open"},x[b("elementProperties")]=new Map,x[b("finalized")]=new Map,f?.({ReactiveElement:x}),(g.reactiveElementVersions??=[]).push("2.1.2");const w=globalThis,A=t=>t,E=w.trustedTypes,k=E?E.createPolicy("lit-html",{createHTML:t=>t}):void 0,S="$lit$",C=`lit$${Math.random().toFixed(9).slice(2)}$`,q="?"+C,P=`<${q}>`,z=document,U=()=>z.createComment(""),O=t=>null===t||"object"!=typeof t&&"function"!=typeof t,H=Array.isArray,M="[ \t\n\f\r]",T=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,I=/-->/g,R=/>/g,N=RegExp(`>|${M}(?:([^\\s"'>=/]+)(${M}*=${M}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),D=/'/g,Q=/"/g,j=/^(?:script|style|textarea|title)$/i,L=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),B=Symbol.for("lit-noChange"),W=Symbol.for("lit-nothing"),V=new WeakMap,F=z.createTreeWalker(z,129);function K(t,e){if(!H(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==k?k.createHTML(e):e}class J{constructor({strings:t,_$litType$:e},i){let s;this.parts=[];let o=0,n=0;const a=t.length-1,r=this.parts,[l,p]=((t,e)=>{const i=t.length-1,s=[];let o,n=2===e?"<svg>":3===e?"<math>":"",a=T;for(let e=0;e<i;e++){const i=t[e];let r,l,p=-1,d=0;for(;d<i.length&&(a.lastIndex=d,l=a.exec(i),null!==l);)d=a.lastIndex,a===T?"!--"===l[1]?a=I:void 0!==l[1]?a=R:void 0!==l[2]?(j.test(l[2])&&(o=RegExp("</"+l[2],"g")),a=N):void 0!==l[3]&&(a=N):a===N?">"===l[0]?(a=o??T,p=-1):void 0===l[1]?p=-2:(p=a.lastIndex-l[2].length,r=l[1],a=void 0===l[3]?N:'"'===l[3]?Q:D):a===Q||a===D?a=N:a===I||a===R?a=T:(a=N,o=void 0);const c=a===N&&t[e+1].startsWith("/>")?" ":"";n+=a===T?i+P:p>=0?(s.push(r),i.slice(0,p)+S+i.slice(p)+C+c):i+C+(-2===p?e:c)}return[K(t,n+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),s]})(t,e);if(this.el=J.createElement(l,i),F.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(s=F.nextNode())&&r.length<a;){if(1===s.nodeType){if(s.hasAttributes())for(const t of s.getAttributeNames())if(t.endsWith(S)){const e=p[n++],i=s.getAttribute(t).split(C),a=/([.?@])?(.*)/.exec(e);r.push({type:1,index:o,name:a[2],strings:i,ctor:"."===a[1]?tt:"?"===a[1]?et:"@"===a[1]?it:Y}),s.removeAttribute(t)}else t.startsWith(C)&&(r.push({type:6,index:o}),s.removeAttribute(t));if(j.test(s.tagName)){const t=s.textContent.split(C),e=t.length-1;if(e>0){s.textContent=E?E.emptyScript:"";for(let i=0;i<e;i++)s.append(t[i],U()),F.nextNode(),r.push({type:2,index:++o});s.append(t[e],U())}}}else if(8===s.nodeType)if(s.data===q)r.push({type:2,index:o});else{let t=-1;for(;-1!==(t=s.data.indexOf(C,t+1));)r.push({type:7,index:o}),t+=C.length-1}o++}}static createElement(t,e){const i=z.createElement("template");return i.innerHTML=t,i}}function Z(t,e,i=t,s){if(e===B)return e;let o=void 0!==s?i._$Co?.[s]:i._$Cl;const n=O(e)?void 0:e._$litDirective$;return o?.constructor!==n&&(o?._$AO?.(!1),void 0===n?o=void 0:(o=new n(t),o._$AT(t,i,s)),void 0!==s?(i._$Co??=[])[s]=o:i._$Cl=o),void 0!==o&&(e=Z(t,o._$AS(t,e.values),o,s)),e}class G{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,s=(t?.creationScope??z).importNode(e,!0);F.currentNode=s;let o=F.nextNode(),n=0,a=0,r=i[0];for(;void 0!==r;){if(n===r.index){let e;2===r.type?e=new X(o,o.nextSibling,this,t):1===r.type?e=new r.ctor(o,r.name,r.strings,this,t):6===r.type&&(e=new st(o,this,t)),this._$AV.push(e),r=i[++a]}n!==r?.index&&(o=F.nextNode(),n++)}return F.currentNode=z,s}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class X{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,s){this.type=2,this._$AH=W,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=s,this._$Cv=s?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=Z(this,t,e),O(t)?t===W||null==t||""===t?(this._$AH!==W&&this._$AR(),this._$AH=W):t!==this._$AH&&t!==B&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>H(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==W&&O(this._$AH)?this._$AA.nextSibling.data=t:this.T(z.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,s="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=J.createElement(K(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===s)this._$AH.p(e);else{const t=new G(s,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=V.get(t.strings);return void 0===e&&V.set(t.strings,e=new J(t)),e}k(t){H(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,s=0;for(const o of t)s===e.length?e.push(i=new X(this.O(U()),this.O(U()),this,this.options)):i=e[s],i._$AI(o),s++;s<e.length&&(this._$AR(i&&i._$AB.nextSibling,s),e.length=s)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=A(t).nextSibling;A(t).remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class Y{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,s,o){this.type=1,this._$AH=W,this._$AN=void 0,this.element=t,this.name=e,this._$AM=s,this.options=o,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=W}_$AI(t,e=this,i,s){const o=this.strings;let n=!1;if(void 0===o)t=Z(this,t,e,0),n=!O(t)||t!==this._$AH&&t!==B,n&&(this._$AH=t);else{const s=t;let a,r;for(t=o[0],a=0;a<o.length-1;a++)r=Z(this,s[i+a],e,a),r===B&&(r=this._$AH[a]),n||=!O(r)||r!==this._$AH[a],r===W?t=W:t!==W&&(t+=(r??"")+o[a+1]),this._$AH[a]=r}n&&!s&&this.j(t)}j(t){t===W?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class tt extends Y{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===W?void 0:t}}class et extends Y{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==W)}}class it extends Y{constructor(t,e,i,s,o){super(t,e,i,s,o),this.type=5}_$AI(t,e=this){if((t=Z(this,t,e,0)??W)===B)return;const i=this._$AH,s=t===W&&i!==W||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,o=t!==W&&(i===W||s);s&&this.element.removeEventListener(this.name,this,i),o&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class st{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){Z(this,t)}}const ot={I:X},nt=w.litHtmlPolyfillSupport;nt?.(J,X),(w.litHtmlVersions??=[]).push("3.3.2");const at=globalThis;let rt=class extends x{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const s=i?.renderBefore??e;let o=s._$litPart$;if(void 0===o){const t=i?.renderBefore??null;s._$litPart$=o=new X(e.insertBefore(U(),t),t,void 0,i??{})}return o._$AI(t),o})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return B}};rt._$litElement$=!0,rt.finalized=!0,at.litElementHydrateSupport?.({LitElement:rt});const lt=at.litElementPolyfillSupport;lt?.({LitElement:rt}),(at.litElementVersions??=[]).push("4.2.2");const pt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}):customElements.define(t,e)},dt={attribute:!0,type:String,converter:y,reflect:!1,hasChanged:v},ct=(t=dt,e,i)=>{const{kind:s,metadata:o}=i;let n=globalThis.litPropertyMetadata.get(o);if(void 0===n&&globalThis.litPropertyMetadata.set(o,n=new Map),"setter"===s&&((t=Object.create(t)).wrapped=!0),n.set(i.name,t),"accessor"===s){const{name:s}=i;return{set(i){const o=e.get.call(this);e.set.call(this,i),this.requestUpdate(s,o,t,!0,i)},init(e){return void 0!==e&&this.C(s,void 0,t,e),e}}}if("setter"===s){const{name:s}=i;return function(i){const o=this[s];e.call(this,i),this.requestUpdate(s,o,t,!0,i)}}throw Error("Unsupported decorator location: "+s)};function ht(t){return(e,i)=>"object"==typeof i?ct(t,e,i):((t,e,i)=>{const s=e.hasOwnProperty(i);return e.constructor.createProperty(i,t),s?Object.getOwnPropertyDescriptor(e,i):void 0})(t,e,i)}function ut(t){return ht({...t,state:!0,attribute:!1})}const gt=2;let mt=class{constructor(t){}get _$AU(){return this._$AM._$AU}_$AT(t,e,i){this._$Ct=t,this._$AM=e,this._$Ci=i}_$AS(t,e){return this.update(t,e)}update(t,e){return this.render(...e)}};const{I:_t}=ot,ft=t=>t,bt=()=>document.createComment(""),yt=(t,e,i)=>{const s=t._$AA.parentNode,o=void 0===e?t._$AB:e._$AA;if(void 0===i){const e=s.insertBefore(bt(),o),n=s.insertBefore(bt(),o);i=new _t(e,n,t,t.options)}else{const e=i._$AB.nextSibling,n=i._$AM,a=n!==t;if(a){let e;i._$AQ?.(t),i._$AM=t,void 0!==i._$AP&&(e=t._$AU)!==n._$AU&&i._$AP(e)}if(e!==o||a){let t=i._$AA;for(;t!==e;){const e=ft(t).nextSibling;ft(s).insertBefore(t,o),t=e}}}return i},vt=(t,e,i=t)=>(t._$AI(e,i),t),$t={},xt=(t,e=$t)=>t._$AH=e,wt=t=>{t._$AR(),t._$AA.remove()},At=(t,e,i)=>{const s=new Map;for(let o=e;o<=i;o++)s.set(t[o],o);return s},Et=(t=>(...e)=>({_$litDirective$:t,values:e}))(class extends mt{constructor(t){if(super(t),t.type!==gt)throw Error("repeat() can only be used in text expressions")}dt(t,e,i){let s;void 0===i?i=e:void 0!==e&&(s=e);const o=[],n=[];let a=0;for(const e of t)o[a]=s?s(e,a):a,n[a]=i(e,a),a++;return{values:n,keys:o}}render(t,e,i){return this.dt(t,e,i).values}update(t,[e,i,s]){const o=(t=>t._$AH)(t),{values:n,keys:a}=this.dt(e,i,s);if(!Array.isArray(o))return this.ut=a,n;const r=this.ut??=[],l=[];let p,d,c=0,h=o.length-1,u=0,g=n.length-1;for(;c<=h&&u<=g;)if(null===o[c])c++;else if(null===o[h])h--;else if(r[c]===a[u])l[u]=vt(o[c],n[u]),c++,u++;else if(r[h]===a[g])l[g]=vt(o[h],n[g]),h--,g--;else if(r[c]===a[g])l[g]=vt(o[c],n[g]),yt(t,l[g+1],o[c]),c++,g--;else if(r[h]===a[u])l[u]=vt(o[h],n[u]),yt(t,o[c],o[h]),h--,u++;else if(void 0===p&&(p=At(a,u,g),d=At(r,c,h)),p.has(r[c]))if(p.has(r[h])){const e=d.get(a[u]),i=void 0!==e?o[e]:null;if(null===i){const e=yt(t,o[c]);vt(e,n[u]),l[u]=e}else l[u]=vt(i,n[u]),yt(t,o[c],i),o[e]=null;u++}else wt(o[h]),h--;else wt(o[c]),c++;for(;u<=g;){const e=yt(t,l[g+1]);vt(e,n[u]),l[u++]=e}for(;c<=h;){const t=o[c++];null!==t&&wt(t)}return this.ut=a,xt(t,l),B}}),kt="shopping-list-card",St="shopping-list-card-editor",Ct={type:`custom:${kt}`,title:"Shopping List",show_header:!0,completed:"bottom",completed_label:"Completed",show_add_input:!0,add_input_position:"bottom",add_button_label:"Add",enable_edit:!0,enable_remove:!0,click_to_check:!0,enable_quantity:!1,quantity_max:0,empty_message:"Nothing on the list",sort:"manual"},qt=/<quantity:\s*(\d+)\s*>/gi;function Pt(t){let e=null;for(const i of t.matchAll(qt)){const t=Number.parseInt(i[1],10);Number.isFinite(t)&&t>0&&(e=t)}return{name:t.replace(qt,"").replace(/\s+/g," ").trim(),quantity:e??1}}function zt(t,e){const i=t.trim();return e<=1?i:`${i} <quantity: ${e}>`}function Ut(t,e){const i=Math.floor(Number(t)||1),s=Math.max(1,i);return e&&e>0?Math.min(s,e):s}const Ot=a`
   /* ─── Tokens ─────────────────────────────────────────────────── */
   :host {
     /* Surface tokens — alpha-blended foreground for subtle pills /
@@ -407,6 +182,16 @@ const cardStyles = i$5 `
   }
   .sl-item:active {
     transform: scale(0.99);
+  }
+  /* Dial back affordances that hint at "press to act" when row click is
+     disabled. The hover background is preserved — it still reads as
+     "this is the row I'm pointing at" without falsely promising an
+     action. */
+  .sl-item--no-row-click {
+    cursor: default;
+  }
+  .sl-item--no-row-click:active {
+    transform: none;
   }
 
   .sl-item--completed .sl-summary {
@@ -626,138 +411,11 @@ const cardStyles = i$5 `
     opacity: 0.4;
     cursor: not-allowed;
   }
-`;
-
-const SORT_OPTIONS = [
-    { value: "manual", label: "Manual (HA order)" },
-    { value: "alpha", label: "Alphabetical" },
-    { value: "created", label: "Created order" },
-];
-const COMPLETED_OPTIONS = [
-    { value: "bottom", label: "At the bottom of the list" },
-    { value: "inline", label: "Mixed with active items" },
-    { value: "collapse", label: "Collapsible section" },
-    { value: "hide", label: "Hide completed items" },
-];
-const ADD_INPUT_POSITION_OPTIONS = [
-    { value: "bottom", label: "Bottom (below the list)" },
-    { value: "top", label: "Top (below the header)" },
-];
-const SCHEMA = [
-    // Top-level: entity selector lives outside any group.
-    { name: "entity", required: true, selector: { entity: { domain: "todo" } } },
-    {
-        type: "expandable",
-        name: "_grp_header",
-        title: "Header",
-        icon: "mdi:format-title",
-        flatten: true,
-        schema: [
-            { name: "show_header", selector: { boolean: {} } },
-            { name: "title", selector: { text: {} } },
-            { name: "icon", selector: { icon: {} } },
-        ],
-    },
-    {
-        type: "expandable",
-        name: "_grp_list",
-        title: "To-do items",
-        icon: "mdi:format-list-bulleted",
-        flatten: true,
-        schema: [
-            { name: "sort", selector: { select: { mode: "dropdown", options: SORT_OPTIONS } } },
-            { name: "enable_edit", selector: { boolean: {} } },
-            { name: "enable_remove", selector: { boolean: {} } },
-            { name: "empty_message", selector: { text: {} } },
-        ],
-    },
-    {
-        type: "expandable",
-        name: "_grp_quantity",
-        title: "Quantities",
-        icon: "mdi:counter",
-        flatten: true,
-        schema: [
-            { name: "enable_quantity", selector: { boolean: {} } },
-            {
-                name: "quantity_max",
-                selector: { number: { min: 0, max: 9999, step: 1, mode: "box" } },
-            },
-        ],
-    },
-    {
-        type: "expandable",
-        name: "_grp_completed",
-        title: "Completed items",
-        icon: "mdi:check-circle-outline",
-        flatten: true,
-        schema: [
-            {
-                name: "completed",
-                selector: { select: { mode: "dropdown", options: COMPLETED_OPTIONS } },
-            },
-            { name: "completed_label", selector: { text: {} } },
-        ],
-    },
-    {
-        type: "expandable",
-        name: "_grp_add",
-        title: "Add items",
-        icon: "mdi:plus-circle-outline",
-        flatten: true,
-        schema: [
-            { name: "show_add_input", selector: { boolean: {} } },
-            {
-                name: "add_input_position",
-                selector: { select: { mode: "dropdown", options: ADD_INPUT_POSITION_OPTIONS } },
-            },
-            { name: "add_button_label", selector: { text: {} } },
-        ],
-    },
-];
-let ShoppingListCardEditor = class ShoppingListCardEditor extends i$2 {
-    constructor() {
-        super(...arguments);
-        this._labelFor = (schema) => {
-            if ("type" in schema && schema.type === "expandable") {
-                return schema.title ?? schema.name;
-            }
-            const map = {
-                entity: "Todo Entity (required)",
-                title: "Title",
-                icon: "Icon",
-                show_header: "Show header",
-                completed: "Show completed items",
-                completed_label: "Completed group label",
-                show_add_input: "Show add-item input",
-                add_input_position: "Add bar position",
-                add_button_label: "Add button label",
-                empty_message: "Empty list message",
-                sort: "Sort order",
-                enable_edit: "Allow editing items",
-                enable_remove: "Allow removing items",
-                enable_quantity: "Enable quantities",
-                quantity_max: "Maximum quantity (0 = unlimited)",
-            };
-            return map[schema.name] ?? schema.name;
-        };
-    }
-    setConfig(config) {
-        this._config = config;
-    }
-    render() {
-        if (!this.hass || !this._config)
-            return b ``;
-        // Merge defaults under the user's config so toggles/selects reflect
-        // the card's actual behavior even when the user hasn't explicitly set
-        // a field. Saved YAML stays clean — see `_formValueChanged` for the
-        // diff-based persistence logic.
-        const formData = { ...DEFAULT_CONFIG, ...this._config };
-        return b `
+`,Ht=[{name:"entity",required:!0,selector:{entity:{domain:"todo"}}},{type:"expandable",name:"_grp_header",title:"Header",icon:"mdi:format-title",flatten:!0,schema:[{name:"show_header",selector:{boolean:{}}},{name:"title",selector:{text:{}}},{name:"icon",selector:{icon:{}}}]},{type:"expandable",name:"_grp_list",title:"To-do items",icon:"mdi:format-list-bulleted",flatten:!0,schema:[{name:"sort",selector:{select:{mode:"dropdown",options:[{value:"manual",label:"Manual (HA order)"},{value:"alpha",label:"Alphabetical"},{value:"created",label:"Created order"}]}}},{name:"click_to_check",selector:{boolean:{}}},{name:"enable_edit",selector:{boolean:{}}},{name:"enable_remove",selector:{boolean:{}}},{name:"empty_message",selector:{text:{}}}]},{type:"expandable",name:"_grp_quantity",title:"Quantities",icon:"mdi:counter",flatten:!0,schema:[{name:"enable_quantity",selector:{boolean:{}}},{name:"quantity_max",selector:{number:{min:0,max:9999,step:1,mode:"box"}}}]},{type:"expandable",name:"_grp_completed",title:"Completed items",icon:"mdi:check-circle-outline",flatten:!0,schema:[{name:"completed",selector:{select:{mode:"dropdown",options:[{value:"bottom",label:"At the bottom of the list"},{value:"inline",label:"Mixed with active items"},{value:"collapse",label:"Collapsible section"},{value:"hide",label:"Hide completed items"}]}}},{name:"completed_label",selector:{text:{}}}]},{type:"expandable",name:"_grp_add",title:"Add items",icon:"mdi:plus-circle-outline",flatten:!0,schema:[{name:"show_add_input",selector:{boolean:{}}},{name:"add_input_position",selector:{select:{mode:"dropdown",options:[{value:"bottom",label:"Bottom (below the list)"},{value:"top",label:"Top (below the header)"}]}}},{name:"add_button_label",selector:{text:{}}}]}];let Mt=class extends rt{constructor(){super(...arguments),this._labelFor=t=>{if("type"in t&&"expandable"===t.type)return t.title??t.name;return{entity:"Todo Entity (required)",title:"Title",icon:"Icon",show_header:"Show header",completed:"Show completed items",completed_label:"Completed group label",show_add_input:"Show add-item input",add_input_position:"Add bar position",add_button_label:"Add button label",empty_message:"Empty list message",sort:"Sort order",click_to_check:"Click row to check/uncheck",enable_edit:"Allow editing items",enable_remove:"Allow removing items",enable_quantity:"Enable quantities",quantity_max:"Maximum quantity (0 = unlimited)"}[t.name]??t.name}}setConfig(t){this._config=t}render(){if(!this.hass||!this._config)return L``;const t={...Ct,...this._config};return L`
       <ha-form
         .hass=${this.hass}
-        .data=${formData}
-        .schema=${SCHEMA}
+        .data=${t}
+        .schema=${Ht}
         .computeLabel=${this._labelFor}
         @value-changed=${this._formValueChanged}
       ></ha-form>
@@ -775,56 +433,12 @@ let ShoppingListCardEditor = class ShoppingListCardEditor extends i$2 {
           </p>
           <ha-code-editor
             mode="css"
-            .value=${typeof this._config.style === "string" ? this._config.style : ""}
+            .value=${"string"==typeof this._config.style?this._config.style:""}
             @value-changed=${this._styleChanged}
           ></ha-code-editor>
         </div>
       </details>
-    `;
-    }
-    _formValueChanged(ev) {
-        ev.stopPropagation();
-        if (!this._config)
-            return;
-        const data = ev.detail.value;
-        // Persist only fields the user actually intends to set:
-        //   - Fields already present in the user's existing config (update)
-        //   - Fields whose new value differs from the built-in default
-        //
-        // ha-form sends back values for every visible field — including ones
-        // we merged in for display purposes. Without this filter, the very
-        // first toggle would balloon the saved YAML with all defaults.
-        const existing = this._config;
-        const defaults = DEFAULT_CONFIG;
-        const newConfig = { ...this._config };
-        for (const [key, value] of Object.entries(data)) {
-            const wasExplicit = key in existing;
-            const matchesDefault = value === defaults[key];
-            if (wasExplicit || !matchesDefault) {
-                newConfig[key] = value;
-            }
-        }
-        // Drop the deprecated boolean once the user touches the editor so we
-        // don't keep two sources of truth in the saved YAML.
-        if ("show_completed" in newConfig)
-            delete newConfig.show_completed;
-        this._fireChange(newConfig);
-    }
-    _styleChanged(ev) {
-        ev.stopPropagation();
-        if (!this._config)
-            return;
-        const value = ev.detail?.value ?? "";
-        const newConfig = { ...this._config, style: value };
-        if (!value)
-            delete newConfig.style;
-        this._fireChange(newConfig);
-    }
-    _fireChange(config) {
-        this.dispatchEvent(new CustomEvent("config-changed", { detail: { config }, bubbles: true, composed: true }));
-    }
-};
-ShoppingListCardEditor.styles = i$5 `
+    `}_formValueChanged(t){if(t.stopPropagation(),!this._config)return;const e=t.detail.value,i=this._config,s=Ct,o={...this._config};for(const[t,n]of Object.entries(e)){!(t in i)&&n===s[t]||(o[t]=n)}"show_completed"in o&&delete o.show_completed,this._fireChange(o)}_styleChanged(t){if(t.stopPropagation(),!this._config)return;const e=t.detail?.value??"",i={...this._config,style:e};e||delete i.style,this._fireChange(i)}_fireChange(t){this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:t},bubbles:!0,composed:!0}))}};Mt.styles=a`
     :host {
       display: block;
     }
@@ -879,481 +493,77 @@ ShoppingListCardEditor.styles = i$5 `
     ha-code-editor {
       --code-mirror-max-height: 240px;
     }
-  `;
-__decorate([
-    n({ attribute: false })
-], ShoppingListCardEditor.prototype, "hass", void 0);
-__decorate([
-    r()
-], ShoppingListCardEditor.prototype, "_config", void 0);
-ShoppingListCardEditor = __decorate([
-    t$2(EDITOR_TAG)
-], ShoppingListCardEditor);
-
-/* ───────────────────────────────────────────────────────────────────────────
- * Register card with the HA frontend.
- * ─────────────────────────────────────────────────────────────────────────── */
-const win = window;
-win.customCards = win.customCards || [];
-if (!win.customCards.find((c) => c.type === CARD_TAG)) {
-    win.customCards.push({
-        type: CARD_TAG,
-        name: "Shopping List Card",
-        description: "Work in progress — a Lovelace shopping list card.",
-        preview: true,
-        documentationURL: "https://github.com/MCuello17/ha-shopping-list",
-    });
-}
-console.info(`%c SHOPPING-LIST-CARD %c v${CARD_VERSION} `, "color: white; background: #03a9f4; font-weight: 700;", "color: #03a9f4; background: white; font-weight: 700;");
-/* ─────────────────────────────────────────────────────────────────────────── */
-let ShoppingListCard = class ShoppingListCard extends i$2 {
-    constructor() {
-        super(...arguments);
-        this._items = [];
-        this._loading = false;
-        this._draft = "";
-        this._completedExpanded = false;
-        this._editDraft = "";
-        this._editQuantity = 1;
-        this._addQuantity = 1;
-        /** Set true on edit start; consumed by `updated()` to focus the input once. */
-        this._focusEditOnUpdate = false;
-        this._toggleCompletedExpanded = () => {
-            this._completedExpanded = !this._completedExpanded;
-        };
-    }
-    /* ─── Card public API ──────────────────────────────────────────────── */
-    static getStubConfig() {
-        return { ...DEFAULT_CONFIG };
-    }
-    static async getConfigElement() {
-        return document.createElement(EDITOR_TAG);
-    }
-    setConfig(config) {
-        if (!config)
-            throw new Error("Invalid configuration");
-        // Migrate legacy `show_completed: boolean` → new `completed` enum.
-        // We only fill `completed` when it isn't already set, so explicit new
-        // configs always win over the deprecated flag.
-        const migrated = { ...config };
-        if (migrated.completed === undefined && migrated.show_completed !== undefined) {
-            migrated.completed = migrated.show_completed ? "inline" : "hide";
-        }
-        this._config = { ...DEFAULT_CONFIG, ...migrated };
-    }
-    getCardSize() {
-        const base = this._config?.show_header ? 2 : 1;
-        return base + Math.min(this._items.length, 6);
-    }
-    /* ─── Lifecycle ────────────────────────────────────────────────────── */
-    disconnectedCallback() {
-        super.disconnectedCallback();
-        this._teardownSubscription();
-    }
-    updated(changed) {
-        super.updated(changed);
-        if (this._focusEditOnUpdate) {
-            const input = this.renderRoot.querySelector(".sl-edit-input");
-            if (input) {
-                input.focus();
-                input.select();
-                this._focusEditOnUpdate = false;
-            }
-        }
-        const entity = this._config?.entity;
-        if (!entity || !this.hass)
-            return;
-        if (entity !== this._lastEntity) {
-            this._lastEntity = entity;
-            void this._setupSubscription(entity);
-        }
-    }
-    /* ─── HA Todo API plumbing ─────────────────────────────────────────── */
-    async _setupSubscription(entity) {
-        this._teardownSubscription();
-        if (!this.hass)
-            return;
-        this._loading = true;
-        this._error = undefined;
-        try {
-            // Initial fetch.
-            const result = await this.hass.callWS({
-                type: "todo/item/list",
-                entity_id: entity,
-            });
-            this._items = result.items ?? [];
-            // Subscribe to updates.
-            this._unsub = await this.hass.connection.subscribeMessage((msg) => {
-                this._items = msg.items ?? [];
-            }, { type: "todo/item/subscribe", entity_id: entity });
-        }
-        catch (err) {
-            this._error = err instanceof Error ? err.message : String(err);
-        }
-        finally {
-            this._loading = false;
-        }
-    }
-    _teardownSubscription() {
-        if (this._unsub) {
-            try {
-                this._unsub();
-            }
-            catch {
-                /* ignore */
-            }
-            this._unsub = undefined;
-        }
-    }
-    async _addItem() {
-        const cfg = this._config;
-        const entity = cfg?.entity;
-        const trimmed = this._draft.trim();
-        if (!entity || !trimmed || !this.hass)
-            return;
-        const enableQuantity = cfg.enable_quantity ?? false;
-        const quantity = clampQuantity(this._addQuantity, cfg.quantity_max ?? 0);
-        // formatQuantity drops the marker entirely when quantity == 1, so
-        // single-quantity adds still produce clean summaries.
-        const itemSummary = enableQuantity ? formatQuantity(trimmed, quantity) : trimmed;
-        try {
-            await this.hass.callService("todo", "add_item", { entity_id: entity, item: itemSummary });
-            this._draft = "";
-            // Per spec: quantities start at 1. Reset after every successful
-            // add so the next item begins fresh rather than carrying over.
-            this._addQuantity = 1;
-        }
-        catch (err) {
-            this._error = err instanceof Error ? err.message : String(err);
-        }
-    }
-    _adjustAddQuantity(delta) {
-        const max = this._config?.quantity_max ?? 0;
-        this._addQuantity = clampQuantity(this._addQuantity + delta, max);
-    }
-    async _toggleItem(item) {
-        const entity = this._config?.entity;
-        if (!entity || !this.hass)
-            return;
-        const next = item.status === "completed" ? "needs_action" : "completed";
-        try {
-            await this.hass.callService("todo", "update_item", {
-                entity_id: entity,
-                item: item.uid,
-                status: next,
-            });
-        }
-        catch (err) {
-            this._error = err instanceof Error ? err.message : String(err);
-        }
-    }
-    async _removeItem(item) {
-        const entity = this._config?.entity;
-        if (!entity || !this.hass)
-            return;
-        try {
-            await this.hass.callService("todo", "remove_item", {
-                entity_id: entity,
-                item: item.uid,
-            });
-        }
-        catch (err) {
-            this._error = err instanceof Error ? err.message : String(err);
-        }
-    }
-    /* ─── Inline edit ──────────────────────────────────────────────────── */
-    _startEdit(item) {
-        const enableQuantity = this._config?.enable_quantity ?? false;
-        if (enableQuantity) {
-            // With quantity ON, split the marker out so the user edits only the
-            // name; the stepper handles quantity separately.
-            const { name, quantity } = parseQuantity(item.summary);
-            this._editDraft = name;
-            this._editQuantity = quantity;
-        }
-        else {
-            // With quantity OFF, treat the summary as opaque text — markers (if
-            // any) are shown verbatim and the user can edit them by hand.
-            this._editDraft = item.summary;
-            this._editQuantity = 1;
-        }
-        this._editingUid = item.uid;
-        this._focusEditOnUpdate = true;
-    }
-    _cancelEdit() {
-        this._editingUid = undefined;
-        this._editDraft = "";
-        this._editQuantity = 1;
-    }
-    /**
-     * Commit an edit (name and/or quantity). Safe to call multiple times
-     * for the same item — once it completes `_editingUid` is cleared so a
-     * stray late blur won't re-fire the service. The new summary is the
-     * trimmed name plus an encoded `<quantity: N>` marker when the feature
-     * is enabled and N > 1; otherwise it's just the trimmed name.
-     */
-    async _saveEdit(item) {
-        if (this._editingUid !== item.uid)
-            return;
-        const cfg = this._config;
-        if (!cfg) {
-            this._cancelEdit();
-            return;
-        }
-        const trimmedName = this._editDraft.trim();
-        if (!trimmedName) {
-            this._cancelEdit();
-            return;
-        }
-        const enableQuantity = cfg.enable_quantity ?? false;
-        const newSummary = enableQuantity
-            ? formatQuantity(trimmedName, clampQuantity(this._editQuantity, cfg.quantity_max ?? 0))
-            : trimmedName;
-        if (newSummary === item.summary) {
-            this._cancelEdit();
-            return;
-        }
-        const entity = cfg.entity;
-        if (!entity || !this.hass) {
-            this._cancelEdit();
-            return;
-        }
-        // Clear editing state before the await so a blur fired by the DOM
-        // teardown can't trigger a second service call.
-        this._cancelEdit();
-        try {
-            await this.hass.callService("todo", "update_item", {
-                entity_id: entity,
-                item: item.uid,
-                rename: newSummary,
-            });
-        }
-        catch (err) {
-            this._error = err instanceof Error ? err.message : String(err);
-        }
-    }
-    _adjustEditQuantity(delta) {
-        const max = this._config?.quantity_max ?? 0;
-        this._editQuantity = clampQuantity(this._editQuantity + delta, max);
-    }
-    /* ─── Sorting / filtering ──────────────────────────────────────────── */
-    _sort(items) {
-        const sortMode = this._config?.sort;
-        if (sortMode === "alpha") {
-            return [...items].sort((a, b) => a.summary.localeCompare(b.summary));
-        }
-        // "manual" / "created" / undefined → preserve HA's order.
-        return items;
-    }
-    /**
-     * Split items into the two buckets used by every render mode, applying
-     * the configured sort to each bucket independently.
-     */
-    _splitItems() {
-        const active = [];
-        const completed = [];
-        for (const item of this._items) {
-            if (item.status === "completed")
-                completed.push(item);
-            else
-                active.push(item);
-        }
-        return { active: this._sort(active), completed: this._sort(completed) };
-    }
-    /* ─── Render ───────────────────────────────────────────────────────── */
-    render() {
-        if (!this._config || !this.hass)
-            return A;
-        const cfg = this._config;
-        const customStyle = this._extractCustomStyle();
-        const showAdd = !!(cfg.show_add_input && cfg.entity);
-        const position = cfg.add_input_position ?? "bottom";
-        return b `
+  `,t([ht({attribute:!1})],Mt.prototype,"hass",void 0),t([ut()],Mt.prototype,"_config",void 0),Mt=t([pt(St)],Mt);const Tt=window;Tt.customCards=Tt.customCards||[],Tt.customCards.find(t=>t.type===kt)||Tt.customCards.push({type:kt,name:"Shopping List Card",description:"Work in progress — a Lovelace shopping list card.",preview:!0,documentationURL:"https://github.com/MCuello17/ha-shopping-list"}),console.info("%c SHOPPING-LIST-CARD %c v0.1.0 ","color: white; background: #03a9f4; font-weight: 700;","color: #03a9f4; background: white; font-weight: 700;");let It=class extends rt{constructor(){super(...arguments),this._items=[],this._loading=!1,this._draft="",this._completedExpanded=!1,this._editDraft="",this._editQuantity=1,this._addQuantity=1,this._focusEditOnUpdate=!1,this._toggleCompletedExpanded=()=>{this._completedExpanded=!this._completedExpanded}}static getStubConfig(){return{...Ct}}static async getConfigElement(){return document.createElement(St)}setConfig(t){if(!t)throw new Error("Invalid configuration");const e={...t};void 0===e.completed&&void 0!==e.show_completed&&(e.completed=e.show_completed?"inline":"hide"),this._config={...Ct,...e}}getCardSize(){return(this._config?.show_header?2:1)+Math.min(this._items.length,6)}disconnectedCallback(){super.disconnectedCallback(),this._teardownSubscription()}updated(t){if(super.updated(t),this._focusEditOnUpdate){const t=this.renderRoot.querySelector(".sl-edit-input");t&&(t.focus(),t.select(),this._focusEditOnUpdate=!1)}const e=this._config?.entity;e&&this.hass&&e!==this._lastEntity&&(this._lastEntity=e,this._setupSubscription(e))}async _setupSubscription(t){if(this._teardownSubscription(),this.hass){this._loading=!0,this._error=void 0;try{const e=await this.hass.callWS({type:"todo/item/list",entity_id:t});this._items=e.items??[],this._unsub=await this.hass.connection.subscribeMessage(t=>{this._items=t.items??[]},{type:"todo/item/subscribe",entity_id:t})}catch(t){this._error=t instanceof Error?t.message:String(t)}finally{this._loading=!1}}}_teardownSubscription(){if(this._unsub){try{this._unsub()}catch{}this._unsub=void 0}}async _addItem(){const t=this._config,e=t?.entity,i=this._draft.trim();if(!e||!i||!this.hass)return;const s=t.enable_quantity??!1,o=Ut(this._addQuantity,t.quantity_max??0),n=s?zt(i,o):i;try{await this.hass.callService("todo","add_item",{entity_id:e,item:n}),this._draft="",this._addQuantity=1}catch(t){this._error=t instanceof Error?t.message:String(t)}}_adjustAddQuantity(t){const e=this._config?.quantity_max??0;this._addQuantity=Ut(this._addQuantity+t,e)}async _toggleItem(t){const e=this._config?.entity;if(!e||!this.hass)return;const i="completed"===t.status?"needs_action":"completed";try{await this.hass.callService("todo","update_item",{entity_id:e,item:t.uid,status:i})}catch(t){this._error=t instanceof Error?t.message:String(t)}}async _removeItem(t){const e=this._config?.entity;if(e&&this.hass)try{await this.hass.callService("todo","remove_item",{entity_id:e,item:t.uid})}catch(t){this._error=t instanceof Error?t.message:String(t)}}_startEdit(t){if(this._config?.enable_quantity??!1){const{name:e,quantity:i}=Pt(t.summary);this._editDraft=e,this._editQuantity=i}else this._editDraft=t.summary,this._editQuantity=1;this._editingUid=t.uid,this._focusEditOnUpdate=!0}_cancelEdit(){this._editingUid=void 0,this._editDraft="",this._editQuantity=1}async _saveEdit(t){if(this._editingUid!==t.uid)return;const e=this._config;if(!e)return void this._cancelEdit();const i=this._editDraft.trim();if(!i)return void this._cancelEdit();const s=e.enable_quantity??!1?zt(i,Ut(this._editQuantity,e.quantity_max??0)):i;if(s===t.summary)return void this._cancelEdit();const o=e.entity;if(o&&this.hass){this._cancelEdit();try{await this.hass.callService("todo","update_item",{entity_id:o,item:t.uid,rename:s})}catch(t){this._error=t instanceof Error?t.message:String(t)}}else this._cancelEdit()}_adjustEditQuantity(t){const e=this._config?.quantity_max??0;this._editQuantity=Ut(this._editQuantity+t,e)}_sort(t){const e=this._config?.sort;return"alpha"===e?[...t].sort((t,e)=>t.summary.localeCompare(e.summary)):t}_splitItems(){const t=[],e=[];for(const i of this._items)"completed"===i.status?e.push(i):t.push(i);return{active:this._sort(t),completed:this._sort(e)}}render(){if(!this._config||!this.hass)return W;const t=this._config,e=this._extractCustomStyle(),i=!(!t.show_add_input||!t.entity),s=t.add_input_position??"bottom";return L`
       <ha-card class="sl-card">
-        ${cfg.show_header ? this._renderHeader() : A}
-        ${this._error ? b `<div class="sl-error">${this._error}</div>` : A}
-        ${showAdd && position === "top" ? this._renderAddRow("top") : A} ${this._renderBody()}
-        ${showAdd && position !== "top" ? this._renderAddRow("bottom") : A}
+        ${t.show_header?this._renderHeader():W}
+        ${this._error?L`<div class="sl-error">${this._error}</div>`:W}
+        ${i&&"top"===s?this._renderAddRow("top"):W} ${this._renderBody()}
+        ${i&&"top"!==s?this._renderAddRow("bottom"):W}
       </ha-card>
-      ${customStyle
-            ? b `<style>
-            ${customStyle}
-          </style>`
-            : A}
-    `;
-    }
-    _renderBody() {
-        const cfg = this._config;
-        if (!cfg.entity) {
-            return b `<div class="sl-empty">
+      ${e?L`<style>
+            ${e}
+          </style>`:W}
+    `}_renderBody(){const t=this._config;if(!t.entity)return L`<div class="sl-empty">
         No todo entity selected. Open the editor to pick one.
-      </div>`;
-        }
-        if (this._loading && this._items.length === 0) {
-            return b `<div class="sl-empty">Loading…</div>`;
-        }
-        const mode = cfg.completed ?? "bottom";
-        const { active, completed } = this._splitItems();
-        // Compute the items to render in the main list, plus whether we need
-        // a collapsed-toggle row at the end.
-        let mainItems;
-        let trailingCompleted = [];
-        let showCollapseToggle = false;
-        if (mode === "hide") {
-            mainItems = active;
-        }
-        else if (mode === "inline") {
-            // HA already gives us a single ordered stream; just sort the union.
-            mainItems = this._sort([...this._items]);
-        }
-        else if (mode === "bottom") {
-            mainItems = active;
-            trailingCompleted = completed;
-        }
-        else {
-            // collapse
-            mainItems = active;
-            showCollapseToggle = completed.length > 0;
-            if (this._completedExpanded)
-                trailingCompleted = completed;
-        }
-        if (mainItems.length === 0 && trailingCompleted.length === 0 && !showCollapseToggle) {
-            return b `<div class="sl-empty">${cfg.empty_message}</div>`;
-        }
-        // Keyed lists: Lit's `repeat` directive uses `item.uid` to track each
-        // row across re-renders. Without it Lit recycles DOM nodes positionally,
-        // which lets stale DOM state (e.g. an `<input>` the user just toggled
-        // before it moved buckets) bleed into the new item that takes its slot.
-        return b `
+      </div>`;if(this._loading&&0===this._items.length)return L`<div class="sl-empty">Loading…</div>`;const e=t.completed??"bottom",{active:i,completed:s}=this._splitItems();let o,n=[],a=!1;return"hide"===e?o=i:"inline"===e?o=this._sort([...this._items]):"bottom"===e?(o=i,n=s):(o=i,a=s.length>0,this._completedExpanded&&(n=s)),0!==o.length||0!==n.length||a?L`
       <ul class="sl-list">
-        ${c(mainItems, (i) => i.uid, (i) => this._renderItem(i))}
-        ${showCollapseToggle ? this._renderCompletedToggle(completed.length) : A}
-        ${c(trailingCompleted, (i) => i.uid, (i) => this._renderItem(i))}
+        ${Et(o,t=>t.uid,t=>this._renderItem(t))}
+        ${a?this._renderCompletedToggle(s.length):W}
+        ${Et(n,t=>t.uid,t=>this._renderItem(t))}
       </ul>
-    `;
-    }
-    _renderCompletedToggle(count) {
-        const expanded = this._completedExpanded;
-        const label = this._config?.completed_label || "Completed";
-        return b `
+    `:L`<div class="sl-empty">${t.empty_message}</div>`}_renderCompletedToggle(t){const e=this._completedExpanded,i=this._config?.completed_label||"Completed";return L`
       <li
-        class="sl-completed-toggle ${expanded ? "sl-completed-toggle--expanded" : ""}"
+        class="sl-completed-toggle ${e?"sl-completed-toggle--expanded":""}"
         role="button"
         tabindex="0"
-        aria-expanded=${expanded ? "true" : "false"}
+        aria-expanded=${e?"true":"false"}
         @click=${this._toggleCompletedExpanded}
-        @keydown=${(ev) => {
-            if (ev.key === "Enter" || ev.key === " ") {
-                ev.preventDefault();
-                this._toggleCompletedExpanded();
-            }
-        }}
+        @keydown=${t=>{"Enter"!==t.key&&" "!==t.key||(t.preventDefault(),this._toggleCompletedExpanded())}}
       >
         <ha-icon
           class="sl-completed-toggle-icon"
-          .icon=${expanded ? "mdi:chevron-up" : "mdi:chevron-down"}
+          .icon=${e?"mdi:chevron-up":"mdi:chevron-down"}
         ></ha-icon>
-        <span class="sl-completed-toggle-label">${label} (${count})</span>
+        <span class="sl-completed-toggle-label">${i} (${t})</span>
       </li>
-    `;
-    }
-    _renderHeader() {
-        const cfg = this._config;
-        return b `
+    `}_renderHeader(){const t=this._config;return L`
       <div class="sl-header">
-        ${cfg.icon ? b `<ha-icon class="sl-icon" .icon=${cfg.icon}></ha-icon>` : A}
-        <span class="sl-title">${cfg.title}</span>
+        ${t.icon?L`<ha-icon class="sl-icon" .icon=${t.icon}></ha-icon>`:W}
+        <span class="sl-title">${t.title}</span>
       </div>
-    `;
-    }
-    _renderItem(item) {
-        const cfg = this._config;
-        const completed = item.status === "completed";
-        const isEditing = this._editingUid === item.uid;
-        const enableEdit = cfg.enable_edit !== false;
-        const enableRemove = cfg.enable_remove !== false;
-        const enableQuantity = cfg.enable_quantity ?? false;
-        const quantityMax = cfg.quantity_max ?? 0;
-        // When the feature is on, split the marker out for display. When off,
-        // pass the summary through verbatim — markers (if any) become text.
-        const parsed = enableQuantity
-            ? parseQuantity(item.summary)
-            : { name: item.summary, quantity: 1 };
-        const showQuantityBadge = enableQuantity && parsed.quantity > 1;
-        const canDecrement = this._editQuantity > 1;
-        const canIncrement = quantityMax <= 0 || this._editQuantity < quantityMax;
-        // Used on stepper/save/cancel buttons to suppress the implicit focus
-        // shift — otherwise mousedown moves focus off the input which fires
-        // `blur`, racing the explicit click handler.
-        const suppressBlur = (ev) => ev.preventDefault();
-        return b `
+    `}_renderItem(t){const e=this._config,i="completed"===t.status,s=this._editingUid===t.uid,o=!1!==e.enable_edit,n=!1!==e.enable_remove,a=e.enable_quantity??!1,r=e.quantity_max??0,l=!1!==e.click_to_check,p=a?Pt(t.summary):{name:t.summary,quantity:1},d=a&&p.quantity>1,c=this._editQuantity>1,h=r<=0||this._editQuantity<r,u=t=>t.preventDefault();return L`
       <li
-        class="sl-item ${completed ? "sl-item--completed" : ""} ${isEditing
-            ? "sl-item--editing"
-            : ""}"
-        @click=${(ev) => {
-            if (isEditing)
-                return;
-            // Avoid double-toggle when clicking the checkbox itself.
-            if (ev.target.tagName === "HA-CHECKBOX")
-                return;
-            void this._toggleItem(item);
-        }}
+        class="sl-item ${i?"sl-item--completed":""} ${s?"sl-item--editing":""} ${l?"":"sl-item--no-row-click"}"
+        @click=${e=>{l&&(s||"HA-CHECKBOX"!==e.target.tagName&&this._toggleItem(t))}}
       >
         <ha-checkbox
           class="sl-checkbox"
-          .checked=${completed}
-          ?disabled=${isEditing}
-          @change=${() => this._toggleItem(item)}
+          .checked=${i}
+          ?disabled=${s}
+          @change=${()=>this._toggleItem(t)}
         ></ha-checkbox>
 
-        ${isEditing
-            ? b `<input
+        ${s?L`<input
               class="sl-edit-input"
               type="text"
               .value=${this._editDraft}
               aria-label="Edit item"
-              @click=${(ev) => ev.stopPropagation()}
-              @input=${(ev) => {
-                this._editDraft = ev.target.value;
-            }}
-              @keydown=${(ev) => {
-                if (ev.key === "Enter") {
-                    ev.preventDefault();
-                    void this._saveEdit(item);
-                }
-                else if (ev.key === "Escape") {
-                    ev.preventDefault();
-                    this._cancelEdit();
-                }
-            }}
-              @blur=${() => {
-                // Commit on blur (e.g. user clicks elsewhere on the page).
-                // Stepper/save/cancel buttons preventDefault on mousedown
-                // so they don't trigger this path.
-                if (this._editingUid === item.uid) {
-                    void this._saveEdit(item);
-                }
-            }}
-            />`
-            : b `<span class="sl-summary"
-              >${parsed.name}${showQuantityBadge
-                ? b `<span class="sl-quantity-badge">×${parsed.quantity}</span>`
-                : A}</span
+              @click=${t=>t.stopPropagation()}
+              @input=${t=>{this._editDraft=t.target.value}}
+              @keydown=${e=>{"Enter"===e.key?(e.preventDefault(),this._saveEdit(t)):"Escape"===e.key&&(e.preventDefault(),this._cancelEdit())}}
+              @blur=${()=>{this._editingUid===t.uid&&this._saveEdit(t)}}
+            />`:L`<span class="sl-summary"
+              >${p.name}${d?L`<span class="sl-quantity-badge">×${p.quantity}</span>`:W}</span
             >`}
-        ${isEditing && enableQuantity
-            ? b `
+        ${s&&a?L`
               <div class="sl-quantity-stepper" aria-label="Item quantity">
                 <button
                   type="button"
                   class="sl-quantity-step sl-quantity-step--minus"
-                  ?disabled=${!canDecrement}
+                  ?disabled=${!c}
                   aria-label="Decrease quantity"
-                  @mousedown=${suppressBlur}
-                  @click=${(ev) => {
-                ev.stopPropagation();
-                this._adjustEditQuantity(-1);
-            }}
+                  @mousedown=${u}
+                  @click=${t=>{t.stopPropagation(),this._adjustEditQuantity(-1)}}
                 >
                   <ha-icon icon="mdi:minus"></ha-icon>
                 </button>
@@ -1361,106 +571,63 @@ let ShoppingListCard = class ShoppingListCard extends i$2 {
                 <button
                   type="button"
                   class="sl-quantity-step sl-quantity-step--plus"
-                  ?disabled=${!canIncrement}
+                  ?disabled=${!h}
                   aria-label="Increase quantity"
-                  @mousedown=${suppressBlur}
-                  @click=${(ev) => {
-                ev.stopPropagation();
-                this._adjustEditQuantity(1);
-            }}
+                  @mousedown=${u}
+                  @click=${t=>{t.stopPropagation(),this._adjustEditQuantity(1)}}
                 >
                   <ha-icon icon="mdi:plus"></ha-icon>
                 </button>
               </div>
-            `
-            : A}
+            `:W}
 
         <div class="sl-actions">
-          ${isEditing
-            ? b `
+          ${s?L`
                 <ha-icon-button
                   class="sl-save-button"
                   .label=${"Save"}
-                  @mousedown=${suppressBlur}
-                  @click=${(ev) => {
-                ev.stopPropagation();
-                void this._saveEdit(item);
-            }}
+                  @mousedown=${u}
+                  @click=${e=>{e.stopPropagation(),this._saveEdit(t)}}
                 >
                   <ha-icon icon="mdi:check"></ha-icon>
                 </ha-icon-button>
                 <ha-icon-button
                   class="sl-cancel-button"
                   .label=${"Cancel"}
-                  @mousedown=${suppressBlur}
-                  @click=${(ev) => {
-                ev.stopPropagation();
-                this._cancelEdit();
-            }}
+                  @mousedown=${u}
+                  @click=${t=>{t.stopPropagation(),this._cancelEdit()}}
                 >
                   <ha-icon icon="mdi:close"></ha-icon>
                 </ha-icon-button>
-              `
-            : b `
-                ${enableEdit
-                ? b `<ha-icon-button
+              `:L`
+                ${o?L`<ha-icon-button
                       class="sl-edit-button"
                       .label=${"Edit"}
-                      @click=${(ev) => {
-                    ev.stopPropagation();
-                    this._startEdit(item);
-                }}
+                      @click=${e=>{e.stopPropagation(),this._startEdit(t)}}
                     >
                       <ha-icon icon="mdi:pencil"></ha-icon>
-                    </ha-icon-button>`
-                : A}
-                ${enableRemove
-                ? b `<ha-icon-button
+                    </ha-icon-button>`:W}
+                ${n?L`<ha-icon-button
                       class="sl-delete-button"
                       .label=${"Remove"}
-                      @click=${(ev) => {
-                    ev.stopPropagation();
-                    void this._removeItem(item);
-                }}
+                      @click=${e=>{e.stopPropagation(),this._removeItem(t)}}
                     >
                       <ha-icon icon="mdi:close"></ha-icon>
-                    </ha-icon-button>`
-                : A}
+                    </ha-icon-button>`:W}
               `}
         </div>
       </li>
-    `;
-    }
-    _renderAddRow(position) {
-        const cfg = this._config;
-        const canAdd = this._draft.trim().length > 0;
-        const enableQuantity = cfg.enable_quantity ?? false;
-        const quantityMax = cfg.quantity_max ?? 0;
-        const canAddDecrement = this._addQuantity > 1;
-        const canAddIncrement = quantityMax <= 0 || this._addQuantity < quantityMax;
-        // Keep the input focused when the user adjusts quantity so they can
-        // immediately press Enter to add. Without this, mousedown on the
-        // stepper button would steal focus from the input.
-        const suppressBlur = (ev) => ev.preventDefault();
-        return b `
-      <div class="sl-add-row sl-add-row--${position}">
+    `}_renderAddRow(t){const e=this._config,i=this._draft.trim().length>0,s=e.enable_quantity??!1,o=e.quantity_max??0,n=this._addQuantity>1,a=o<=0||this._addQuantity<o,r=t=>t.preventDefault();return L`
+      <div class="sl-add-row sl-add-row--${t}">
         <input
           class="sl-input"
           type="text"
           placeholder="Add an item…"
           .value=${this._draft}
-          @input=${(ev) => {
-            this._draft = ev.target.value;
-        }}
-          @keydown=${(ev) => {
-            if (ev.key === "Enter") {
-                ev.preventDefault();
-                void this._addItem();
-            }
-        }}
+          @input=${t=>{this._draft=t.target.value}}
+          @keydown=${t=>{"Enter"===t.key&&(t.preventDefault(),this._addItem())}}
         />
-        ${enableQuantity
-            ? b `
+        ${s?L`
               <div
                 class="sl-quantity-stepper sl-quantity-stepper--add"
                 aria-label="Initial quantity for new item"
@@ -1468,10 +635,10 @@ let ShoppingListCard = class ShoppingListCard extends i$2 {
                 <button
                   type="button"
                   class="sl-quantity-step sl-quantity-step--minus"
-                  ?disabled=${!canAddDecrement}
+                  ?disabled=${!n}
                   aria-label="Decrease quantity"
-                  @mousedown=${suppressBlur}
-                  @click=${() => this._adjustAddQuantity(-1)}
+                  @mousedown=${r}
+                  @click=${()=>this._adjustAddQuantity(-1)}
                 >
                   <ha-icon icon="mdi:minus"></ha-icon>
                 </button>
@@ -1479,88 +646,22 @@ let ShoppingListCard = class ShoppingListCard extends i$2 {
                 <button
                   type="button"
                   class="sl-quantity-step sl-quantity-step--plus"
-                  ?disabled=${!canAddIncrement}
+                  ?disabled=${!a}
                   aria-label="Increase quantity"
-                  @mousedown=${suppressBlur}
-                  @click=${() => this._adjustAddQuantity(1)}
+                  @mousedown=${r}
+                  @click=${()=>this._adjustAddQuantity(1)}
                 >
                   <ha-icon icon="mdi:plus"></ha-icon>
                 </button>
               </div>
-            `
-            : A}
+            `:W}
         <button
           class="sl-add-button"
           type="button"
-          ?disabled=${!canAdd}
-          @click=${() => this._addItem()}
+          ?disabled=${!i}
+          @click=${()=>this._addItem()}
         >
-          ${cfg.add_button_label}
+          ${e.add_button_label}
         </button>
       </div>
-    `;
-    }
-    /**
-     * Allow users to inject custom CSS via either:
-     *   style: |
-     *     ha-card { ... }
-     * or the card-mod compatible:
-     *   card_mod:
-     *     style: |
-     *       ha-card { ... }
-     */
-    _extractCustomStyle() {
-        const cfg = this._config;
-        if (!cfg)
-            return undefined;
-        if (typeof cfg.style === "string" && cfg.style.trim())
-            return cfg.style;
-        if (cfg.card_mod) {
-            if (typeof cfg.card_mod === "string")
-                return cfg.card_mod;
-            if (typeof cfg.card_mod === "object" && cfg.card_mod.style)
-                return cfg.card_mod.style;
-        }
-        return undefined;
-    }
-};
-ShoppingListCard.styles = cardStyles;
-__decorate([
-    n({ attribute: false })
-], ShoppingListCard.prototype, "hass", void 0);
-__decorate([
-    r()
-], ShoppingListCard.prototype, "_config", void 0);
-__decorate([
-    r()
-], ShoppingListCard.prototype, "_items", void 0);
-__decorate([
-    r()
-], ShoppingListCard.prototype, "_loading", void 0);
-__decorate([
-    r()
-], ShoppingListCard.prototype, "_error", void 0);
-__decorate([
-    r()
-], ShoppingListCard.prototype, "_draft", void 0);
-__decorate([
-    r()
-], ShoppingListCard.prototype, "_completedExpanded", void 0);
-__decorate([
-    r()
-], ShoppingListCard.prototype, "_editingUid", void 0);
-__decorate([
-    r()
-], ShoppingListCard.prototype, "_editDraft", void 0);
-__decorate([
-    r()
-], ShoppingListCard.prototype, "_editQuantity", void 0);
-__decorate([
-    r()
-], ShoppingListCard.prototype, "_addQuantity", void 0);
-ShoppingListCard = __decorate([
-    t$2(CARD_TAG)
-], ShoppingListCard);
-
-export { ShoppingListCard };
-//# sourceMappingURL=ha-shopping-list-card.js.map
+    `}_extractCustomStyle(){const t=this._config;if(t){if("string"==typeof t.style&&t.style.trim())return t.style;if(t.card_mod){if("string"==typeof t.card_mod)return t.card_mod;if("object"==typeof t.card_mod&&t.card_mod.style)return t.card_mod.style}}}};It.styles=Ot,t([ht({attribute:!1})],It.prototype,"hass",void 0),t([ut()],It.prototype,"_config",void 0),t([ut()],It.prototype,"_items",void 0),t([ut()],It.prototype,"_loading",void 0),t([ut()],It.prototype,"_error",void 0),t([ut()],It.prototype,"_draft",void 0),t([ut()],It.prototype,"_completedExpanded",void 0),t([ut()],It.prototype,"_editingUid",void 0),t([ut()],It.prototype,"_editDraft",void 0),t([ut()],It.prototype,"_editQuantity",void 0),t([ut()],It.prototype,"_addQuantity",void 0),It=t([pt(kt)],It);export{It as ShoppingListCard};

@@ -42,6 +42,14 @@ export interface ShoppingListCardConfig extends LovelaceCardConfig {
   /** Allow removing items via the trailing close button. Defaults to true. */
   enable_remove?: boolean;
   /**
+   * When true (default), clicking anywhere on an item row toggles its
+   * checked state. When false, only the checkbox itself reacts to clicks
+   * and the rest of the row is inert (no pointer cursor, no press
+   * animation) — useful when you want clicks on the row to leave the
+   * action buttons accessible without accidentally checking the item.
+   */
+  click_to_check?: boolean;
+  /**
    * Track per-item quantities. When enabled, edits expose a `−/N/+`
    * stepper and items render as `name ×N` (badge shown only when N > 1).
    * Quantity is persisted in the item's summary as `<quantity: N>`.

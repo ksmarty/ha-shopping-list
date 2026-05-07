@@ -40,6 +40,7 @@ import { css } from "lit";
  *   .sl-item                — single item row
  *   .sl-item--completed     — modifier on completed items
  *   .sl-item--editing       — modifier on item being inline-edited
+ *   .sl-item--no-row-click  — modifier when click_to_check is false
  *   .sl-checkbox            — item checkbox
  *   .sl-summary             — item label text (read-only mode)
  *   .sl-edit-input          — inline rename input (edit mode)
@@ -248,6 +249,16 @@ export const cardStyles = css`
   }
   .sl-item:active {
     transform: scale(0.99);
+  }
+  /* Dial back affordances that hint at "press to act" when row click is
+     disabled. The hover background is preserved — it still reads as
+     "this is the row I'm pointing at" without falsely promising an
+     action. */
+  .sl-item--no-row-click {
+    cursor: default;
+  }
+  .sl-item--no-row-click:active {
+    transform: none;
   }
 
   .sl-item--completed .sl-summary {

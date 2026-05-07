@@ -77,6 +77,7 @@ const SCHEMA: SchemaItem[] = [
     flatten: true,
     schema: [
       { name: "sort", selector: { select: { mode: "dropdown", options: SORT_OPTIONS } } },
+      { name: "click_to_check", selector: { boolean: {} } },
       { name: "enable_edit", selector: { boolean: {} } },
       { name: "enable_remove", selector: { boolean: {} } },
       { name: "empty_message", selector: { text: {} } },
@@ -251,6 +252,7 @@ export class ShoppingListCardEditor extends LitElement implements LovelaceCardEd
       add_button_label: "Add button label",
       empty_message: "Empty list message",
       sort: "Sort order",
+      click_to_check: "Click row to check/uncheck",
       enable_edit: "Allow editing items",
       enable_remove: "Allow removing items",
       enable_quantity: "Enable quantities",

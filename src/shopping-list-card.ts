@@ -460,6 +460,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     const enableRemove = cfg.enable_remove !== false;
     const enableQuantity = cfg.enable_quantity ?? false;
     const quantityMax = cfg.quantity_max ?? 0;
+    const clickToCheck = cfg.click_to_check !== false;
 
     // When the feature is on, split the marker out for display. When off,
     // pass the summary through verbatim — markers (if any) become text.
@@ -480,8 +481,9 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
       <li
         class="sl-item ${completed ? "sl-item--completed" : ""} ${isEditing
           ? "sl-item--editing"
-          : ""}"
+          : ""} ${clickToCheck ? "" : "sl-item--no-row-click"}"
         @click=${(ev: MouseEvent) => {
+          if (!clickToCheck) return;
           if (isEditing) return;
           // Avoid double-toggle when clicking the checkbox itself.
           if ((ev.target as HTMLElement).tagName === "HA-CHECKBOX") return;
