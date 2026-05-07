@@ -62,6 +62,33 @@ export interface ShoppingListCardConfig extends LovelaceCardConfig {
    * this limit; existing items above the limit are not auto-clamped.
    */
   quantity_max?: number;
+  /**
+   * Parse `[Category] Name` prefixes out of item summaries. When off,
+   * the brackets are just text and the rest of the category options
+   * have no effect. Defaults to false.
+   */
+  enable_categories?: boolean;
+  /**
+   * When categories are enabled, group items under collapsible category
+   * headers (`true`, default) or render a flat list with the category
+   * prefix shown on each item (`false`).
+   */
+  group_by_category?: boolean;
+  /** Show the chevron toggle on each category header. Defaults to true. */
+  category_collapsible?: boolean;
+  /**
+   * Show a "check all" checkbox on each category header. Clicking it
+   * marks every item in the category complete (or active if all already
+   * complete). Defaults to true.
+   */
+  category_check_all?: boolean;
+  /** Label for the bucket of items with no `[Category]` prefix. */
+  general_category_label?: string;
+  /**
+   * Map of category name → CSS color, applied to category labels in
+   * both grouped and flat layouts. Any valid CSS `<color>` works.
+   */
+  category_colors?: Record<string, string>;
   empty_message?: string;
   sort?: SortMode;
   /** Free-form CSS appended to the card's shadow root for power users / theming. */

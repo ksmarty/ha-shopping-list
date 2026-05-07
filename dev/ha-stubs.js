@@ -35,6 +35,10 @@ class HaCheckbox extends HTMLElement {
     this._input = root.querySelector("input");
     this._input.addEventListener("change", () => {
       this._checked = this._input.checked;
+      // Click clears indeterminate in real HA too — match that here so the
+      // visual state matches a fresh checked/unchecked after user input.
+      this._indeterminate = false;
+      this._input.indeterminate = false;
       this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
     });
   }
@@ -44,6 +48,16 @@ class HaCheckbox extends HTMLElement {
   }
   get checked() {
     return this._input ? this._input.checked : !!this._checked;
+  }
+  // The category check-all uses the indeterminate state to communicate
+  // "some but not all items in this group are completed". Real <ha-checkbox>
+  // exposes this as a property; the stub follows suit.
+  set indeterminate(v) {
+    this._indeterminate = !!v;
+    if (this._input) this._input.indeterminate = this._indeterminate;
+  }
+  get indeterminate() {
+    return this._input ? this._input.indeterminate : !!this._indeterminate;
   }
 }
 customElements.define("ha-checkbox", HaCheckbox);
@@ -384,7 +398,16 @@ class HaCodeEditor extends HTMLElement {
     });
   }
   set value(v) {
-    if (this._ta && this._ta.value !== v) this._ta.value = v ?? "";
+    if (!this._ta) return;
+    // Don't stomp on a focused editor. Real HA's <ha-code-editor> is
+    // built on CodeMirror, which diffs internal state on `.value =`
+    // without disturbing the cursor; this <textarea> stub doesn't have
+    // that affordance, so we skip the assignment while focused. The
+    // categories YAML editor specifically needs this — its parse →
+    // serialize round-trip isn't identity (incomplete lines drop), and
+    // re-pushing the serialized form mid-typing would lose progress.
+    if (document.activeElement === this) return;
+    if (this._ta.value !== v) this._ta.value = v ?? "";
   }
   get value() {
     return this._ta?.value ?? "";

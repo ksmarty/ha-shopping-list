@@ -3,6 +3,11 @@ import { customElement, property, state } from "lit/decorators.js";
 import type { HomeAssistant, LovelaceCardEditor } from "./ha-types.js";
 
 import { DEFAULT_CONFIG, EDITOR_TAG } from "./const.js";
+import {
+  DEFAULT_CATEGORY_COLORS,
+  parseCategoryColors,
+  stringifyCategoryColors,
+} from "./categories.js";
 import type {
   AddInputPosition,
   CompletedDisplay,
@@ -131,6 +136,19 @@ const SCHEMA: SchemaItem[] = [
   },
 ];
 
+// Rendered separately from the main ha-form so we can keep the
+// category-color YAML editor inside the same expandable block. The
+// individual selectors here still feed back into `_formValueChanged`
+// just like the main form's fields do — both forms share the same
+// flat data shape and the same change handler.
+const CATEGORIES_SCHEMA: SchemaItem[] = [
+  { name: "enable_categories", selector: { boolean: {} } },
+  { name: "group_by_category", selector: { boolean: {} } },
+  { name: "category_collapsible", selector: { boolean: {} } },
+  { name: "category_check_all", selector: { boolean: {} } },
+  { name: "general_category_label", selector: { text: {} } },
+];
+
 @customElement(EDITOR_TAG)
 export class ShoppingListCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
@@ -192,6 +210,12 @@ export class ShoppingListCardEditor extends LitElement implements LovelaceCardEd
       color: var(--secondary-text-color);
       margin: 0 0 6px;
     }
+    /* Categories ha-form sits inside a custom <details>; tighten its
+       default vertical rhythm so it visually belongs with the YAML editor
+       and the example block beneath it. */
+    .categories-form {
+      margin-bottom: 4px;
+    }
     ha-code-editor {
       --code-mirror-max-height: 240px;
     }
@@ -214,6 +238,45 @@ export class ShoppingListCardEditor extends LitElement implements LovelaceCardEd
         .computeLabel=${this._labelFor}
         @value-changed=${this._formValueChanged}
       ></ha-form>
+
+      <details class="customization">
+        <summary>
+          <ha-icon icon="mdi:tag-multiple-outline"></ha-icon>
+          <span>Categories</span>
+          <ha-icon class="chevron" icon="mdi:chevron-down"></ha-icon>
+        </summary>
+        <div class="customization-body">
+          <p class="hint">
+            Prefix an item with <code>[Category]</code> to bucket it — e.g.
+            <code>[Veggies] Lettuce</code>. Brackets are required; items without them land in the
+            <em>General</em> bucket.
+          </p>
+          <ha-form
+            class="categories-form"
+            .hass=${this.hass}
+            .data=${formData}
+            .schema=${CATEGORIES_SCHEMA}
+            .computeLabel=${this._labelFor}
+            @value-changed=${this._formValueChanged}
+          ></ha-form>
+
+          <p class="hint">
+            <strong>Category colors.</strong> One <code>Name: color</code> per line. Any CSS color
+            works — named (<code>green</code>), hex (<code>"#171717"</code>), <code>rgb()</code>, or
+            <code>var(--my-token)</code>. Categories without a mapping use the current text color.
+            Clear the editor to remove all colors.
+          </p>
+          <ha-code-editor
+            mode="yaml"
+            .value=${stringifyCategoryColors(
+              this._config.category_colors !== undefined
+                ? this._config.category_colors
+                : DEFAULT_CATEGORY_COLORS,
+            )}
+            @value-changed=${this._categoryColorsChanged}
+          ></ha-code-editor>
+        </div>
+      </details>
 
       <details class="customization">
         <summary>
@@ -257,6 +320,11 @@ export class ShoppingListCardEditor extends LitElement implements LovelaceCardEd
       enable_remove: "Allow removing items",
       enable_quantity: "Enable quantities",
       quantity_max: "Maximum quantity (0 = unlimited)",
+      enable_categories: "Enable categories",
+      group_by_category: "Group items by category",
+      category_collapsible: "Allow collapsing categories",
+      category_check_all: "Allow check-all on categories",
+      general_category_label: "Label for uncategorized items",
     };
     return map[schema.name] ?? schema.name;
   };
@@ -301,6 +369,24 @@ export class ShoppingListCardEditor extends LitElement implements LovelaceCardEd
     const value = ev.detail?.value ?? "";
     const newConfig: ShoppingListCardConfig = { ...this._config, style: value };
     if (!value) delete newConfig.style;
+    this._fireChange(newConfig);
+  }
+
+  /**
+   * Parse the YAML-ish text from the code editor and persist it under
+   * `category_colors`. Always saves the parsed result — including an
+   * empty `{}` — to make "I cleared this on purpose" a distinct state
+   * from "I never touched it". The latter (key absent) is the only
+   * state that triggers DEFAULT_CATEGORY_COLORS at runtime, so deleting
+   * on empty would bounce the editor back to the defaults the moment
+   * the user finishes wiping it.
+   */
+  private _categoryColorsChanged(ev: CustomEvent): void {
+    ev.stopPropagation();
+    if (!this._config) return;
+    const text = (ev.detail?.value as string) ?? "";
+    const parsed = parseCategoryColors(text);
+    const newConfig: ShoppingListCardConfig = { ...this._config, category_colors: parsed };
     this._fireChange(newConfig);
   }
 

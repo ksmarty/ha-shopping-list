@@ -64,6 +64,17 @@ import { css } from "lit";
  *     .sl-completed-toggle--expanded — modifier when section is open
  *   .sl-completed-toggle-icon  — chevron icon inside the toggle row
  *   .sl-completed-toggle-label — text label inside the toggle row
+ *   .sl-list--grouped       — modifier on root list when grouping is on
+ *   .sl-category            — single category section in grouped layout
+ *   .sl-category-header     — header row of a category (checkbox + label + chevron)
+ *   .sl-category-checkbox   — check-all checkbox in a category header
+ *   .sl-category-name       — clickable [Category] label in the header
+ *   .sl-category-collapse   — chevron toggle in the header
+ *   .sl-category-items      — <ul> of items inside a category
+ *   .sl-category-prefix     — inline [Category] tag shown on flat-mode items
+ *   .sl-name                — wrapper around the item's parsed name
+ *   .sl-grouped-completed   — global completed bucket shown below all
+ *                             groups when completed mode is "collapse"
  */
 export const cardStyles = css`
   /* ─── Tokens ─────────────────────────────────────────────────── */
@@ -167,6 +178,34 @@ export const cardStyles = css`
     /* Empty / loading */
     --shopping-list-empty-fg: var(--shopping-list-muted);
     --shopping-list-empty-padding: 16px 8px;
+
+    /* Categories — grouped layout + flat-mode prefix.
+
+       The color shown for a category is read from
+       --shopping-list-category-color. Per-category overrides are set
+       inline by the card itself when the user provides
+       category_colors: { Veggies: green }; otherwise this falls back
+       to currentColor so the label adopts the surrounding text color. */
+    --shopping-list-category-color: currentColor;
+
+    --shopping-list-category-gap: 12px;
+    --shopping-list-category-bg: transparent;
+    --shopping-list-category-radius: var(--shopping-list-inner-radius);
+    --shopping-list-category-padding: 0;
+
+    --shopping-list-category-header-padding: 4px 4px 4px 0;
+    --shopping-list-category-header-gap: 6px;
+    --shopping-list-category-header-font-size: 0.95rem;
+    --shopping-list-category-header-font-weight: 600;
+    --shopping-list-category-header-bg-hover: var(--shopping-list-pill-bg);
+    --shopping-list-category-collapse-size: 28px;
+    --shopping-list-category-collapse-icon-size: 18px;
+    --shopping-list-category-items-gap: var(--shopping-list-list-gap);
+    --shopping-list-category-items-padding: 0 0 0 4px;
+
+    --shopping-list-category-prefix-margin: 0 6px 0 0;
+    --shopping-list-category-prefix-font-weight: 600;
+    --shopping-list-category-prefix-opacity: 0.85;
 
     /* Layout */
     --shopping-list-add-row-gap: 8px;
@@ -414,6 +453,110 @@ export const cardStyles = css`
   }
   .sl-completed-toggle-label {
     flex: 1;
+  }
+
+  /* ─── Category (grouped layout) ──────────────────────────────── */
+  /* When categories are grouped, the root <div> swaps from .sl-list to
+     .sl-list.sl-list--grouped and contains <section class="sl-category">
+     children. Each section keeps its own internal <ul> of items so the
+     existing item styles apply unchanged. */
+  .sl-list--grouped {
+    gap: var(--shopping-list-category-gap);
+  }
+
+  .sl-category {
+    display: block;
+    background: var(--shopping-list-category-bg);
+    border-radius: var(--shopping-list-category-radius);
+    padding: var(--shopping-list-category-padding);
+  }
+
+  .sl-category-header {
+    display: flex;
+    align-items: center;
+    gap: var(--shopping-list-category-header-gap);
+    padding: var(--shopping-list-category-header-padding);
+    font-size: var(--shopping-list-category-header-font-size);
+    font-weight: var(--shopping-list-category-header-font-weight);
+  }
+
+  .sl-category-checkbox {
+    --mdc-checkbox-unchecked-color: var(--shopping-list-muted);
+    --mdc-theme-secondary: var(--shopping-list-accent);
+    margin: -8px 0 -8px -4px;
+    flex-shrink: 0;
+  }
+
+  .sl-category-name {
+    flex: 1;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: var(--shopping-list-category-color);
+    font: inherit;
+    font-weight: var(--shopping-list-category-header-font-weight);
+    padding: 4px 6px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .sl-category-name:disabled {
+    cursor: default;
+  }
+  .sl-category-name:hover:not(:disabled) {
+    background: var(--shopping-list-category-header-bg-hover);
+  }
+
+  .sl-category-collapse {
+    width: var(--shopping-list-category-collapse-size);
+    height: var(--shopping-list-category-collapse-size);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--shopping-list-muted);
+    border-radius: 999px;
+    cursor: pointer;
+    --mdc-icon-size: var(--shopping-list-category-collapse-icon-size);
+    transition: background 120ms ease;
+    flex-shrink: 0;
+  }
+  .sl-category-collapse:hover,
+  .sl-category-collapse:focus-visible {
+    background: var(--shopping-list-pill-bg-hover);
+    outline: none;
+  }
+
+  .sl-category-items {
+    list-style: none;
+    margin: 0;
+    padding: var(--shopping-list-category-items-padding);
+    display: flex;
+    flex-direction: column;
+    gap: var(--shopping-list-category-items-gap);
+  }
+
+  /* Global completed bucket below all categories (collapse mode).
+     Sits as a peer of the .sl-category sections. The list's own gap
+     handles spacing — this rule just suppresses the default <ul>
+     padding/margin since this is a nested .sl-list. */
+  .sl-grouped-completed {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Flat-mode prefix shown directly on each item when categories are on
+     but grouping is off. Adopts the same color variable as the group
+     header so a single user-provided color theme covers both layouts. */
+  .sl-category-prefix {
+    color: var(--shopping-list-category-color);
+    font-weight: var(--shopping-list-category-prefix-font-weight);
+    opacity: var(--shopping-list-category-prefix-opacity);
+    margin: var(--shopping-list-category-prefix-margin);
+  }
+  .sl-item--completed .sl-category-prefix {
+    color: var(--shopping-list-completed-fg);
   }
 
   /* ─── Add row (input + button) ────────────────────────────────── */

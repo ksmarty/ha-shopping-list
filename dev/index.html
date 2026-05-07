@@ -312,6 +312,9 @@
           <button id="seed">Seed 20 items</button>
           <button id="seed-quantities">Seed quantities</button>
         </div>
+        <div class="row">
+          <button id="seed-categories">Seed categories</button>
+        </div>
 
         <div class="footer-note">
           This harness mocks <code>hass</code> in-memory. Reload to reset everything. The
@@ -432,6 +435,52 @@
           icon: "mdi:cart",
           enable_quantity: true,
           quantity_max: 5,
+        },
+        "Categories: grouped": {
+          type: "custom:shopping-list-card",
+          entity: "todo.shopping_list",
+          title: "Groceries",
+          icon: "mdi:cart",
+          enable_categories: true,
+          enable_quantity: true,
+          quantity_max: 99,
+        },
+        "Categories: grouped + colors": {
+          type: "custom:shopping-list-card",
+          entity: "todo.shopping_list",
+          title: "Groceries",
+          icon: "mdi:cart",
+          enable_categories: true,
+          enable_quantity: true,
+          quantity_max: 99,
+          category_colors: {
+            Veggies: "seagreen",
+            Dairy: "#9c27b0",
+            Frozen: "#1976d2",
+            Bakery: "#c2410c",
+          },
+        },
+        "Categories: flat with prefix": {
+          type: "custom:shopping-list-card",
+          entity: "todo.shopping_list",
+          title: "Groceries",
+          icon: "mdi:cart",
+          enable_categories: true,
+          group_by_category: false,
+          sort: "alpha",
+          category_colors: {
+            Veggies: "seagreen",
+            Dairy: "#9c27b0",
+          },
+        },
+        "Categories: no collapse, no check-all": {
+          type: "custom:shopping-list-card",
+          entity: "todo.shopping_list",
+          title: "Plain groups",
+          icon: "mdi:cart",
+          enable_categories: true,
+          category_collapsible: false,
+          category_check_all: false,
         },
         "Custom CSS (theme-aware)": {
           type: "custom:shopping-list-card",
@@ -630,6 +679,28 @@
           { uid: "q4", summary: "Apples <quantity: 12>", status: "needs_action" },
           { uid: "q5", summary: "Coffee beans <quantity: 1>", status: "completed" },
           { uid: "q6", summary: "Sparkling water <quantity: 4>", status: "completed" },
+        ];
+        mock = createMockHass({ initialItems: items });
+        mountCard(structuredClone(activeConfig));
+      });
+      // Items pre-tagged with `[Category]` prefixes (and a few quantities)
+      // so the categories preset can be exercised end-to-end. Includes
+      // mixed completed states + a few uncategorized "General" items.
+      document.getElementById("seed-categories").addEventListener("click", () => {
+        const items = [
+          { uid: "c1", summary: "[Veggies] Lettuce", status: "needs_action" },
+          {
+            uid: "c2",
+            summary: "[Veggies] Tomatoes <quantity: 4>",
+            status: "needs_action",
+          },
+          { uid: "c3", summary: "[Veggies] Eggplant", status: "completed" },
+          { uid: "c4", summary: "[Dairy] Milk <quantity: 2>", status: "needs_action" },
+          { uid: "c5", summary: "[Dairy] Cheese", status: "completed" },
+          { uid: "c6", summary: "[Bakery] Sourdough", status: "needs_action" },
+          { uid: "c7", summary: "[Frozen] Peas <quantity: 3>", status: "needs_action" },
+          { uid: "c8", summary: "Bread", status: "needs_action" },
+          { uid: "c9", summary: "Toilet paper", status: "completed" },
         ];
         mock = createMockHass({ initialItems: items });
         mountCard(structuredClone(activeConfig));

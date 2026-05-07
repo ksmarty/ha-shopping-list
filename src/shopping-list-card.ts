@@ -4,9 +4,25 @@ import { repeat } from "lit/directives/repeat.js";
 import type { HomeAssistant, LovelaceCard, LovelaceCardEditor } from "./ha-types.js";
 
 import { CARD_TAG, CARD_VERSION, DEFAULT_CONFIG, EDITOR_TAG } from "./const.js";
+import { DEFAULT_CATEGORY_COLORS, parseCategory } from "./categories.js";
 import { clampQuantity, formatQuantity, parseQuantity } from "./quantity.js";
 import type { ShoppingListCardConfig, TodoItem } from "./types.js";
 import { cardStyles } from "./styles.js";
+
+/**
+ * One category bucket. `key` distinguishes the special "general" bucket
+ * from a real category named "__general__" (as unlikely as that is) so
+ * that our state Set and Map operations are unambiguous.
+ */
+interface CategoryGroup {
+  key: string;
+  category: string | null;
+  displayName: string;
+  active: TodoItem[];
+  completed: TodoItem[];
+}
+
+const GENERAL_GROUP_KEY = "__general__";
 
 // Editor side-effect import so HA can lazy-load it.
 import "./shopping-list-card-editor.js";
@@ -56,6 +72,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
   @state() private _editDraft = "";
   @state() private _editQuantity = 1;
   @state() private _addQuantity = 1;
+  @state() private _collapsedCategories: Set<string> = new Set();
 
   private _unsub?: () => void;
   private _lastEntity?: string;
@@ -216,6 +233,59 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     }
   }
 
+  /**
+   * Toggle every item in a category between completed and needs_action.
+   * If every item is already completed we mark them all active again;
+   * otherwise we complete the still-active ones. Already-target items
+   * are skipped to avoid no-op service calls.
+   *
+   * Service calls are sent sequentially: HA's todo state-change events
+   * arrive between calls and the user sees a quick rolling update,
+   * which is friendlier than a parallel burst that could race.
+   */
+  private async _toggleCategoryAll(items: TodoItem[], allCompleted: boolean): Promise<void> {
+    const entity = this._config?.entity;
+    if (!entity || !this.hass || items.length === 0) return;
+    const target = allCompleted ? "needs_action" : "completed";
+    const toUpdate = items.filter((i) => i.status !== target);
+    for (const item of toUpdate) {
+      try {
+        await this.hass.callService("todo", "update_item", {
+          entity_id: entity,
+          item: item.uid,
+          status: target,
+        });
+      } catch (err) {
+        this._error = err instanceof Error ? err.message : String(err);
+        return;
+      }
+    }
+  }
+
+  private _toggleCategoryCollapse(key: string): void {
+    // New Set so Lit's `@state()` reactivity notices the change.
+    const next = new Set(this._collapsedCategories);
+    if (next.has(key)) next.delete(key);
+    else next.add(key);
+    this._collapsedCategories = next;
+  }
+
+  /**
+   * Resolve the color for a category by its DISPLAY name. We key on the
+   * label that the user sees (and would type into the colors editor) so
+   * the General bucket — which has `category: null` internally — still
+   * matches an entry like `General: red` in the YAML editor.
+   *
+   * Lookup order:
+   *   1. `cfg.category_colors` if the user set it (even to {}).
+   *   2. `DEFAULT_CATEGORY_COLORS` only if the user never set anything.
+   */
+  private _categoryColor(name: string): string | undefined {
+    const cfg = this._config!;
+    const map = cfg.category_colors !== undefined ? cfg.category_colors : DEFAULT_CATEGORY_COLORS;
+    return map[name];
+  }
+
   /* ─── Inline edit ──────────────────────────────────────────────────── */
 
   private _startEdit(item: TodoItem): void {
@@ -325,6 +395,57 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     return { active: this._sort(active), completed: this._sort(completed) };
   }
 
+  /**
+   * Bucket items by parsed `[Category]` prefix, applying the configured
+   * sort both within each group and across groups.
+   *
+   * Group ordering rules:
+   *   - `sort: "alpha"` → groups sorted alphabetically by displayName
+   *     (the General bucket sorts naturally with everything else).
+   *   - `sort: "manual" | "created"` → first-appearance order in HA's
+   *     stream, which puts General wherever its first item lives.
+   */
+  private _buildGroups(): CategoryGroup[] {
+    const cfg = this._config!;
+    const generalLabel = cfg.general_category_label || "General";
+    const groups = new Map<string, CategoryGroup>();
+    const insertionOrder: string[] = [];
+
+    for (const item of this._items) {
+      const { category } = parseCategory(item.summary);
+      const key = category ?? GENERAL_GROUP_KEY;
+      let g = groups.get(key);
+      if (!g) {
+        g = {
+          key,
+          category,
+          displayName: category ?? generalLabel,
+          active: [],
+          completed: [],
+        };
+        groups.set(key, g);
+        insertionOrder.push(key);
+      }
+      if (item.status === "completed") g.completed.push(item);
+      else g.active.push(item);
+    }
+
+    const sorted: CategoryGroup[] = insertionOrder.map((k) => {
+      const g = groups.get(k)!;
+      return {
+        ...g,
+        active: this._sort(g.active),
+        completed: this._sort(g.completed),
+      };
+    });
+
+    if (cfg.sort === "alpha") {
+      sorted.sort((a, b) => a.displayName.localeCompare(b.displayName));
+    }
+
+    return sorted;
+  }
+
   /* ─── Render ───────────────────────────────────────────────────────── */
 
   protected render(): TemplateResult | typeof nothing {
@@ -363,6 +484,14 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
       return html`<div class="sl-empty">Loading…</div>`;
     }
 
+    if (cfg.enable_categories && cfg.group_by_category !== false) {
+      return this._renderGrouped();
+    }
+    return this._renderFlat();
+  }
+
+  private _renderFlat(): TemplateResult {
+    const cfg = this._config!;
     const mode = cfg.completed ?? "bottom";
     const { active, completed } = this._splitItems();
 
@@ -412,6 +541,150 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     `;
   }
 
+  private _renderGrouped(): TemplateResult {
+    const cfg = this._config!;
+    const mode = cfg.completed ?? "bottom";
+    const groups = this._buildGroups();
+
+    // In `collapse` mode we lift every completed item out of its group
+    // into one global section at the bottom of the card. Once an item is
+    // done the user has explicitly told us they don't care about its
+    // category any more — keeping per-group collapses on top of an outer
+    // category collapse would be visually noisy and harder to operate.
+    let globalCompleted: TodoItem[] = [];
+    let showGlobalCollapseToggle = false;
+    if (mode === "collapse") {
+      const allCompleted: TodoItem[] = [];
+      for (const g of groups) allCompleted.push(...g.completed);
+      globalCompleted = this._sort(allCompleted);
+      showGlobalCollapseToggle = globalCompleted.length > 0;
+    }
+
+    // Drop groups that would render empty under the current completed mode.
+    const visible = groups.filter((g) => {
+      if (mode === "hide" || mode === "collapse") return g.active.length > 0;
+      return g.active.length + g.completed.length > 0;
+    });
+
+    if (visible.length === 0 && !showGlobalCollapseToggle) {
+      return html`<div class="sl-empty">${cfg.empty_message}</div>`;
+    }
+
+    return html`
+      <div class="sl-list sl-list--grouped">
+        ${repeat(
+          visible,
+          (g) => g.key,
+          (g) => this._renderGroup(g),
+        )}
+        ${showGlobalCollapseToggle
+          ? html`
+              <ul class="sl-list sl-grouped-completed">
+                ${this._renderCompletedToggle(globalCompleted.length)}
+                ${this._completedExpanded
+                  ? repeat(
+                      globalCompleted,
+                      (i) => i.uid,
+                      // Show the [Category] prefix here — the global
+                      // section has no header to anchor categories, so
+                      // each row needs its own context cue.
+                      (i) => this._renderItem(i, { hidePrefix: false }),
+                    )
+                  : nothing}
+              </ul>
+            `
+          : nothing}
+      </div>
+    `;
+  }
+
+  private _renderGroup(group: CategoryGroup): TemplateResult {
+    const cfg = this._config!;
+    const mode = cfg.completed ?? "bottom";
+
+    // Items relevant to the header's check-all state.
+    //
+    // - In `collapse` mode the completed items are lifted into a global
+    //   bottom section, so the header reflects only what's currently
+    //   visible inside the group. Completing a visible item moves it
+    //   straight into that global section.
+    // - In `hide` mode the (hidden) completed items still count toward
+    //   the toggle: clicking once should mark the entire category done,
+    //   visible or not, to avoid a state where hidden items quietly
+    //   leave the toggle stuck off.
+    const headerScope = mode === "collapse" ? group.active : [...group.active, ...group.completed];
+    const allCompleted =
+      headerScope.length > 0 && headerScope.every((i) => i.status === "completed");
+    const someCompleted = !allCompleted && headerScope.some((i) => i.status === "completed");
+
+    const showCheckAll = cfg.category_check_all !== false;
+    const showCollapseToggle = cfg.category_collapsible !== false;
+
+    const isCollapsed = showCollapseToggle && this._collapsedCategories.has(group.key);
+
+    // Per-group items respecting the global completed mode.
+    let groupItems: TodoItem[];
+    if (mode === "hide" || mode === "collapse") {
+      // collapse: completed items lifted to the global section below.
+      groupItems = group.active;
+    } else if (mode === "inline") {
+      groupItems = this._sort([...group.active, ...group.completed]);
+    } else {
+      // bottom: active first, then completed inside this group.
+      groupItems = [...group.active, ...group.completed];
+    }
+
+    // Look up by displayName so the General bucket can be themed under
+    // its label (e.g. `General: grey` or, if the user renamed General
+    // to "Other", `Other: grey`).
+    const colorValue = this._categoryColor(group.displayName);
+    const styleAttr = colorValue ? `--shopping-list-category-color: ${colorValue}` : "";
+
+    return html`
+      <section class="sl-category" style=${styleAttr}>
+        <div class="sl-category-header">
+          ${showCheckAll
+            ? html`<ha-checkbox
+                class="sl-category-checkbox"
+                .checked=${allCompleted}
+                .indeterminate=${someCompleted}
+                @click=${(ev: Event) => ev.stopPropagation()}
+                @change=${() => this._toggleCategoryAll(headerScope, allCompleted)}
+              ></ha-checkbox>`
+            : nothing}
+          <button
+            class="sl-category-name"
+            type="button"
+            ?disabled=${!showCollapseToggle}
+            aria-expanded=${showCollapseToggle ? (isCollapsed ? "false" : "true") : "true"}
+            @click=${showCollapseToggle ? () => this._toggleCategoryCollapse(group.key) : null}
+          >
+            [${group.displayName}]
+          </button>
+          ${showCollapseToggle
+            ? html`<button
+                type="button"
+                class="sl-category-collapse"
+                aria-label=${isCollapsed ? "Expand category" : "Collapse category"}
+                @click=${() => this._toggleCategoryCollapse(group.key)}
+              >
+                <ha-icon .icon=${isCollapsed ? "mdi:chevron-down" : "mdi:chevron-up"}></ha-icon>
+              </button>`
+            : nothing}
+        </div>
+        ${!isCollapsed
+          ? html`<ul class="sl-category-items">
+              ${repeat(
+                groupItems,
+                (i) => i.uid,
+                (i) => this._renderItem(i, { hidePrefix: true }),
+              )}
+            </ul>`
+          : nothing}
+      </section>
+    `;
+  }
+
   private _renderCompletedToggle(count: number): TemplateResult {
     const expanded = this._completedExpanded;
     const label = this._config?.completed_label || "Completed";
@@ -452,7 +725,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     `;
   }
 
-  private _renderItem(item: TodoItem): TemplateResult {
+  private _renderItem(item: TodoItem, opts?: { hidePrefix?: boolean }): TemplateResult {
     const cfg = this._config!;
     const completed = item.status === "completed";
     const isEditing = this._editingUid === item.uid;
@@ -461,13 +734,31 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     const enableQuantity = cfg.enable_quantity ?? false;
     const quantityMax = cfg.quantity_max ?? 0;
     const clickToCheck = cfg.click_to_check !== false;
+    const enableCategories = cfg.enable_categories ?? false;
 
-    // When the feature is on, split the marker out for display. When off,
-    // pass the summary through verbatim — markers (if any) become text.
-    const parsed = enableQuantity
-      ? parseQuantity(item.summary)
-      : { name: item.summary, quantity: 1 };
+    // Two-stage parse:
+    //   1. Strip `[Category]` prefix when categories are on, leaving the
+    //      rest for quantity-marker parsing.
+    //   2. Strip the `<quantity: N>` marker when quantity is on.
+    // Both feature flags are independent, so each stage no-ops when its
+    // flag is off.
+    let nameSource = item.summary;
+    let displayCategory: string | null = null;
+    if (enableCategories) {
+      const parsedCat = parseCategory(item.summary);
+      displayCategory = parsedCat.category;
+      nameSource = parsedCat.rest;
+    }
+    const parsed = enableQuantity ? parseQuantity(nameSource) : { name: nameSource, quantity: 1 };
     const showQuantityBadge = enableQuantity && parsed.quantity > 1;
+
+    // The category prefix shows in the row only when categories are on
+    // AND we're not inside a grouped layout (the group header already
+    // shows the bracket label). Color via the same CSS custom property
+    // used by the group header for theme consistency.
+    const showCategoryPrefix = enableCategories && !opts?.hidePrefix && !!displayCategory;
+    const colorValue = displayCategory ? this._categoryColor(displayCategory) : undefined;
+    const itemStyle = colorValue ? `--shopping-list-category-color: ${colorValue}` : "";
 
     const canDecrement = this._editQuantity > 1;
     const canIncrement = quantityMax <= 0 || this._editQuantity < quantityMax;
@@ -482,6 +773,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
         class="sl-item ${completed ? "sl-item--completed" : ""} ${isEditing
           ? "sl-item--editing"
           : ""} ${clickToCheck ? "" : "sl-item--no-row-click"}"
+        style=${itemStyle}
         @click=${(ev: MouseEvent) => {
           if (!clickToCheck) return;
           if (isEditing) return;
@@ -525,11 +817,13 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
                 }
               }}
             />`
-          : html`<span class="sl-summary"
-              >${parsed.name}${showQuantityBadge
+          : html`<span class="sl-summary">
+              ${showCategoryPrefix
+                ? html`<span class="sl-category-prefix">[${displayCategory}]</span> `
+                : nothing}<span class="sl-name">${parsed.name}</span>${showQuantityBadge
                 ? html`<span class="sl-quantity-badge">×${parsed.quantity}</span>`
-                : nothing}</span
-            >`}
+                : nothing}
+            </span>`}
         ${isEditing && enableQuantity
           ? html`
               <div class="sl-quantity-stepper" aria-label="Item quantity">

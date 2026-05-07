@@ -17,6 +17,14 @@ export const DEFAULT_CONFIG = {
   click_to_check: true,
   enable_quantity: false,
   quantity_max: 0,
+  enable_categories: false,
+  group_by_category: true,
+  category_collapsible: true,
+  category_check_all: true,
+  general_category_label: "General",
+  // Note: `category_colors` intentionally omitted from defaults —
+  // including it as an empty object would reference-compare unequal
+  // against any user value and pollute saved YAML with `{}`.
   empty_message: "Nothing on the list",
   sort: "manual" as const,
 };
