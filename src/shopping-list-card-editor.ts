@@ -39,6 +39,19 @@ type ExpandableSchemaItem = {
 };
 type SchemaItem = LeafSchemaItem | ExpandableSchemaItem;
 
+/**
+ * `<ha-code-editor>` only ships language packs for `yaml` and `jinja2`
+ * (see frontend/src/resources/codemirror.ts → `langs`). Passing any
+ * other mode resolves to `undefined`, which CodeMirror then crashes on
+ * inside its compartment resolver with `can't access property
+ * "extension", t is undefined`.
+ *
+ * For free-form text like Custom CSS we therefore use `yaml` — its
+ * highlighter degrades gracefully on non-YAML input (mostly plain text)
+ * and gives us a working editor instead of an inert element.
+ */
+const CODE_EDITOR_MODE = "yaml" as const;
+
 const SORT_OPTIONS = [
   { value: "manual", label: "Manual (HA order)" },
   { value: "alpha", label: "Alphabetical" },
@@ -167,13 +180,17 @@ export class ShoppingListCardEditor extends LitElement implements LovelaceCardEd
       display: block;
     }
     /* Visual match for the Customization section so it sits naturally
-       below HA's native ha-form expandable groups. */
+       below HA's native ha-form expandable groups.
+       Background is intentionally transparent — HA's own expandables
+       (rendered by ha-form for "expandable" schema items) inherit the
+       parent dialog background, and setting our own card-background
+       here makes us visibly mismatch against them in dark themes. */
     .customization {
       display: block;
       margin-top: 8px;
       border: 1px solid var(--divider-color, rgba(0, 0, 0, 0.12));
       border-radius: 8px;
-      background: var(--card-background-color, var(--ha-card-background, transparent));
+      background: transparent;
       overflow: hidden;
     }
     .customization > summary {
@@ -268,7 +285,7 @@ export class ShoppingListCardEditor extends LitElement implements LovelaceCardEd
             Clear the editor to remove all colors.
           </p>
           <ha-code-editor
-            mode="yaml"
+            .mode=${CODE_EDITOR_MODE}
             .value=${stringifyCategoryColors(
               this._config.category_colors !== undefined
                 ? this._config.category_colors
@@ -291,7 +308,7 @@ export class ShoppingListCardEditor extends LitElement implements LovelaceCardEd
             <code>--shopping-list-*</code> variables.
           </p>
           <ha-code-editor
-            mode="css"
+            .mode=${CODE_EDITOR_MODE}
             .value=${typeof this._config.style === "string" ? this._config.style : ""}
             @value-changed=${this._styleChanged}
           ></ha-code-editor>
