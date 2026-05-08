@@ -1,7 +1,7 @@
 {
-  "name": "ha-shopping-list",
+  "name": "ha-shopping-list-card",
   "version": "0.1.0",
-  "description": "Work in progress — a shopping list card for Home Assistant.",
+  "description": "A shopping-style list view for any Home Assistant todo entity, with categories, quantities, sorting, and theming.",
   "private": true,
   "type": "module",
   "scripts": {

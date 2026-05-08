@@ -1,5 +1,5 @@
 {
-  "name": "Shopping List Card (WIP)",
+  "name": "Shopping List Card",
   "render_readme": true,
   "filename": "ha-shopping-list-card.js",
   "homeassistant": "2023.11.0"

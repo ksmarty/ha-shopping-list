@@ -44,7 +44,7 @@ if (!win.customCards.find((c) => c.type === CARD_TAG)) {
   win.customCards.push({
     type: CARD_TAG,
     name: "Shopping List Card",
-    description: "Work in progress — a Lovelace shopping list card.",
+    description: "A shopping-style list view for any todo entity, with categories and quantities.",
     preview: true,
     documentationURL: "https://github.com/MCuello17/ha-shopping-list",
   });
@@ -659,7 +659,11 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
             aria-expanded=${showCollapseToggle ? (isCollapsed ? "false" : "true") : "true"}
             @click=${showCollapseToggle ? () => this._toggleCategoryCollapse(group.key) : null}
           >
-            [${group.displayName}]
+            [${group.displayName}]${cfg.category_show_count !== false && group.active.length > 0
+              ? html`<span class="sl-category-count" aria-label="active items"
+                  >(${group.active.length})</span
+                >`
+              : nothing}
           </button>
           ${showCollapseToggle
             ? html`<button
@@ -862,7 +866,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
           ${isEditing
             ? html`
                 <ha-icon-button
-                  class="sl-save-button"
+                  class="sl-action-button sl-action-button-save"
                   .label=${"Save"}
                   @mousedown=${suppressBlur}
                   @click=${(ev: MouseEvent) => {
@@ -873,7 +877,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
                   <ha-icon icon="mdi:check"></ha-icon>
                 </ha-icon-button>
                 <ha-icon-button
-                  class="sl-cancel-button"
+                  class="sl-action-button sl-action-button-cancel"
                   .label=${"Cancel"}
                   @mousedown=${suppressBlur}
                   @click=${(ev: MouseEvent) => {
@@ -887,7 +891,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
             : html`
                 ${enableEdit
                   ? html`<ha-icon-button
-                      class="sl-edit-button"
+                      class="sl-action-button sl-action-button-edit"
                       .label=${"Edit"}
                       @click=${(ev: MouseEvent) => {
                         ev.stopPropagation();
@@ -899,7 +903,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
                   : nothing}
                 ${enableRemove
                   ? html`<ha-icon-button
-                      class="sl-delete-button"
+                      class="sl-action-button sl-action-button-delete"
                       .label=${"Remove"}
                       @click=${(ev: MouseEvent) => {
                         ev.stopPropagation();
