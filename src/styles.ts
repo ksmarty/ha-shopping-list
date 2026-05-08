@@ -45,10 +45,11 @@ import { css } from "lit";
  *   .sl-summary             — item label text (read-only mode)
  *   .sl-edit-input          — inline rename input (edit mode)
  *   .sl-actions             — wrapper for per-item action buttons
- *   .sl-edit-button         — pencil button to enter edit mode
- *   .sl-delete-button       — per-item delete button
- *   .sl-save-button         — confirm rename (edit mode)
- *   .sl-cancel-button       — abort rename (edit mode)
+ *   .sl-action-button       — every per-item action button (base class)
+ *   .sl-action-button-edit  — pencil button to enter edit mode
+ *   .sl-action-button-delete — per-item delete button
+ *   .sl-action-button-save  — confirm rename (edit mode)
+ *   .sl-action-button-cancel — abort rename (edit mode)
  *   .sl-quantity-badge      — "×N" badge shown on items with quantity > 1
  *   .sl-quantity-stepper    — −/N/+ wrapper shown in edit mode
  *     .sl-quantity-stepper--add — modifier when used in the add row
@@ -350,10 +351,7 @@ export const cardStyles = css`
     }
   }
 
-  .sl-edit-button,
-  .sl-delete-button,
-  .sl-save-button,
-  .sl-cancel-button {
+  .sl-action-button {
     --mdc-icon-button-size: var(--shopping-list-action-size);
     --mdc-icon-size: var(--shopping-list-action-icon-size);
     color: var(--shopping-list-muted);
@@ -362,7 +360,7 @@ export const cardStyles = css`
        is sized by the text/checkbox instead of the action buttons. */
     margin: var(--shopping-list-action-margin);
   }
-  .sl-save-button {
+  .sl-action-button-save {
     color: var(--shopping-list-accent);
   }
 

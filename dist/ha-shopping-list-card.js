@@ -271,10 +271,7 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     }
   }
 
-  .sl-edit-button,
-  .sl-delete-button,
-  .sl-save-button,
-  .sl-cancel-button {
+  .sl-action-button {
     --mdc-icon-button-size: var(--shopping-list-action-size);
     --mdc-icon-size: var(--shopping-list-action-icon-size);
     color: var(--shopping-list-muted);
@@ -283,7 +280,7 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
        is sized by the text/checkbox instead of the action buttons. */
     margin: var(--shopping-list-action-margin);
   }
-  .sl-save-button {
+  .sl-action-button-save {
     color: var(--shopping-list-accent);
   }
 
@@ -834,7 +831,7 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
         <div class="sl-actions">
           ${o?B`
                 <ha-icon-button
-                  class="sl-save-button"
+                  class="sl-action-button sl-action-button-save"
                   .label=${"Save"}
                   @mousedown=${v}
                   @click=${e=>{e.stopPropagation(),this._saveEdit(t)}}
@@ -842,7 +839,7 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
                   <ha-icon icon="mdi:check"></ha-icon>
                 </ha-icon-button>
                 <ha-icon-button
-                  class="sl-cancel-button"
+                  class="sl-action-button sl-action-button-cancel"
                   .label=${"Cancel"}
                   @mousedown=${v}
                   @click=${t=>{t.stopPropagation(),this._cancelEdit()}}
@@ -851,14 +848,14 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
                 </ha-icon-button>
               `:B`
                 ${n?B`<ha-icon-button
-                      class="sl-edit-button"
+                      class="sl-action-button sl-action-button-edit"
                       .label=${"Edit"}
                       @click=${e=>{e.stopPropagation(),this._startEdit(t)}}
                     >
                       <ha-icon icon="mdi:pencil"></ha-icon>
                     </ha-icon-button>`:V}
                 ${a?B`<ha-icon-button
-                      class="sl-delete-button"
+                      class="sl-action-button sl-action-button-delete"
                       .label=${"Remove"}
                       @click=${e=>{e.stopPropagation(),this._removeItem(t)}}
                     >
