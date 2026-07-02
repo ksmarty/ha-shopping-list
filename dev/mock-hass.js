@@ -88,6 +88,17 @@ export function createMockHass({
     },
 
     connection: {
+      _eventTarget: new EventTarget(),
+      _connected: true,
+      get connected() {
+        return this._connected;
+      },
+      addEventListener(event, handler) {
+        this._eventTarget.addEventListener(event, handler);
+      },
+      removeEventListener(event, handler) {
+        this._eventTarget.removeEventListener(event, handler);
+      },
       async subscribeMessage(cb, msg) {
         log("subscribeMessage", msg);
         state.subs.add(cb);
@@ -98,5 +109,11 @@ export function createMockHass({
     },
   };
 
-  return { hass, state };
+  const mock = { hass, state };
+
+  mock.setState = (status) => {
+    state.items = state.items.map((i) => ({ ...i }));
+  };
+
+  return mock;
 }

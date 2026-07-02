@@ -5,10 +5,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "rollup -c",
-    "watch": "rollup -c --watch",
-    "serve": "node dev/serve.mjs",
-    "dev": "npm run build && (npm run watch & npm run serve)",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.{ts,js,json,md}\" \"dev/**/*.{js,mjs,html}\"",
     "format:check": "prettier --check \"src/**/*.{ts,js,json,md}\" \"dev/**/*.{js,mjs,html}\"",
@@ -36,15 +35,9 @@
     "lit": "^3.3.2"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^29.0.2",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.3",
-    "@rollup/plugin-terser": "^1.0.0",
-    "@rollup/plugin-typescript": "^12.3.0",
     "prettier": "^3.8.3",
-    "rollup": "^4.60.2",
     "simple-git-hooks": "^2.13.1",
-    "tslib": "^2.8.1",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vite": "^8.1.1"
   }
 }

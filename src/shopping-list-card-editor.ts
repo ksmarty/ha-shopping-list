@@ -106,6 +106,7 @@ const SCHEMA: SchemaItem[] = [
       { name: "click_to_check", selector: { boolean: {} } },
       { name: "enable_edit", selector: { boolean: {} } },
       { name: "enable_remove", selector: { boolean: {} } },
+      { name: "enable_reorder", selector: { boolean: {} } },
       { name: "empty_message", selector: { text: {} } },
     ],
   },
@@ -123,6 +124,15 @@ const SCHEMA: SchemaItem[] = [
         selector: { number: { min: 0, max: 9999, step: 1, mode: "box" } },
       },
     ],
+  },
+
+  {
+    type: "expandable",
+    name: "_grp_layout",
+    title: "Layout",
+    icon: "mdi:view-quilt",
+    flatten: true,
+    schema: [{ name: "fill_screen", selector: { boolean: {} } }],
   },
 
   {
@@ -390,6 +400,8 @@ export class ShoppingListCardEditor extends LitElement implements LovelaceCardEd
       category_check_all: "Allow check-all on categories",
       category_show_count: "Show item count on category headers",
       general_category_label: "Label for uncategorized items",
+      fill_screen: "Fill the screen (use full available height)",
+      enable_reorder: "Allow drag-and-drop reorder",
     };
     return map[schema.name] ?? schema.name;
   };

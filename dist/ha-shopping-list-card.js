@@ -1,13 +1,759 @@
-function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPropertyDescriptor(e,i):s;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(t,e,i,s);else for(var r=t.length-1;r>=0;r--)(o=t[r])&&(a=(n<3?o(a):n>3?o(e,i,a):o(e,i))||a);return n>3&&a&&Object.defineProperty(e,i,a),a}"function"==typeof SuppressedError&&SuppressedError;const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,s=Symbol(),o=new WeakMap;let n=class{constructor(t,e,i){if(this._$cssResult$=!0,i!==s)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(i&&void 0===t){const i=void 0!==e&&1===e.length;i&&(t=o.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),i&&o.set(e,t))}return t}toString(){return this.cssText}};const a=t=>new n("string"==typeof t?t:t+"",void 0,s),r=(t,...e)=>{const i=1===t.length?t[0]:e.reduce((e,i,s)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[s+1],t[0]);return new n(i,t,s)},l=i?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return a(e)})(t):t,{is:c,defineProperty:p,getOwnPropertyDescriptor:d,getOwnPropertyNames:h,getOwnPropertySymbols:g,getPrototypeOf:u}=Object,m=globalThis,y=m.trustedTypes,_=y?y.emptyScript:"",f=m.reactiveElementPolyfillSupport,b=(t,e)=>t,v={toAttribute(t,e){switch(e){case Boolean:t=t?_:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},$=(t,e)=>!c(t,e),x={attribute:!0,type:String,converter:v,reflect:!1,useDefault:!1,hasChanged:$};Symbol.metadata??=Symbol("metadata"),m.litPropertyMetadata??=new WeakMap;let w=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=x){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){const i=Symbol(),s=this.getPropertyDescriptor(t,i,e);void 0!==s&&p(this.prototype,t,s)}}static getPropertyDescriptor(t,e,i){const{get:s,set:o}=d(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get:s,set(e){const n=s?.call(this);o?.call(this,e),this.requestUpdate(t,n,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??x}static _$Ei(){if(this.hasOwnProperty(b("elementProperties")))return;const t=u(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(b("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(b("properties"))){const t=this.properties,e=[...h(t),...g(t)];for(const i of e)this.createProperty(i,t[i])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,i]of e)this.elementProperties.set(t,i)}this._$Eh=new Map;for(const[t,e]of this.elementProperties){const i=this._$Eu(t,e);void 0!==i&&this._$Eh.set(i,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(l(t))}else void 0!==t&&e.push(l(t));return e}static _$Eu(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=new Map,e=this.constructor.elementProperties;for(const i of e.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((t,s)=>{if(i)t.adoptedStyleSheets=s.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const i of s){const s=document.createElement("style"),o=e.litNonce;void 0!==o&&s.setAttribute("nonce",o),s.textContent=i.cssText,t.appendChild(s)}})(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$ET(t,e){const i=this.constructor.elementProperties.get(t),s=this.constructor._$Eu(t,i);if(void 0!==s&&!0===i.reflect){const o=(void 0!==i.converter?.toAttribute?i.converter:v).toAttribute(e,i.type);this._$Em=t,null==o?this.removeAttribute(s):this.setAttribute(s,o),this._$Em=null}}_$AK(t,e){const i=this.constructor,s=i._$Eh.get(t);if(void 0!==s&&this._$Em!==s){const t=i.getPropertyOptions(s),o="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:v;this._$Em=s;const n=o.fromAttribute(e,t.type);this[s]=n??this._$Ej?.get(s)??n,this._$Em=null}}requestUpdate(t,e,i,s=!1,o){if(void 0!==t){const n=this.constructor;if(!1===s&&(o=this[t]),i??=n.getPropertyOptions(t),!((i.hasChanged??$)(o,e)||i.useDefault&&i.reflect&&o===this._$Ej?.get(t)&&!this.hasAttribute(n._$Eu(t,i))))return;this.C(t,e,i)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(t,e,{useDefault:i,reflect:s,wrapped:o},n){i&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,n??e??this[t]),!0!==o||void 0!==n)||(this._$AL.has(t)||(this.hasUpdated||i||(e=void 0),this._$AL.set(t,e)),!0===s&&this._$Em!==t&&(this._$Eq??=new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,i]of t){const{wrapped:t}=i,s=this[e];!0!==t||this._$AL.has(e)||void 0===s||this.C(e,void 0,i,s)}}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(e)):this._$EM()}catch(e){throw t=!1,this._$EM(),e}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM()}updated(t){}firstUpdated(t){}};w.elementStyles=[],w.shadowRootOptions={mode:"open"},w[b("elementProperties")]=new Map,w[b("finalized")]=new Map,f?.({ReactiveElement:w}),(m.reactiveElementVersions??=[]).push("2.1.2");const A=globalThis,k=t=>t,E=A.trustedTypes,C=E?E.createPolicy("lit-html",{createHTML:t=>t}):void 0,S="$lit$",q=`lit$${Math.random().toFixed(9).slice(2)}$`,z="?"+q,P=`<${z}>`,U=document,H=()=>U.createComment(""),O=t=>null===t||"object"!=typeof t&&"function"!=typeof t,M=Array.isArray,T="[ \t\n\f\r]",N=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,I=/-->/g,R=/>/g,D=RegExp(`>|${T}(?:([^\\s"'>=/]+)(${T}*=${T}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),j=/'/g,Q=/"/g,L=/^(?:script|style|textarea|title)$/i,B=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),G=Symbol.for("lit-noChange"),V=Symbol.for("lit-nothing"),W=new WeakMap,F=U.createTreeWalker(U,129);function K(t,e){if(!M(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==C?C.createHTML(e):e}class J{constructor({strings:t,_$litType$:e},i){let s;this.parts=[];let o=0,n=0;const a=t.length-1,r=this.parts,[l,c]=((t,e)=>{const i=t.length-1,s=[];let o,n=2===e?"<svg>":3===e?"<math>":"",a=N;for(let e=0;e<i;e++){const i=t[e];let r,l,c=-1,p=0;for(;p<i.length&&(a.lastIndex=p,l=a.exec(i),null!==l);)p=a.lastIndex,a===N?"!--"===l[1]?a=I:void 0!==l[1]?a=R:void 0!==l[2]?(L.test(l[2])&&(o=RegExp("</"+l[2],"g")),a=D):void 0!==l[3]&&(a=D):a===D?">"===l[0]?(a=o??N,c=-1):void 0===l[1]?c=-2:(c=a.lastIndex-l[2].length,r=l[1],a=void 0===l[3]?D:'"'===l[3]?Q:j):a===Q||a===j?a=D:a===I||a===R?a=N:(a=D,o=void 0);const d=a===D&&t[e+1].startsWith("/>")?" ":"";n+=a===N?i+P:c>=0?(s.push(r),i.slice(0,c)+S+i.slice(c)+q+d):i+q+(-2===c?e:d)}return[K(t,n+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),s]})(t,e);if(this.el=J.createElement(l,i),F.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(s=F.nextNode())&&r.length<a;){if(1===s.nodeType){if(s.hasAttributes())for(const t of s.getAttributeNames())if(t.endsWith(S)){const e=c[n++],i=s.getAttribute(t).split(q),a=/([.?@])?(.*)/.exec(e);r.push({type:1,index:o,name:a[2],strings:i,ctor:"."===a[1]?et:"?"===a[1]?it:"@"===a[1]?st:tt}),s.removeAttribute(t)}else t.startsWith(q)&&(r.push({type:6,index:o}),s.removeAttribute(t));if(L.test(s.tagName)){const t=s.textContent.split(q),e=t.length-1;if(e>0){s.textContent=E?E.emptyScript:"";for(let i=0;i<e;i++)s.append(t[i],H()),F.nextNode(),r.push({type:2,index:++o});s.append(t[e],H())}}}else if(8===s.nodeType)if(s.data===z)r.push({type:2,index:o});else{let t=-1;for(;-1!==(t=s.data.indexOf(q,t+1));)r.push({type:7,index:o}),t+=q.length-1}o++}}static createElement(t,e){const i=U.createElement("template");return i.innerHTML=t,i}}function X(t,e,i=t,s){if(e===G)return e;let o=void 0!==s?i._$Co?.[s]:i._$Cl;const n=O(e)?void 0:e._$litDirective$;return o?.constructor!==n&&(o?._$AO?.(!1),void 0===n?o=void 0:(o=new n(t),o._$AT(t,i,s)),void 0!==s?(i._$Co??=[])[s]=o:i._$Cl=o),void 0!==o&&(e=X(t,o._$AS(t,e.values),o,s)),e}class Z{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,s=(t?.creationScope??U).importNode(e,!0);F.currentNode=s;let o=F.nextNode(),n=0,a=0,r=i[0];for(;void 0!==r;){if(n===r.index){let e;2===r.type?e=new Y(o,o.nextSibling,this,t):1===r.type?e=new r.ctor(o,r.name,r.strings,this,t):6===r.type&&(e=new ot(o,this,t)),this._$AV.push(e),r=i[++a]}n!==r?.index&&(o=F.nextNode(),n++)}return F.currentNode=U,s}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class Y{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,s){this.type=2,this._$AH=V,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=s,this._$Cv=s?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=X(this,t,e),O(t)?t===V||null==t||""===t?(this._$AH!==V&&this._$AR(),this._$AH=V):t!==this._$AH&&t!==G&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>M(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==V&&O(this._$AH)?this._$AA.nextSibling.data=t:this.T(U.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,s="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=J.createElement(K(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===s)this._$AH.p(e);else{const t=new Z(s,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=W.get(t.strings);return void 0===e&&W.set(t.strings,e=new J(t)),e}k(t){M(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,s=0;for(const o of t)s===e.length?e.push(i=new Y(this.O(H()),this.O(H()),this,this.options)):i=e[s],i._$AI(o),s++;s<e.length&&(this._$AR(i&&i._$AB.nextSibling,s),e.length=s)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=k(t).nextSibling;k(t).remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class tt{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,s,o){this.type=1,this._$AH=V,this._$AN=void 0,this.element=t,this.name=e,this._$AM=s,this.options=o,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=V}_$AI(t,e=this,i,s){const o=this.strings;let n=!1;if(void 0===o)t=X(this,t,e,0),n=!O(t)||t!==this._$AH&&t!==G,n&&(this._$AH=t);else{const s=t;let a,r;for(t=o[0],a=0;a<o.length-1;a++)r=X(this,s[i+a],e,a),r===G&&(r=this._$AH[a]),n||=!O(r)||r!==this._$AH[a],r===V?t=V:t!==V&&(t+=(r??"")+o[a+1]),this._$AH[a]=r}n&&!s&&this.j(t)}j(t){t===V?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class et extends tt{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===V?void 0:t}}class it extends tt{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==V)}}class st extends tt{constructor(t,e,i,s,o){super(t,e,i,s,o),this.type=5}_$AI(t,e=this){if((t=X(this,t,e,0)??V)===G)return;const i=this._$AH,s=t===V&&i!==V||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,o=t!==V&&(i===V||s);s&&this.element.removeEventListener(this.name,this,i),o&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class ot{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){X(this,t)}}const nt={I:Y},at=A.litHtmlPolyfillSupport;at?.(J,Y),(A.litHtmlVersions??=[]).push("3.3.2");const rt=globalThis;let lt=class extends w{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const s=i?.renderBefore??e;let o=s._$litPart$;if(void 0===o){const t=i?.renderBefore??null;s._$litPart$=o=new Y(e.insertBefore(H(),t),t,void 0,i??{})}return o._$AI(t),o})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return G}};lt._$litElement$=!0,lt.finalized=!0,rt.litElementHydrateSupport?.({LitElement:lt});const ct=rt.litElementPolyfillSupport;ct?.({LitElement:lt}),(rt.litElementVersions??=[]).push("4.2.2");const pt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}):customElements.define(t,e)},dt={attribute:!0,type:String,converter:v,reflect:!1,hasChanged:$},ht=(t=dt,e,i)=>{const{kind:s,metadata:o}=i;let n=globalThis.litPropertyMetadata.get(o);if(void 0===n&&globalThis.litPropertyMetadata.set(o,n=new Map),"setter"===s&&((t=Object.create(t)).wrapped=!0),n.set(i.name,t),"accessor"===s){const{name:s}=i;return{set(i){const o=e.get.call(this);e.set.call(this,i),this.requestUpdate(s,o,t,!0,i)},init(e){return void 0!==e&&this.C(s,void 0,t,e),e}}}if("setter"===s){const{name:s}=i;return function(i){const o=this[s];e.call(this,i),this.requestUpdate(s,o,t,!0,i)}}throw Error("Unsupported decorator location: "+s)};function gt(t){return(e,i)=>"object"==typeof i?ht(t,e,i):((t,e,i)=>{const s=e.hasOwnProperty(i);return e.constructor.createProperty(i,t),s?Object.getOwnPropertyDescriptor(e,i):void 0})(t,e,i)}function ut(t){return gt({...t,state:!0,attribute:!1})}const mt=2;let yt=class{constructor(t){}get _$AU(){return this._$AM._$AU}_$AT(t,e,i){this._$Ct=t,this._$AM=e,this._$Ci=i}_$AS(t,e){return this.update(t,e)}update(t,e){return this.render(...e)}};const{I:_t}=nt,ft=t=>t,bt=()=>document.createComment(""),vt=(t,e,i)=>{const s=t._$AA.parentNode,o=void 0===e?t._$AB:e._$AA;if(void 0===i){const e=s.insertBefore(bt(),o),n=s.insertBefore(bt(),o);i=new _t(e,n,t,t.options)}else{const e=i._$AB.nextSibling,n=i._$AM,a=n!==t;if(a){let e;i._$AQ?.(t),i._$AM=t,void 0!==i._$AP&&(e=t._$AU)!==n._$AU&&i._$AP(e)}if(e!==o||a){let t=i._$AA;for(;t!==e;){const e=ft(t).nextSibling;ft(s).insertBefore(t,o),t=e}}}return i},$t=(t,e,i=t)=>(t._$AI(e,i),t),xt={},wt=(t,e=xt)=>t._$AH=e,At=t=>{t._$AR(),t._$AA.remove()},kt=(t,e,i)=>{const s=new Map;for(let o=e;o<=i;o++)s.set(t[o],o);return s},Et=(t=>(...e)=>({_$litDirective$:t,values:e}))(class extends yt{constructor(t){if(super(t),t.type!==mt)throw Error("repeat() can only be used in text expressions")}dt(t,e,i){let s;void 0===i?i=e:void 0!==e&&(s=e);const o=[],n=[];let a=0;for(const e of t)o[a]=s?s(e,a):a,n[a]=i(e,a),a++;return{values:n,keys:o}}render(t,e,i){return this.dt(t,e,i).values}update(t,[e,i,s]){const o=(t=>t._$AH)(t),{values:n,keys:a}=this.dt(e,i,s);if(!Array.isArray(o))return this.ut=a,n;const r=this.ut??=[],l=[];let c,p,d=0,h=o.length-1,g=0,u=n.length-1;for(;d<=h&&g<=u;)if(null===o[d])d++;else if(null===o[h])h--;else if(r[d]===a[g])l[g]=$t(o[d],n[g]),d++,g++;else if(r[h]===a[u])l[u]=$t(o[h],n[u]),h--,u--;else if(r[d]===a[u])l[u]=$t(o[d],n[u]),vt(t,l[u+1],o[d]),d++,u--;else if(r[h]===a[g])l[g]=$t(o[h],n[g]),vt(t,o[d],o[h]),h--,g++;else if(void 0===c&&(c=kt(a,g,u),p=kt(r,d,h)),c.has(r[d]))if(c.has(r[h])){const e=p.get(a[g]),i=void 0!==e?o[e]:null;if(null===i){const e=vt(t,o[d]);$t(e,n[g]),l[g]=e}else l[g]=$t(i,n[g]),vt(t,o[d],i),o[e]=null;g++}else At(o[h]),h--;else At(o[d]),d++;for(;g<=u;){const e=vt(t,l[u+1]);$t(e,n[g]),l[g++]=e}for(;d<=h;){const t=o[d++];null!==t&&At(t)}return this.ut=a,wt(t,l),G}}),Ct="shopping-list-card",St="shopping-list-card-editor",qt={type:`custom:${Ct}`,title:"Shopping List",show_header:!0,completed:"bottom",completed_label:"Completed",show_add_input:!0,add_input_position:"bottom",add_button_label:"Add",enable_edit:!0,enable_remove:!0,click_to_check:!0,enable_quantity:!1,quantity_max:0,enable_categories:!1,group_by_category:!0,category_collapsible:!0,category_check_all:!0,category_show_count:!0,general_category_label:"General",empty_message:"Nothing on the list",sort:"manual"},zt=/^\s*\[([^\]]+)\]\s*/;function Pt(t){const e=t.match(zt);if(!e)return{category:null,rest:t};const i=e[1].trim(),s=t.slice(e[0].length);return i?{category:i,rest:s}:{category:null,rest:s}}const Ut=Object.freeze({General:"grey",Veggies:"green"}),Ht=/<quantity:\s*(\d+)\s*>/gi;function Ot(t){let e=null;for(const i of t.matchAll(Ht)){const t=Number.parseInt(i[1],10);Number.isFinite(t)&&t>0&&(e=t)}return{name:t.replace(Ht,"").replace(/\s+/g," ").trim(),quantity:e??1}}function Mt(t,e){const i=t.trim();return e<=1?i:`${i} <quantity: ${e}>`}function Tt(t,e){const i=Math.floor(Number(t)||1),s=Math.max(1,i);return e&&e>0?Math.min(s,e):s}const Nt=r`
-  /* ─── Tokens ─────────────────────────────────────────────────── */
+//#region node_modules/.pnpm/@lit+reactive-element@2.1.2/node_modules/@lit/reactive-element/css-tag.js
+var e = globalThis, t = e.ShadowRoot && (e.ShadyCSS === void 0 || e.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, n = Symbol(), r = /* @__PURE__ */ new WeakMap(), i = class {
+	constructor(e, t, r) {
+		if (this._$cssResult$ = !0, r !== n) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
+		this.cssText = e, this.t = t;
+	}
+	get styleSheet() {
+		let e = this.o, n = this.t;
+		if (t && e === void 0) {
+			let t = n !== void 0 && n.length === 1;
+			t && (e = r.get(n)), e === void 0 && ((this.o = e = new CSSStyleSheet()).replaceSync(this.cssText), t && r.set(n, e));
+		}
+		return e;
+	}
+	toString() {
+		return this.cssText;
+	}
+}, a = (e) => new i(typeof e == "string" ? e : e + "", void 0, n), o = (e, ...t) => new i(e.length === 1 ? e[0] : t.reduce((t, n, r) => t + ((e) => {
+	if (!0 === e._$cssResult$) return e.cssText;
+	if (typeof e == "number") return e;
+	throw Error("Value passed to 'css' function must be a 'css' function result: " + e + ". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.");
+})(n) + e[r + 1], e[0]), e, n), s = (n, r) => {
+	if (t) n.adoptedStyleSheets = r.map((e) => e instanceof CSSStyleSheet ? e : e.styleSheet);
+	else for (let t of r) {
+		let r = document.createElement("style"), i = e.litNonce;
+		i !== void 0 && r.setAttribute("nonce", i), r.textContent = t.cssText, n.appendChild(r);
+	}
+}, c = t ? (e) => e : (e) => e instanceof CSSStyleSheet ? ((e) => {
+	let t = "";
+	for (let n of e.cssRules) t += n.cssText;
+	return a(t);
+})(e) : e, { is: l, defineProperty: u, getOwnPropertyDescriptor: d, getOwnPropertyNames: f, getOwnPropertySymbols: p, getPrototypeOf: m } = Object, h = globalThis, g = h.trustedTypes, ee = g ? g.emptyScript : "", te = h.reactiveElementPolyfillSupport, _ = (e, t) => e, v = {
+	toAttribute(e, t) {
+		switch (t) {
+			case Boolean:
+				e = e ? ee : null;
+				break;
+			case Object:
+			case Array: e = e == null ? e : JSON.stringify(e);
+		}
+		return e;
+	},
+	fromAttribute(e, t) {
+		let n = e;
+		switch (t) {
+			case Boolean:
+				n = e !== null;
+				break;
+			case Number:
+				n = e === null ? null : Number(e);
+				break;
+			case Object:
+			case Array: try {
+				n = JSON.parse(e);
+			} catch {
+				n = null;
+			}
+		}
+		return n;
+	}
+}, y = (e, t) => !l(e, t), ne = {
+	attribute: !0,
+	type: String,
+	converter: v,
+	reflect: !1,
+	useDefault: !1,
+	hasChanged: y
+};
+Symbol.metadata ??= Symbol("metadata"), h.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
+var b = class extends HTMLElement {
+	static addInitializer(e) {
+		this._$Ei(), (this.l ??= []).push(e);
+	}
+	static get observedAttributes() {
+		return this.finalize(), this._$Eh && [...this._$Eh.keys()];
+	}
+	static createProperty(e, t = ne) {
+		if (t.state && (t.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(e) && ((t = Object.create(t)).wrapped = !0), this.elementProperties.set(e, t), !t.noAccessor) {
+			let n = Symbol(), r = this.getPropertyDescriptor(e, n, t);
+			r !== void 0 && u(this.prototype, e, r);
+		}
+	}
+	static getPropertyDescriptor(e, t, n) {
+		let { get: r, set: i } = d(this.prototype, e) ?? {
+			get() {
+				return this[t];
+			},
+			set(e) {
+				this[t] = e;
+			}
+		};
+		return {
+			get: r,
+			set(t) {
+				let a = r?.call(this);
+				i?.call(this, t), this.requestUpdate(e, a, n);
+			},
+			configurable: !0,
+			enumerable: !0
+		};
+	}
+	static getPropertyOptions(e) {
+		return this.elementProperties.get(e) ?? ne;
+	}
+	static _$Ei() {
+		if (this.hasOwnProperty(_("elementProperties"))) return;
+		let e = m(this);
+		e.finalize(), e.l !== void 0 && (this.l = [...e.l]), this.elementProperties = new Map(e.elementProperties);
+	}
+	static finalize() {
+		if (this.hasOwnProperty(_("finalized"))) return;
+		if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(_("properties"))) {
+			let e = this.properties, t = [...f(e), ...p(e)];
+			for (let n of t) this.createProperty(n, e[n]);
+		}
+		let e = this[Symbol.metadata];
+		if (e !== null) {
+			let t = litPropertyMetadata.get(e);
+			if (t !== void 0) for (let [e, n] of t) this.elementProperties.set(e, n);
+		}
+		this._$Eh = /* @__PURE__ */ new Map();
+		for (let [e, t] of this.elementProperties) {
+			let n = this._$Eu(e, t);
+			n !== void 0 && this._$Eh.set(n, e);
+		}
+		this.elementStyles = this.finalizeStyles(this.styles);
+	}
+	static finalizeStyles(e) {
+		let t = [];
+		if (Array.isArray(e)) {
+			let n = new Set(e.flat(Infinity).reverse());
+			for (let e of n) t.unshift(c(e));
+		} else e !== void 0 && t.push(c(e));
+		return t;
+	}
+	static _$Eu(e, t) {
+		let n = t.attribute;
+		return !1 === n ? void 0 : typeof n == "string" ? n : typeof e == "string" ? e.toLowerCase() : void 0;
+	}
+	constructor() {
+		super(), this._$Ep = void 0, this.isUpdatePending = !1, this.hasUpdated = !1, this._$Em = null, this._$Ev();
+	}
+	_$Ev() {
+		this._$ES = new Promise((e) => this.enableUpdating = e), this._$AL = /* @__PURE__ */ new Map(), this._$E_(), this.requestUpdate(), this.constructor.l?.forEach((e) => e(this));
+	}
+	addController(e) {
+		(this._$EO ??= /* @__PURE__ */ new Set()).add(e), this.renderRoot !== void 0 && this.isConnected && e.hostConnected?.();
+	}
+	removeController(e) {
+		this._$EO?.delete(e);
+	}
+	_$E_() {
+		let e = /* @__PURE__ */ new Map(), t = this.constructor.elementProperties;
+		for (let n of t.keys()) this.hasOwnProperty(n) && (e.set(n, this[n]), delete this[n]);
+		e.size > 0 && (this._$Ep = e);
+	}
+	createRenderRoot() {
+		let e = this.shadowRoot ?? this.attachShadow(this.constructor.shadowRootOptions);
+		return s(e, this.constructor.elementStyles), e;
+	}
+	connectedCallback() {
+		this.renderRoot ??= this.createRenderRoot(), this.enableUpdating(!0), this._$EO?.forEach((e) => e.hostConnected?.());
+	}
+	enableUpdating(e) {}
+	disconnectedCallback() {
+		this._$EO?.forEach((e) => e.hostDisconnected?.());
+	}
+	attributeChangedCallback(e, t, n) {
+		this._$AK(e, n);
+	}
+	_$ET(e, t) {
+		let n = this.constructor.elementProperties.get(e), r = this.constructor._$Eu(e, n);
+		if (r !== void 0 && !0 === n.reflect) {
+			let i = (n.converter?.toAttribute === void 0 ? v : n.converter).toAttribute(t, n.type);
+			this._$Em = e, i == null ? this.removeAttribute(r) : this.setAttribute(r, i), this._$Em = null;
+		}
+	}
+	_$AK(e, t) {
+		let n = this.constructor, r = n._$Eh.get(e);
+		if (r !== void 0 && this._$Em !== r) {
+			let e = n.getPropertyOptions(r), i = typeof e.converter == "function" ? { fromAttribute: e.converter } : e.converter?.fromAttribute === void 0 ? v : e.converter;
+			this._$Em = r;
+			let a = i.fromAttribute(t, e.type);
+			this[r] = a ?? this._$Ej?.get(r) ?? a, this._$Em = null;
+		}
+	}
+	requestUpdate(e, t, n, r = !1, i) {
+		if (e !== void 0) {
+			let a = this.constructor;
+			if (!1 === r && (i = this[e]), n ??= a.getPropertyOptions(e), !((n.hasChanged ?? y)(i, t) || n.useDefault && n.reflect && i === this._$Ej?.get(e) && !this.hasAttribute(a._$Eu(e, n)))) return;
+			this.C(e, t, n);
+		}
+		!1 === this.isUpdatePending && (this._$ES = this._$EP());
+	}
+	C(e, t, { useDefault: n, reflect: r, wrapped: i }, a) {
+		n && !(this._$Ej ??= /* @__PURE__ */ new Map()).has(e) && (this._$Ej.set(e, a ?? t ?? this[e]), !0 !== i || a !== void 0) || (this._$AL.has(e) || (this.hasUpdated || n || (t = void 0), this._$AL.set(e, t)), !0 === r && this._$Em !== e && (this._$Eq ??= /* @__PURE__ */ new Set()).add(e));
+	}
+	async _$EP() {
+		this.isUpdatePending = !0;
+		try {
+			await this._$ES;
+		} catch (e) {
+			Promise.reject(e);
+		}
+		let e = this.scheduleUpdate();
+		return e != null && await e, !this.isUpdatePending;
+	}
+	scheduleUpdate() {
+		return this.performUpdate();
+	}
+	performUpdate() {
+		if (!this.isUpdatePending) return;
+		if (!this.hasUpdated) {
+			if (this.renderRoot ??= this.createRenderRoot(), this._$Ep) {
+				for (let [e, t] of this._$Ep) this[e] = t;
+				this._$Ep = void 0;
+			}
+			let e = this.constructor.elementProperties;
+			if (e.size > 0) for (let [t, n] of e) {
+				let { wrapped: e } = n, r = this[t];
+				!0 !== e || this._$AL.has(t) || r === void 0 || this.C(t, void 0, n, r);
+			}
+		}
+		let e = !1, t = this._$AL;
+		try {
+			e = this.shouldUpdate(t), e ? (this.willUpdate(t), this._$EO?.forEach((e) => e.hostUpdate?.()), this.update(t)) : this._$EM();
+		} catch (t) {
+			throw e = !1, this._$EM(), t;
+		}
+		e && this._$AE(t);
+	}
+	willUpdate(e) {}
+	_$AE(e) {
+		this._$EO?.forEach((e) => e.hostUpdated?.()), this.hasUpdated || (this.hasUpdated = !0, this.firstUpdated(e)), this.updated(e);
+	}
+	_$EM() {
+		this._$AL = /* @__PURE__ */ new Map(), this.isUpdatePending = !1;
+	}
+	get updateComplete() {
+		return this.getUpdateComplete();
+	}
+	getUpdateComplete() {
+		return this._$ES;
+	}
+	shouldUpdate(e) {
+		return !0;
+	}
+	update(e) {
+		this._$Eq &&= this._$Eq.forEach((e) => this._$ET(e, this[e])), this._$EM();
+	}
+	updated(e) {}
+	firstUpdated(e) {}
+};
+b.elementStyles = [], b.shadowRootOptions = { mode: "open" }, b[_("elementProperties")] = /* @__PURE__ */ new Map(), b[_("finalized")] = /* @__PURE__ */ new Map(), te?.({ ReactiveElement: b }), (h.reactiveElementVersions ??= []).push("2.1.2");
+//#endregion
+//#region node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/lit-html.js
+var x = globalThis, re = (e) => e, S = x.trustedTypes, ie = S ? S.createPolicy("lit-html", { createHTML: (e) => e }) : void 0, ae = "$lit$", C = `lit$${Math.random().toFixed(9).slice(2)}$`, w = "?" + C, oe = `<${w}>`, T = document, E = () => T.createComment(""), D = (e) => e === null || typeof e != "object" && typeof e != "function", O = Array.isArray, se = (e) => O(e) || typeof e?.[Symbol.iterator] == "function", k = "[ 	\n\f\r]", A = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, ce = /-->/g, le = />/g, j = RegExp(`>|${k}(?:([^\\s"'>=/]+)(${k}*=${k}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), ue = /'/g, de = /"/g, fe = /^(?:script|style|textarea|title)$/i, M = ((e) => (t, ...n) => ({
+	_$litType$: e,
+	strings: t,
+	values: n
+}))(1), N = Symbol.for("lit-noChange"), P = Symbol.for("lit-nothing"), pe = /* @__PURE__ */ new WeakMap(), F = T.createTreeWalker(T, 129);
+function me(e, t) {
+	if (!O(e) || !e.hasOwnProperty("raw")) throw Error("invalid template strings array");
+	return ie === void 0 ? t : ie.createHTML(t);
+}
+var he = (e, t) => {
+	let n = e.length - 1, r = [], i, a = t === 2 ? "<svg>" : t === 3 ? "<math>" : "", o = A;
+	for (let t = 0; t < n; t++) {
+		let n = e[t], s, c, l = -1, u = 0;
+		for (; u < n.length && (o.lastIndex = u, c = o.exec(n), c !== null);) u = o.lastIndex, o === A ? c[1] === "!--" ? o = ce : c[1] === void 0 ? c[2] === void 0 ? c[3] !== void 0 && (o = j) : (fe.test(c[2]) && (i = RegExp("</" + c[2], "g")), o = j) : o = le : o === j ? c[0] === ">" ? (o = i ?? A, l = -1) : c[1] === void 0 ? l = -2 : (l = o.lastIndex - c[2].length, s = c[1], o = c[3] === void 0 ? j : c[3] === "\"" ? de : ue) : o === de || o === ue ? o = j : o === ce || o === le ? o = A : (o = j, i = void 0);
+		let d = o === j && e[t + 1].startsWith("/>") ? " " : "";
+		a += o === A ? n + oe : l >= 0 ? (r.push(s), n.slice(0, l) + ae + n.slice(l) + C + d) : n + C + (l === -2 ? t : d);
+	}
+	return [me(e, a + (e[n] || "<?>") + (t === 2 ? "</svg>" : t === 3 ? "</math>" : "")), r];
+}, I = class e {
+	constructor({ strings: t, _$litType$: n }, r) {
+		let i;
+		this.parts = [];
+		let a = 0, o = 0, s = t.length - 1, c = this.parts, [l, u] = he(t, n);
+		if (this.el = e.createElement(l, r), F.currentNode = this.el.content, n === 2 || n === 3) {
+			let e = this.el.content.firstChild;
+			e.replaceWith(...e.childNodes);
+		}
+		for (; (i = F.nextNode()) !== null && c.length < s;) {
+			if (i.nodeType === 1) {
+				if (i.hasAttributes()) for (let e of i.getAttributeNames()) if (e.endsWith(ae)) {
+					let t = u[o++], n = i.getAttribute(e).split(C), r = /([.?@])?(.*)/.exec(t);
+					c.push({
+						type: 1,
+						index: a,
+						name: r[2],
+						strings: n,
+						ctor: r[1] === "." ? _e : r[1] === "?" ? ve : r[1] === "@" ? ye : z
+					}), i.removeAttribute(e);
+				} else e.startsWith(C) && (c.push({
+					type: 6,
+					index: a
+				}), i.removeAttribute(e));
+				if (fe.test(i.tagName)) {
+					let e = i.textContent.split(C), t = e.length - 1;
+					if (t > 0) {
+						i.textContent = S ? S.emptyScript : "";
+						for (let n = 0; n < t; n++) i.append(e[n], E()), F.nextNode(), c.push({
+							type: 2,
+							index: ++a
+						});
+						i.append(e[t], E());
+					}
+				}
+			} else if (i.nodeType === 8) if (i.data === w) c.push({
+				type: 2,
+				index: a
+			});
+			else {
+				let e = -1;
+				for (; (e = i.data.indexOf(C, e + 1)) !== -1;) c.push({
+					type: 7,
+					index: a
+				}), e += C.length - 1;
+			}
+			a++;
+		}
+	}
+	static createElement(e, t) {
+		let n = T.createElement("template");
+		return n.innerHTML = e, n;
+	}
+};
+function L(e, t, n = e, r) {
+	if (t === N) return t;
+	let i = r === void 0 ? n._$Cl : n._$Co?.[r], a = D(t) ? void 0 : t._$litDirective$;
+	return i?.constructor !== a && (i?._$AO?.(!1), a === void 0 ? i = void 0 : (i = new a(e), i._$AT(e, n, r)), r === void 0 ? n._$Cl = i : (n._$Co ??= [])[r] = i), i !== void 0 && (t = L(e, i._$AS(e, t.values), i, r)), t;
+}
+var ge = class {
+	constructor(e, t) {
+		this._$AV = [], this._$AN = void 0, this._$AD = e, this._$AM = t;
+	}
+	get parentNode() {
+		return this._$AM.parentNode;
+	}
+	get _$AU() {
+		return this._$AM._$AU;
+	}
+	u(e) {
+		let { el: { content: t }, parts: n } = this._$AD, r = (e?.creationScope ?? T).importNode(t, !0);
+		F.currentNode = r;
+		let i = F.nextNode(), a = 0, o = 0, s = n[0];
+		for (; s !== void 0;) {
+			if (a === s.index) {
+				let t;
+				s.type === 2 ? t = new R(i, i.nextSibling, this, e) : s.type === 1 ? t = new s.ctor(i, s.name, s.strings, this, e) : s.type === 6 && (t = new be(i, this, e)), this._$AV.push(t), s = n[++o];
+			}
+			a !== s?.index && (i = F.nextNode(), a++);
+		}
+		return F.currentNode = T, r;
+	}
+	p(e) {
+		let t = 0;
+		for (let n of this._$AV) n !== void 0 && (n.strings === void 0 ? n._$AI(e[t]) : (n._$AI(e, n, t), t += n.strings.length - 2)), t++;
+	}
+}, R = class e {
+	get _$AU() {
+		return this._$AM?._$AU ?? this._$Cv;
+	}
+	constructor(e, t, n, r) {
+		this.type = 2, this._$AH = P, this._$AN = void 0, this._$AA = e, this._$AB = t, this._$AM = n, this.options = r, this._$Cv = r?.isConnected ?? !0;
+	}
+	get parentNode() {
+		let e = this._$AA.parentNode, t = this._$AM;
+		return t !== void 0 && e?.nodeType === 11 && (e = t.parentNode), e;
+	}
+	get startNode() {
+		return this._$AA;
+	}
+	get endNode() {
+		return this._$AB;
+	}
+	_$AI(e, t = this) {
+		e = L(this, e, t), D(e) ? e === P || e == null || e === "" ? (this._$AH !== P && this._$AR(), this._$AH = P) : e !== this._$AH && e !== N && this._(e) : e._$litType$ === void 0 ? e.nodeType === void 0 ? se(e) ? this.k(e) : this._(e) : this.T(e) : this.$(e);
+	}
+	O(e) {
+		return this._$AA.parentNode.insertBefore(e, this._$AB);
+	}
+	T(e) {
+		this._$AH !== e && (this._$AR(), this._$AH = this.O(e));
+	}
+	_(e) {
+		this._$AH !== P && D(this._$AH) ? this._$AA.nextSibling.data = e : this.T(T.createTextNode(e)), this._$AH = e;
+	}
+	$(e) {
+		let { values: t, _$litType$: n } = e, r = typeof n == "number" ? this._$AC(e) : (n.el === void 0 && (n.el = I.createElement(me(n.h, n.h[0]), this.options)), n);
+		if (this._$AH?._$AD === r) this._$AH.p(t);
+		else {
+			let e = new ge(r, this), n = e.u(this.options);
+			e.p(t), this.T(n), this._$AH = e;
+		}
+	}
+	_$AC(e) {
+		let t = pe.get(e.strings);
+		return t === void 0 && pe.set(e.strings, t = new I(e)), t;
+	}
+	k(t) {
+		O(this._$AH) || (this._$AH = [], this._$AR());
+		let n = this._$AH, r, i = 0;
+		for (let a of t) i === n.length ? n.push(r = new e(this.O(E()), this.O(E()), this, this.options)) : r = n[i], r._$AI(a), i++;
+		i < n.length && (this._$AR(r && r._$AB.nextSibling, i), n.length = i);
+	}
+	_$AR(e = this._$AA.nextSibling, t) {
+		for (this._$AP?.(!1, !0, t); e !== this._$AB;) {
+			let t = re(e).nextSibling;
+			re(e).remove(), e = t;
+		}
+	}
+	setConnected(e) {
+		this._$AM === void 0 && (this._$Cv = e, this._$AP?.(e));
+	}
+}, z = class {
+	get tagName() {
+		return this.element.tagName;
+	}
+	get _$AU() {
+		return this._$AM._$AU;
+	}
+	constructor(e, t, n, r, i) {
+		this.type = 1, this._$AH = P, this._$AN = void 0, this.element = e, this.name = t, this._$AM = r, this.options = i, n.length > 2 || n[0] !== "" || n[1] !== "" ? (this._$AH = Array(n.length - 1).fill(/* @__PURE__ */ new String()), this.strings = n) : this._$AH = P;
+	}
+	_$AI(e, t = this, n, r) {
+		let i = this.strings, a = !1;
+		if (i === void 0) e = L(this, e, t, 0), a = !D(e) || e !== this._$AH && e !== N, a && (this._$AH = e);
+		else {
+			let r = e, o, s;
+			for (e = i[0], o = 0; o < i.length - 1; o++) s = L(this, r[n + o], t, o), s === N && (s = this._$AH[o]), a ||= !D(s) || s !== this._$AH[o], s === P ? e = P : e !== P && (e += (s ?? "") + i[o + 1]), this._$AH[o] = s;
+		}
+		a && !r && this.j(e);
+	}
+	j(e) {
+		e === P ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
+	}
+}, _e = class extends z {
+	constructor() {
+		super(...arguments), this.type = 3;
+	}
+	j(e) {
+		this.element[this.name] = e === P ? void 0 : e;
+	}
+}, ve = class extends z {
+	constructor() {
+		super(...arguments), this.type = 4;
+	}
+	j(e) {
+		this.element.toggleAttribute(this.name, !!e && e !== P);
+	}
+}, ye = class extends z {
+	constructor(e, t, n, r, i) {
+		super(e, t, n, r, i), this.type = 5;
+	}
+	_$AI(e, t = this) {
+		if ((e = L(this, e, t, 0) ?? P) === N) return;
+		let n = this._$AH, r = e === P && n !== P || e.capture !== n.capture || e.once !== n.once || e.passive !== n.passive, i = e !== P && (n === P || r);
+		r && this.element.removeEventListener(this.name, this, n), i && this.element.addEventListener(this.name, this, e), this._$AH = e;
+	}
+	handleEvent(e) {
+		typeof this._$AH == "function" ? this._$AH.call(this.options?.host ?? this.element, e) : this._$AH.handleEvent(e);
+	}
+}, be = class {
+	constructor(e, t, n) {
+		this.element = e, this.type = 6, this._$AN = void 0, this._$AM = t, this.options = n;
+	}
+	get _$AU() {
+		return this._$AM._$AU;
+	}
+	_$AI(e) {
+		L(this, e);
+	}
+}, xe = {
+	M: ae,
+	P: C,
+	A: w,
+	C: 1,
+	L: he,
+	R: ge,
+	D: se,
+	V: L,
+	I: R,
+	H: z,
+	N: ve,
+	U: ye,
+	B: _e,
+	F: be
+}, Se = x.litHtmlPolyfillSupport;
+Se?.(I, R), (x.litHtmlVersions ??= []).push("3.3.3");
+var Ce = (e, t, n) => {
+	let r = n?.renderBefore ?? t, i = r._$litPart$;
+	if (i === void 0) {
+		let e = n?.renderBefore ?? null;
+		r._$litPart$ = i = new R(t.insertBefore(E(), e), e, void 0, n ?? {});
+	}
+	return i._$AI(e), i;
+}, B = globalThis, V = class extends b {
+	constructor() {
+		super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
+	}
+	createRenderRoot() {
+		let e = super.createRenderRoot();
+		return this.renderOptions.renderBefore ??= e.firstChild, e;
+	}
+	update(e) {
+		let t = this.render();
+		this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = Ce(t, this.renderRoot, this.renderOptions);
+	}
+	connectedCallback() {
+		super.connectedCallback(), this._$Do?.setConnected(!0);
+	}
+	disconnectedCallback() {
+		super.disconnectedCallback(), this._$Do?.setConnected(!1);
+	}
+	render() {
+		return N;
+	}
+};
+V._$litElement$ = !0, V.finalized = !0, B.litElementHydrateSupport?.({ LitElement: V });
+var we = B.litElementPolyfillSupport;
+we?.({ LitElement: V }), (B.litElementVersions ??= []).push("4.2.2");
+//#endregion
+//#region node_modules/.pnpm/@lit+reactive-element@2.1.2/node_modules/@lit/reactive-element/decorators/custom-element.js
+var Te = (e) => (t, n) => {
+	n === void 0 ? customElements.define(e, t) : n.addInitializer(() => {
+		customElements.define(e, t);
+	});
+}, Ee = {
+	attribute: !0,
+	type: String,
+	converter: v,
+	reflect: !1,
+	hasChanged: y
+}, De = (e = Ee, t, n) => {
+	let { kind: r, metadata: i } = n, a = globalThis.litPropertyMetadata.get(i);
+	if (a === void 0 && globalThis.litPropertyMetadata.set(i, a = /* @__PURE__ */ new Map()), r === "setter" && ((e = Object.create(e)).wrapped = !0), a.set(n.name, e), r === "accessor") {
+		let { name: r } = n;
+		return {
+			set(n) {
+				let i = t.get.call(this);
+				t.set.call(this, n), this.requestUpdate(r, i, e, !0, n);
+			},
+			init(t) {
+				return t !== void 0 && this.C(r, void 0, e, t), t;
+			}
+		};
+	}
+	if (r === "setter") {
+		let { name: r } = n;
+		return function(n) {
+			let i = this[r];
+			t.call(this, n), this.requestUpdate(r, i, e, !0, n);
+		};
+	}
+	throw Error("Unsupported decorator location: " + r);
+};
+function H(e) {
+	return (t, n) => typeof n == "object" ? De(e, t, n) : ((e, t, n) => {
+		let r = t.hasOwnProperty(n);
+		return t.constructor.createProperty(n, e), r ? Object.getOwnPropertyDescriptor(t, n) : void 0;
+	})(e, t, n);
+}
+//#endregion
+//#region node_modules/.pnpm/@lit+reactive-element@2.1.2/node_modules/@lit/reactive-element/decorators/state.js
+function U(e) {
+	return H({
+		...e,
+		state: !0,
+		attribute: !1
+	});
+}
+//#endregion
+//#region node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/directive.js
+var Oe = {
+	ATTRIBUTE: 1,
+	CHILD: 2,
+	PROPERTY: 3,
+	BOOLEAN_ATTRIBUTE: 4,
+	EVENT: 5,
+	ELEMENT: 6
+}, ke = (e) => (...t) => ({
+	_$litDirective$: e,
+	values: t
+}), Ae = class {
+	constructor(e) {}
+	get _$AU() {
+		return this._$AM._$AU;
+	}
+	_$AT(e, t, n) {
+		this._$Ct = e, this._$AM = t, this._$Ci = n;
+	}
+	_$AS(e, t) {
+		return this.update(e, t);
+	}
+	update(e, t) {
+		return this.render(...t);
+	}
+}, { I: je } = xe, Me = (e) => e, Ne = () => document.createComment(""), W = (e, t, n) => {
+	let r = e._$AA.parentNode, i = t === void 0 ? e._$AB : t._$AA;
+	if (n === void 0) n = new je(r.insertBefore(Ne(), i), r.insertBefore(Ne(), i), e, e.options);
+	else {
+		let t = n._$AB.nextSibling, a = n._$AM, o = a !== e;
+		if (o) {
+			let t;
+			n._$AQ?.(e), n._$AM = e, n._$AP !== void 0 && (t = e._$AU) !== a._$AU && n._$AP(t);
+		}
+		if (t !== i || o) {
+			let e = n._$AA;
+			for (; e !== t;) {
+				let t = Me(e).nextSibling;
+				Me(r).insertBefore(e, i), e = t;
+			}
+		}
+	}
+	return n;
+}, G = (e, t, n = e) => (e._$AI(t, n), e), Pe = {}, Fe = (e, t = Pe) => e._$AH = t, Ie = (e) => e._$AH, Le = (e) => {
+	e._$AR(), e._$AA.remove();
+}, Re = (e, t, n) => {
+	let r = /* @__PURE__ */ new Map();
+	for (let i = t; i <= n; i++) r.set(e[i], i);
+	return r;
+}, K = ke(class extends Ae {
+	constructor(e) {
+		if (super(e), e.type !== Oe.CHILD) throw Error("repeat() can only be used in text expressions");
+	}
+	dt(e, t, n) {
+		let r;
+		n === void 0 ? n = t : t !== void 0 && (r = t);
+		let i = [], a = [], o = 0;
+		for (let t of e) i[o] = r ? r(t, o) : o, a[o] = n(t, o), o++;
+		return {
+			values: a,
+			keys: i
+		};
+	}
+	render(e, t, n) {
+		return this.dt(e, t, n).values;
+	}
+	update(e, [t, n, r]) {
+		let i = Ie(e), { values: a, keys: o } = this.dt(t, n, r);
+		if (!Array.isArray(i)) return this.ut = o, a;
+		let s = this.ut ??= [], c = [], l, u, d = 0, f = i.length - 1, p = 0, m = a.length - 1;
+		for (; d <= f && p <= m;) if (i[d] === null) d++;
+		else if (i[f] === null) f--;
+		else if (s[d] === o[p]) c[p] = G(i[d], a[p]), d++, p++;
+		else if (s[f] === o[m]) c[m] = G(i[f], a[m]), f--, m--;
+		else if (s[d] === o[m]) c[m] = G(i[d], a[m]), W(e, c[m + 1], i[d]), d++, m--;
+		else if (s[f] === o[p]) c[p] = G(i[f], a[p]), W(e, i[d], i[f]), f--, p++;
+		else if (l === void 0 && (l = Re(o, p, m), u = Re(s, d, f)), l.has(s[d])) if (l.has(s[f])) {
+			let t = u.get(o[p]), n = t === void 0 ? null : i[t];
+			if (n === null) {
+				let t = W(e, i[d]);
+				G(t, a[p]), c[p] = t;
+			} else c[p] = G(n, a[p]), W(e, i[d], n), i[t] = null;
+			p++;
+		} else Le(i[f]), f--;
+		else Le(i[d]), d++;
+		for (; p <= m;) {
+			let t = W(e, c[m + 1]);
+			G(t, a[p]), c[p++] = t;
+		}
+		for (; d <= f;) {
+			let e = i[d++];
+			e !== null && Le(e);
+		}
+		return this.ut = o, Fe(e, c), N;
+	}
+}), ze = "0.2.0", Be = "shopping-list-card", Ve = "shopping-list-card-editor", q = {
+	type: `custom:${Be}`,
+	title: "Shopping List",
+	show_header: !0,
+	completed: "bottom",
+	completed_label: "Completed",
+	show_add_input: !0,
+	add_input_position: "bottom",
+	add_button_label: "Add",
+	enable_edit: !0,
+	enable_remove: !0,
+	click_to_check: !0,
+	enable_quantity: !1,
+	quantity_max: 0,
+	enable_categories: !1,
+	group_by_category: !0,
+	category_collapsible: !0,
+	category_check_all: !0,
+	category_show_count: !0,
+	general_category_label: "General",
+	empty_message: "Nothing on the list",
+	sort: "manual",
+	fill_screen: !1,
+	enable_reorder: !0
+}, He = /^\s*\[([^\]]+)\]\s*/;
+function Ue(e) {
+	let t = e.match(He);
+	if (!t) return {
+		category: null,
+		rest: e
+	};
+	let n = t[1].trim(), r = e.slice(t[0].length);
+	return n ? {
+		category: n,
+		rest: r
+	} : {
+		category: null,
+		rest: r
+	};
+}
+function We(e) {
+	let t = {};
+	if (!e) return t;
+	for (let n of e.split("\n")) {
+		let e = n.trim();
+		if (!e || e.startsWith("#")) continue;
+		let r = e.replace(/^-\s*/, ""), i = r.indexOf(":");
+		if (i <= 0) continue;
+		let a = r.slice(0, i).trim(), o = r.slice(i + 1).trim();
+		o = o.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1"), a && o && (t[a] = o);
+	}
+	return t;
+}
+function Ge(e) {
+	return e ? Object.entries(e).map(([e, t]) => `${e}: ${t}`).join("\n") : "";
+}
+var Ke = Object.freeze({
+	General: "grey",
+	Veggies: "green"
+}), qe = /<quantity:\s*(\d+)\s*>/gi;
+function Je(e) {
+	let t = null;
+	for (let n of e.matchAll(qe)) {
+		let e = Number.parseInt(n[1], 10);
+		Number.isFinite(e) && e > 0 && (t = e);
+	}
+	return {
+		name: e.replace(qe, "").replace(/\s+/g, " ").trim(),
+		quantity: t ?? 1
+	};
+}
+function Ye(e, t) {
+	let n = e.trim();
+	return t <= 1 ? n : `${n} <quantity: ${t}>`;
+}
+function J(e, t) {
+	let n = Math.floor(Number(e) || 1), r = Math.max(1, n);
+	return t && t > 0 ? Math.min(r, t) : r;
+}
+//#endregion
+//#region src/styles.ts
+var Xe = o`
   :host {
-    /* Surface tokens — alpha-blended foreground for subtle pills /
-       dividers / hover states. Works in both dark and light themes. */
     --shopping-list-pill-bg: rgba(var(--rgb-primary-text-color, 33, 33, 33), 0.04);
     --shopping-list-pill-bg-hover: rgba(var(--rgb-primary-text-color, 33, 33, 33), 0.08);
     --shopping-list-pill-border: 1px solid rgba(var(--rgb-primary-text-color, 33, 33, 33), 0.06);
 
-    /* Card chrome */
     --shopping-list-bg: var(--ha-card-background, var(--card-background-color, white));
     --shopping-list-fg: var(--primary-text-color, #212121);
     --shopping-list-muted: var(--secondary-text-color, #727272);
@@ -17,13 +763,8 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     --shopping-list-padding: 16px;
     --shopping-list-gap: 4px;
 
-    /* Shared "inner element" radius — used by items, input, button so
-       they all relate to each other and to the outer card. Override
-       this single variable to retune the whole interior at once.
-       Use 999px here for the full-pill aesthetic. */
     --shopping-list-inner-radius: 14px;
 
-    /* Header */
     --shopping-list-header-gap: 10px;
     --shopping-list-header-padding: 4px 8px 8px;
     --shopping-list-header-icon-size: 22px;
@@ -31,7 +772,6 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     --shopping-list-header-font-size: 1.1rem;
     --shopping-list-header-font-weight: 500;
 
-    /* Items */
     --shopping-list-item-bg: var(--shopping-list-pill-bg);
     --shopping-list-item-bg-hover: var(--shopping-list-pill-bg-hover);
     --shopping-list-item-radius: var(--shopping-list-inner-radius);
@@ -39,18 +779,11 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     --shopping-list-item-gap: 12px;
     --shopping-list-list-gap: 4px;
 
-    /* Per-item actions (edit / delete / save / cancel).
-       Sized down from the original 32 px touch target so a row with
-       actions isn't visibly taller than one without. The negative
-       --shopping-list-action-margin below pulls the wrapper out of the
-       row's height calculation, so the surrounding text still drives
-       row height. */
     --shopping-list-actions-gap: 0px;
     --shopping-list-action-size: 28px;
     --shopping-list-action-icon-size: 16px;
     --shopping-list-action-margin: -4px 0;
 
-    /* Quantity badge (display) */
     --shopping-list-quantity-badge-bg: rgba(var(--rgb-primary-color, 3, 169, 244), 0.14);
     --shopping-list-quantity-badge-fg: var(--shopping-list-accent);
     --shopping-list-quantity-badge-padding: 1px 8px;
@@ -59,7 +792,6 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     --shopping-list-quantity-badge-font-weight: 600;
     --shopping-list-quantity-badge-margin: 0 0 0 6px;
 
-    /* Quantity stepper (edit mode) */
     --shopping-list-quantity-stepper-gap: 2px;
     --shopping-list-quantity-step-size: 28px;
     --shopping-list-quantity-step-icon-size: 16px;
@@ -69,11 +801,9 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     --shopping-list-quantity-step-radius: 999px;
     --shopping-list-quantity-value-min-width: 22px;
 
-    /* Completed items */
     --shopping-list-completed-fg: var(--disabled-text-color, #bdbdbd);
     --shopping-list-completed-decoration: line-through;
 
-    /* Completed-section toggle (collapse mode) */
     --shopping-list-completed-toggle-bg: transparent;
     --shopping-list-completed-toggle-bg-hover: var(--shopping-list-pill-bg);
     --shopping-list-completed-toggle-fg: var(--shopping-list-muted);
@@ -84,7 +814,6 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     --shopping-list-completed-toggle-icon-size: 18px;
     --shopping-list-completed-toggle-margin: 6px 0 0;
 
-    /* Input */
     --shopping-list-input-bg: var(--shopping-list-pill-bg);
     --shopping-list-input-bg-focus: var(--shopping-list-pill-bg-hover);
     --shopping-list-input-fg: var(--shopping-list-fg);
@@ -95,7 +824,6 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     --shopping-list-input-padding: 10px 14px;
     --shopping-list-input-font-size: 0.95rem;
 
-    /* Add button */
     --shopping-list-button-bg: var(--shopping-list-accent);
     --shopping-list-button-fg: var(--text-primary-color, white);
     --shopping-list-button-radius: var(--shopping-list-inner-radius);
@@ -103,17 +831,9 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     --shopping-list-button-font-size: 0.95rem;
     --shopping-list-button-font-weight: 500;
 
-    /* Empty / loading */
     --shopping-list-empty-fg: var(--shopping-list-muted);
     --shopping-list-empty-padding: 16px 8px;
 
-    /* Categories — grouped layout + flat-mode prefix.
-
-       The color shown for a category is read from
-       --shopping-list-category-color. Per-category overrides are set
-       inline by the card itself when the user provides
-       category_colors: { Veggies: green }; otherwise this falls back
-       to currentColor so the label adopts the surrounding text color. */
     --shopping-list-category-color: currentColor;
 
     --shopping-list-category-gap: 12px;
@@ -138,18 +858,25 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     --shopping-list-category-prefix-font-weight: 600;
     --shopping-list-category-prefix-opacity: 0.85;
 
-    /* Layout */
     --shopping-list-add-row-gap: 8px;
-    /* Breathing room between the add row and the list. Applied to the
-       side facing the list so it works for both top and bottom placement
-       (margin-top when the row sits at the bottom, margin-bottom when it
-       sits at the top). */
     --shopping-list-add-row-spacing: 8px;
 
+    --shopping-list-drag-handle-size: 24px;
+    --shopping-list-drag-handle-icon-size: 18px;
+    --shopping-list-drag-handle-color: var(--shopping-list-muted);
+    --shopping-list-drag-handle-active-color: var(--shopping-list-accent);
+    --shopping-list-drag-over-bg: rgba(var(--rgb-primary-color, 3, 169, 244), 0.1);
+    --shopping-list-drag-over-border-color: var(--shopping-list-accent);
+
+    --shopping-list-offline-bg: rgba(var(--rgb-error-color, 219, 68, 55), 0.1);
+    --shopping-list-offline-fg: var(--shopping-list-error);
+    --shopping-list-offline-padding: 6px 12px;
+    --shopping-list-offline-font-size: 0.85rem;
+
     display: block;
+    height: var(--shopping-list-host-height, auto);
   }
 
-  /* ─── Card chrome ─────────────────────────────────────────────── */
   .sl-card {
     background: var(--shopping-list-bg);
     color: var(--shopping-list-fg);
@@ -158,9 +885,16 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     display: flex;
     flex-direction: column;
     gap: var(--shopping-list-gap);
+    height: var(--shopping-list-card-height, auto);
+    max-height: var(--shopping-list-card-max-height, none);
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .sl-card--fill-screen {
+    height: 100%;
+    max-height: 100%;
   }
 
-  /* ─── Header ──────────────────────────────────────────────────── */
   .sl-header {
     display: flex;
     align-items: center;
@@ -168,6 +902,7 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     padding: var(--shopping-list-header-padding);
     font-size: var(--shopping-list-header-font-size);
     font-weight: var(--shopping-list-header-font-weight);
+    flex-shrink: 0;
   }
 
   .sl-icon {
@@ -175,7 +910,6 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     color: var(--shopping-list-header-icon-color);
   }
 
-  /* ─── Banners (empty / error) ─────────────────────────────────── */
   .sl-empty {
     color: var(--shopping-list-empty-fg);
     font-style: italic;
@@ -189,9 +923,35 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     border-radius: var(--shopping-list-inner-radius);
     padding: 8px 12px;
     font-size: 0.9rem;
+    flex-shrink: 0;
   }
 
-  /* ─── List + items ────────────────────────────────────────────── */
+  .sl-offline {
+    color: var(--shopping-list-offline-fg);
+    background: var(--shopping-list-offline-bg);
+    border-radius: var(--shopping-list-inner-radius);
+    padding: var(--shopping-list-offline-padding);
+    font-size: var(--shopping-list-offline-font-size);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .sl-list-scroll {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sl-list-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  .sl-list-scroll::-webkit-scrollbar-thumb {
+    background: var(--shopping-list-pill-bg-hover);
+    border-radius: 2px;
+  }
+
   .sl-list {
     list-style: none;
     margin: 0;
@@ -220,15 +980,19 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
   .sl-item:active {
     transform: scale(0.99);
   }
-  /* Dial back affordances that hint at "press to act" when row click is
-     disabled. The hover background is preserved — it still reads as
-     "this is the row I'm pointing at" without falsely promising an
-     action. */
   .sl-item--no-row-click {
     cursor: default;
   }
   .sl-item--no-row-click:active {
     transform: none;
+  }
+
+  .sl-item--dragging {
+    opacity: 0.5;
+  }
+  .sl-item--drag-over {
+    background: var(--shopping-list-drag-over-bg);
+    border-radius: var(--shopping-list-item-radius);
   }
 
   .sl-item--completed .sl-summary {
@@ -240,23 +1004,41 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     --mdc-checkbox-unchecked-color: var(--shopping-list-muted);
     --mdc-theme-secondary: var(--shopping-list-accent);
     margin: -8px 0 -8px -8px;
+    flex-shrink: 0;
   }
 
   .sl-summary {
     flex: 1;
     word-break: break-word;
+    min-width: 0;
   }
 
-  /* ─── Per-item action buttons (edit / delete / save / cancel) ─── */
+  .sl-drag-handle {
+    width: var(--shopping-list-drag-handle-size);
+    height: var(--shopping-list-drag-handle-size);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--shopping-list-drag-handle-color);
+    cursor: grab;
+    --mdc-icon-size: var(--shopping-list-drag-handle-icon-size);
+    border-radius: 4px;
+    transition: color 120ms ease;
+  }
+  .sl-drag-handle:hover {
+    color: var(--shopping-list-drag-handle-active-color);
+  }
+  .sl-drag-handle:active {
+    cursor: grabbing;
+    color: var(--shopping-list-drag-handle-active-color);
+  }
+
   .sl-actions {
     display: flex;
     align-items: center;
     gap: var(--shopping-list-actions-gap);
     flex-shrink: 0;
-    /* Hidden by default; revealed on hover or focus on devices that
-       support hover. The @media (hover: none) block below makes them
-       always visible on touch devices (phones, tablets, HA's mobile
-       dashboards) where hover is not a viable affordance. */
     opacity: 0;
     transition: opacity 120ms ease;
   }
@@ -272,18 +1054,10 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
   }
 
   .sl-action-button {
-    /* HA's modern <ha-icon-button> reads --ha-icon-button-size for the
-       hit area; the old --mdc-icon-button-size token is a no-op on
-       current HA. We set both so the card still works on older HA
-       versions that still honour the MDC token. --mdc-icon-size is
-       consumed by <ha-svg-icon>/<ha-icon> for the glyph itself. */
     --ha-icon-button-size: var(--shopping-list-action-size);
     --mdc-icon-button-size: var(--shopping-list-action-size);
     --mdc-icon-size: var(--shopping-list-action-icon-size);
     color: var(--shopping-list-muted);
-    /* Negative vertical margin: the buttons render full-size visually
-       but contribute less height to the row's flex layout, so the row
-       is sized by the text/checkbox instead of the action buttons. */
     margin: var(--shopping-list-action-margin);
   }
   .sl-action-button-save {
@@ -305,7 +1079,6 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     background: rgba(var(--rgb-primary-color, 3, 169, 244), 0.35);
   }
 
-  /* ─── Quantity (badge + stepper) ────────────────────────────── */
   .sl-quantity-badge {
     display: inline-block;
     margin: var(--shopping-list-quantity-badge-margin);
@@ -318,8 +1091,6 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     vertical-align: middle;
     white-space: nowrap;
   }
-  /* Inherit the muted/strikethrough treatment of completed items so the
-     badge fades along with the rest of the row. */
   .sl-item--completed .sl-quantity-badge {
     color: var(--shopping-list-completed-fg);
     background: rgba(var(--rgb-primary-text-color, 33, 33, 33), 0.06);
@@ -362,7 +1133,6 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     color: var(--shopping-list-fg);
   }
 
-  /* ─── Completed section toggle (collapse mode) ─────────────────── */
   .sl-completed-toggle {
     list-style: none;
     display: flex;
@@ -393,11 +1163,6 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     flex: 1;
   }
 
-  /* ─── Category (grouped layout) ──────────────────────────────── */
-  /* When categories are grouped, the root <div> swaps from .sl-list to
-     .sl-list.sl-list--grouped and contains <section class="sl-category">
-     children. Each section keeps its own internal <ul> of items so the
-     existing item styles apply unchanged. */
   .sl-list--grouped {
     gap: var(--shopping-list-category-gap);
   }
@@ -444,11 +1209,6 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     background: var(--shopping-list-category-header-bg-hover);
   }
 
-  /* Active-item count rendered inside .sl-category-name. The cursor is
-     inherited from the parent button so clicking the count still
-     toggles the collapse, and the color is muted even when the parent
-     has a custom category color (the count is meta, not part of the
-     label). */
   .sl-category-count {
     color: var(--shopping-list-category-count-color);
     font-weight: var(--shopping-list-category-count-font-weight);
@@ -486,18 +1246,11 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     gap: var(--shopping-list-category-items-gap);
   }
 
-  /* Global completed bucket below all categories (collapse mode).
-     Sits as a peer of the .sl-category sections. The list's own gap
-     handles spacing — this rule just suppresses the default <ul>
-     padding/margin since this is a nested .sl-list. */
   .sl-grouped-completed {
     margin: 0;
     padding: 0;
   }
 
-  /* Flat-mode prefix shown directly on each item when categories are on
-     but grouping is off. Adopts the same color variable as the group
-     header so a single user-provided color theme covers both layouts. */
   .sl-category-prefix {
     color: var(--shopping-list-category-color);
     font-weight: var(--shopping-list-category-prefix-font-weight);
@@ -508,13 +1261,12 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     color: var(--shopping-list-completed-fg);
   }
 
-  /* ─── Add row (input + button) ────────────────────────────────── */
   .sl-add-row {
     display: flex;
     gap: var(--shopping-list-add-row-gap);
     align-items: center;
+    flex-shrink: 0;
   }
-  /* Position-aware spacing: push away from the list, not from the edge. */
   .sl-add-row--bottom {
     margin-top: var(--shopping-list-add-row-spacing);
   }
@@ -570,11 +1322,266 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     opacity: 0.4;
     cursor: not-allowed;
   }
-`,It="yaml",Rt=[{name:"entity",required:!0,selector:{entity:{domain:"todo"}}},{type:"expandable",name:"_grp_header",title:"Header",icon:"mdi:format-title",flatten:!0,schema:[{name:"show_header",selector:{boolean:{}}},{name:"title",selector:{text:{}}},{name:"icon",selector:{icon:{}}}]},{type:"expandable",name:"_grp_list",title:"To-do items",icon:"mdi:format-list-bulleted",flatten:!0,schema:[{name:"sort",selector:{select:{mode:"dropdown",options:[{value:"manual",label:"Manual (HA order)"},{value:"alpha",label:"Alphabetical"},{value:"created",label:"Created order"}]}}},{name:"click_to_check",selector:{boolean:{}}},{name:"enable_edit",selector:{boolean:{}}},{name:"enable_remove",selector:{boolean:{}}},{name:"empty_message",selector:{text:{}}}]},{type:"expandable",name:"_grp_quantity",title:"Quantities",icon:"mdi:counter",flatten:!0,schema:[{name:"enable_quantity",selector:{boolean:{}}},{name:"quantity_max",selector:{number:{min:0,max:9999,step:1,mode:"box"}}}]},{type:"expandable",name:"_grp_completed",title:"Completed items",icon:"mdi:check-circle-outline",flatten:!0,schema:[{name:"completed",selector:{select:{mode:"dropdown",options:[{value:"bottom",label:"At the bottom of the list"},{value:"inline",label:"Mixed with active items"},{value:"collapse",label:"Collapsible section"},{value:"hide",label:"Hide completed items"}]}}},{name:"completed_label",selector:{text:{}}}]},{type:"expandable",name:"_grp_add",title:"Add items",icon:"mdi:plus-circle-outline",flatten:!0,schema:[{name:"show_add_input",selector:{boolean:{}}},{name:"add_input_position",selector:{select:{mode:"dropdown",options:[{value:"bottom",label:"Bottom (below the list)"},{value:"top",label:"Top (below the header)"}]}}},{name:"add_button_label",selector:{text:{}}}]}],Dt=[{name:"enable_categories",selector:{boolean:{}}},{name:"group_by_category",selector:{boolean:{}}},{name:"category_collapsible",selector:{boolean:{}}},{name:"category_check_all",selector:{boolean:{}}},{name:"category_show_count",selector:{boolean:{}}},{name:"general_category_label",selector:{text:{}}}];let jt=class extends lt{constructor(){super(...arguments),this._labelFor=t=>{if("type"in t&&"expandable"===t.type)return t.title??t.name;return{entity:"Todo Entity (required)",title:"Title",icon:"Icon",show_header:"Show header",completed:"Show completed items",completed_label:"Completed group label",show_add_input:"Show add-item input",add_input_position:"Add bar position",add_button_label:"Add button label",empty_message:"Empty list message",sort:"Sort order",click_to_check:"Click row to check/uncheck",enable_edit:"Allow editing items",enable_remove:"Allow removing items",enable_quantity:"Enable quantities",quantity_max:"Maximum quantity (0 = unlimited)",enable_categories:"Enable categories",group_by_category:"Group items by category",category_collapsible:"Allow collapsing categories",category_check_all:"Allow check-all on categories",category_show_count:"Show item count on category headers",general_category_label:"Label for uncategorized items"}[t.name]??t.name}}setConfig(t){this._config=t}updated(t){super.updated(t),this._patchHaFormSpacing()}_patchHaFormSpacing(){for(const t of this.renderRoot.querySelectorAll("ha-form")){const e=t.shadowRoot;if(!e)continue;if(e.querySelector("style[data-sl-spacing]"))continue;const i=document.createElement("style");i.setAttribute("data-sl-spacing",""),i.textContent=".root > *:not([own-margin]):not(:last-child) { margin-bottom: 8px !important; }",e.appendChild(i)}}render(){if(!this.hass||!this._config)return B``;const t={...qt,...this._config};return B`
+`;
+//#endregion
+//#region \0@oxc-project+runtime@0.137.0/helpers/esm/decorate.js
+function Y(e, t, n, r) {
+	var i = arguments.length, a = i < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, n) : r, o;
+	if (typeof Reflect == "object" && typeof Reflect.decorate == "function") a = Reflect.decorate(e, t, n, r);
+	else for (var s = e.length - 1; s >= 0; s--) (o = e[s]) && (a = (i < 3 ? o(a) : i > 3 ? o(t, n, a) : o(t, n)) || a);
+	return i > 3 && a && Object.defineProperty(t, n, a), a;
+}
+//#endregion
+//#region src/shopping-list-card-editor.ts
+var Ze, Qe = "yaml", $e = 8, et = [
+	{
+		name: "entity",
+		required: !0,
+		selector: { entity: { domain: "todo" } }
+	},
+	{
+		type: "expandable",
+		name: "_grp_header",
+		title: "Header",
+		icon: "mdi:format-title",
+		flatten: !0,
+		schema: [
+			{
+				name: "show_header",
+				selector: { boolean: {} }
+			},
+			{
+				name: "title",
+				selector: { text: {} }
+			},
+			{
+				name: "icon",
+				selector: { icon: {} }
+			}
+		]
+	},
+	{
+		type: "expandable",
+		name: "_grp_list",
+		title: "To-do items",
+		icon: "mdi:format-list-bulleted",
+		flatten: !0,
+		schema: [
+			{
+				name: "sort",
+				selector: { select: {
+					mode: "dropdown",
+					options: [
+						{
+							value: "manual",
+							label: "Manual (HA order)"
+						},
+						{
+							value: "alpha",
+							label: "Alphabetical"
+						},
+						{
+							value: "created",
+							label: "Created order"
+						}
+					]
+				} }
+			},
+			{
+				name: "click_to_check",
+				selector: { boolean: {} }
+			},
+			{
+				name: "enable_edit",
+				selector: { boolean: {} }
+			},
+			{
+				name: "enable_remove",
+				selector: { boolean: {} }
+			},
+			{
+				name: "enable_reorder",
+				selector: { boolean: {} }
+			},
+			{
+				name: "empty_message",
+				selector: { text: {} }
+			}
+		]
+	},
+	{
+		type: "expandable",
+		name: "_grp_quantity",
+		title: "Quantities",
+		icon: "mdi:counter",
+		flatten: !0,
+		schema: [{
+			name: "enable_quantity",
+			selector: { boolean: {} }
+		}, {
+			name: "quantity_max",
+			selector: { number: {
+				min: 0,
+				max: 9999,
+				step: 1,
+				mode: "box"
+			} }
+		}]
+	},
+	{
+		type: "expandable",
+		name: "_grp_layout",
+		title: "Layout",
+		icon: "mdi:view-quilt",
+		flatten: !0,
+		schema: [{
+			name: "fill_screen",
+			selector: { boolean: {} }
+		}]
+	},
+	{
+		type: "expandable",
+		name: "_grp_completed",
+		title: "Completed items",
+		icon: "mdi:check-circle-outline",
+		flatten: !0,
+		schema: [{
+			name: "completed",
+			selector: { select: {
+				mode: "dropdown",
+				options: [
+					{
+						value: "bottom",
+						label: "At the bottom of the list"
+					},
+					{
+						value: "inline",
+						label: "Mixed with active items"
+					},
+					{
+						value: "collapse",
+						label: "Collapsible section"
+					},
+					{
+						value: "hide",
+						label: "Hide completed items"
+					}
+				]
+			} }
+		}, {
+			name: "completed_label",
+			selector: { text: {} }
+		}]
+	},
+	{
+		type: "expandable",
+		name: "_grp_add",
+		title: "Add items",
+		icon: "mdi:plus-circle-outline",
+		flatten: !0,
+		schema: [
+			{
+				name: "show_add_input",
+				selector: { boolean: {} }
+			},
+			{
+				name: "add_input_position",
+				selector: { select: {
+					mode: "dropdown",
+					options: [{
+						value: "bottom",
+						label: "Bottom (below the list)"
+					}, {
+						value: "top",
+						label: "Top (below the header)"
+					}]
+				} }
+			},
+			{
+				name: "add_button_label",
+				selector: { text: {} }
+			}
+		]
+	}
+], tt = [
+	{
+		name: "enable_categories",
+		selector: { boolean: {} }
+	},
+	{
+		name: "group_by_category",
+		selector: { boolean: {} }
+	},
+	{
+		name: "category_collapsible",
+		selector: { boolean: {} }
+	},
+	{
+		name: "category_check_all",
+		selector: { boolean: {} }
+	},
+	{
+		name: "category_show_count",
+		selector: { boolean: {} }
+	},
+	{
+		name: "general_category_label",
+		selector: { text: {} }
+	}
+], X = (Ze = class extends V {
+	constructor(...e) {
+		super(...e), this._labelFor = (e) => "type" in e && e.type === "expandable" ? e.title ?? e.name : {
+			entity: "Todo Entity (required)",
+			title: "Title",
+			icon: "Icon",
+			show_header: "Show header",
+			completed: "Show completed items",
+			completed_label: "Completed group label",
+			show_add_input: "Show add-item input",
+			add_input_position: "Add bar position",
+			add_button_label: "Add button label",
+			empty_message: "Empty list message",
+			sort: "Sort order",
+			click_to_check: "Click row to check/uncheck",
+			enable_edit: "Allow editing items",
+			enable_remove: "Allow removing items",
+			enable_quantity: "Enable quantities",
+			quantity_max: "Maximum quantity (0 = unlimited)",
+			enable_categories: "Enable categories",
+			group_by_category: "Group items by category",
+			category_collapsible: "Allow collapsing categories",
+			category_check_all: "Allow check-all on categories",
+			category_show_count: "Show item count on category headers",
+			general_category_label: "Label for uncategorized items",
+			fill_screen: "Fill the screen (use full available height)",
+			enable_reorder: "Allow drag-and-drop reorder"
+		}[e.name] ?? e.name;
+	}
+	setConfig(e) {
+		this._config = e;
+	}
+	updated(e) {
+		super.updated(e), this._patchHaFormSpacing();
+	}
+	_patchHaFormSpacing() {
+		for (let e of this.renderRoot.querySelectorAll("ha-form")) {
+			let t = e.shadowRoot;
+			if (!t || t.querySelector("style[data-sl-spacing]")) continue;
+			let n = document.createElement("style");
+			n.setAttribute("data-sl-spacing", ""), n.textContent = `.root > *:not([own-margin]):not(:last-child) { margin-bottom: ${$e}px !important; }`, t.appendChild(n);
+		}
+	}
+	render() {
+		if (!this.hass || !this._config) return M``;
+		let e = {
+			...q,
+			...this._config
+		};
+		return M`
       <ha-form
         .hass=${this.hass}
-        .data=${t}
-        .schema=${Rt}
+        .data=${e}
+        .schema=${et}
         .computeLabel=${this._labelFor}
         @value-changed=${this._formValueChanged}
       ></ha-form>
@@ -594,8 +1601,8 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
           <ha-form
             class="categories-form"
             .hass=${this.hass}
-            .data=${t}
-            .schema=${Dt}
+            .data=${e}
+            .schema=${tt}
             .computeLabel=${this._labelFor}
             @value-changed=${this._formValueChanged}
           ></ha-form>
@@ -607,8 +1614,8 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
             Clear the editor to remove all colors.
           </p>
           <ha-code-editor
-            .mode=${It}
-            .value=${e=void 0!==this._config.category_colors?this._config.category_colors:Ut,e?Object.entries(e).map(([t,e])=>`${t}: ${e}`).join("\n"):""}
+            .mode=${Qe}
+            .value=${Ge(this._config.category_colors === void 0 ? Ke : this._config.category_colors)}
             @value-changed=${this._categoryColorsChanged}
           ></ha-code-editor>
         </div>
@@ -626,13 +1633,47 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
             <code>--shopping-list-*</code> variables.
           </p>
           <ha-code-editor
-            .mode=${It}
-            .value=${"string"==typeof this._config.style?this._config.style:""}
+            .mode=${Qe}
+            .value=${typeof this._config.style == "string" ? this._config.style : ""}
             @value-changed=${this._styleChanged}
           ></ha-code-editor>
         </div>
       </details>
-    `;var e}_formValueChanged(t){if(t.stopPropagation(),!this._config)return;const e=t.detail.value,i=this._config,s=qt,o={...this._config};for(const[t,n]of Object.entries(e)){!(t in i)&&n===s[t]||(o[t]=n)}"show_completed"in o&&delete o.show_completed,this._fireChange(o)}_styleChanged(t){if(t.stopPropagation(),!this._config)return;const e=t.detail?.value??"",i={...this._config,style:e};e||delete i.style,this._fireChange(i)}_categoryColorsChanged(t){if(t.stopPropagation(),!this._config)return;const e=function(t){const e={};if(!t)return e;for(const i of t.split("\n")){const t=i.trim();if(!t)continue;if(t.startsWith("#"))continue;const s=t.replace(/^-\s*/,""),o=s.indexOf(":");if(o<=0)continue;const n=s.slice(0,o).trim();let a=s.slice(o+1).trim();a=a.replace(/^"(.*)"$/,"$1").replace(/^'(.*)'$/,"$1"),n&&a&&(e[n]=a)}return e}(t.detail?.value??""),i={...this._config,category_colors:e};this._fireChange(i)}_fireChange(t){this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:t},bubbles:!0,composed:!0}))}};jt.styles=r`
+    `;
+	}
+	_formValueChanged(e) {
+		if (e.stopPropagation(), !this._config) return;
+		let t = e.detail.value, n = this._config, r = q, i = { ...this._config };
+		for (let [e, a] of Object.entries(t)) {
+			let t = e in n, o = a === r[e];
+			(t || !o) && (i[e] = a);
+		}
+		"show_completed" in i && delete i.show_completed, this._fireChange(i);
+	}
+	_styleChanged(e) {
+		if (e.stopPropagation(), !this._config) return;
+		let t = e.detail?.value ?? "", n = {
+			...this._config,
+			style: t
+		};
+		t || delete n.style, this._fireChange(n);
+	}
+	_categoryColorsChanged(e) {
+		if (e.stopPropagation(), !this._config) return;
+		let t = We(e.detail?.value ?? ""), n = {
+			...this._config,
+			category_colors: t
+		};
+		this._fireChange(n);
+	}
+	_fireChange(e) {
+		this.dispatchEvent(new CustomEvent("config-changed", {
+			detail: { config: e },
+			bubbles: !0,
+			composed: !0
+		}));
+	}
+}, Ze.styles = o`
     :host {
       display: block;
     }
@@ -651,7 +1692,7 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
          apart. */
     .customization {
       display: block;
-      margin-top: ${a("8px")};
+      margin-top: ${a(`${$e}px`)};
       border: 1px solid var(--divider-color, rgba(0, 0, 0, 0.12));
       border-radius: 8px;
       background: transparent;
@@ -701,220 +1742,723 @@ function t(t,e,i,s){var o,n=arguments.length,a=n<3?e:null===s?s=Object.getOwnPro
     ha-code-editor {
       --code-mirror-max-height: 240px;
     }
-  `,t([gt({attribute:!1})],jt.prototype,"hass",void 0),t([ut()],jt.prototype,"_config",void 0),jt=t([pt(St)],jt);const Qt=window;Qt.customCards=Qt.customCards||[],Qt.customCards.find(t=>t.type===Ct)||Qt.customCards.push({type:Ct,name:"Shopping List Card",description:"A shopping-style list view for any todo entity, with categories and quantities.",preview:!0,documentationURL:"https://github.com/MCuello17/ha-shopping-list"}),console.info("%c SHOPPING-LIST-CARD %c v0.1.0 ","color: white; background: #03a9f4; font-weight: 700;","color: #03a9f4; background: white; font-weight: 700;");let Lt=class extends lt{constructor(){super(...arguments),this._items=[],this._loading=!1,this._draft="",this._completedExpanded=!1,this._editDraft="",this._editQuantity=1,this._addQuantity=1,this._collapsedCategories=new Set,this._focusEditOnUpdate=!1,this._toggleCompletedExpanded=()=>{this._completedExpanded=!this._completedExpanded}}static getStubConfig(){return{...qt}}static async getConfigElement(){return document.createElement(St)}setConfig(t){if(!t)throw new Error("Invalid configuration");const e={...t};void 0===e.completed&&void 0!==e.show_completed&&(e.completed=e.show_completed?"inline":"hide"),this._config={...qt,...e}}getCardSize(){return(this._config?.show_header?2:1)+Math.min(this._items.length,6)}disconnectedCallback(){super.disconnectedCallback(),this._teardownSubscription()}updated(t){if(super.updated(t),this._focusEditOnUpdate){const t=this.renderRoot.querySelector(".sl-edit-input");t&&(t.focus(),t.select(),this._focusEditOnUpdate=!1)}const e=this._config?.entity;e&&this.hass&&e!==this._lastEntity&&(this._lastEntity=e,this._setupSubscription(e))}async _setupSubscription(t){if(this._teardownSubscription(),this.hass){this._loading=!0,this._error=void 0;try{const e=await this.hass.callWS({type:"todo/item/list",entity_id:t});this._items=e.items??[],this._unsub=await this.hass.connection.subscribeMessage(t=>{this._items=t.items??[]},{type:"todo/item/subscribe",entity_id:t})}catch(t){this._error=t instanceof Error?t.message:String(t)}finally{this._loading=!1}}}_teardownSubscription(){if(this._unsub){try{this._unsub()}catch{}this._unsub=void 0}}async _addItem(){const t=this._config,e=t?.entity,i=this._draft.trim();if(!e||!i||!this.hass)return;const s=t.enable_quantity??!1,o=Tt(this._addQuantity,t.quantity_max??0),n=s?Mt(i,o):i;try{await this.hass.callService("todo","add_item",{entity_id:e,item:n}),this._draft="",this._addQuantity=1}catch(t){this._error=t instanceof Error?t.message:String(t)}}_adjustAddQuantity(t){const e=this._config?.quantity_max??0;this._addQuantity=Tt(this._addQuantity+t,e)}async _toggleItem(t){const e=this._config?.entity;if(!e||!this.hass)return;const i="completed"===t.status?"needs_action":"completed";try{await this.hass.callService("todo","update_item",{entity_id:e,item:t.uid,status:i})}catch(t){this._error=t instanceof Error?t.message:String(t)}}async _removeItem(t){const e=this._config?.entity;if(e&&this.hass)try{await this.hass.callService("todo","remove_item",{entity_id:e,item:t.uid})}catch(t){this._error=t instanceof Error?t.message:String(t)}}async _toggleCategoryAll(t,e){const i=this._config?.entity;if(!i||!this.hass||0===t.length)return;const s=e?"needs_action":"completed",o=t.filter(t=>t.status!==s);for(const t of o)try{await this.hass.callService("todo","update_item",{entity_id:i,item:t.uid,status:s})}catch(t){return void(this._error=t instanceof Error?t.message:String(t))}}_toggleCategoryCollapse(t){const e=new Set(this._collapsedCategories);e.has(t)?e.delete(t):e.add(t),this._collapsedCategories=e}_categoryColor(t){const e=this._config;return(void 0!==e.category_colors?e.category_colors:Ut)[t]}_startEdit(t){if(this._config?.enable_quantity??!1){const{name:e,quantity:i}=Ot(t.summary);this._editDraft=e,this._editQuantity=i}else this._editDraft=t.summary,this._editQuantity=1;this._editingUid=t.uid,this._focusEditOnUpdate=!0}_cancelEdit(){this._editingUid=void 0,this._editDraft="",this._editQuantity=1}async _saveEdit(t){if(this._editingUid!==t.uid)return;const e=this._config;if(!e)return void this._cancelEdit();const i=this._editDraft.trim();if(!i)return void this._cancelEdit();const s=e.enable_quantity??!1?Mt(i,Tt(this._editQuantity,e.quantity_max??0)):i;if(s===t.summary)return void this._cancelEdit();const o=e.entity;if(o&&this.hass){this._cancelEdit();try{await this.hass.callService("todo","update_item",{entity_id:o,item:t.uid,rename:s})}catch(t){this._error=t instanceof Error?t.message:String(t)}}else this._cancelEdit()}_adjustEditQuantity(t){const e=this._config?.quantity_max??0;this._editQuantity=Tt(this._editQuantity+t,e)}_sort(t){const e=this._config?.sort;return"alpha"===e?[...t].sort((t,e)=>t.summary.localeCompare(e.summary)):t}_splitItems(){const t=[],e=[];for(const i of this._items)"completed"===i.status?e.push(i):t.push(i);return{active:this._sort(t),completed:this._sort(e)}}_buildGroups(){const t=this._config,e=t.general_category_label||"General",i=new Map,s=[];for(const t of this._items){const{category:o}=Pt(t.summary),n=o??"__general__";let a=i.get(n);a||(a={key:n,category:o,displayName:o??e,active:[],completed:[]},i.set(n,a),s.push(n)),"completed"===t.status?a.completed.push(t):a.active.push(t)}const o=s.map(t=>{const e=i.get(t);return{...e,active:this._sort(e.active),completed:this._sort(e.completed)}});return"alpha"===t.sort&&o.sort((t,e)=>t.displayName.localeCompare(e.displayName)),o}render(){if(!this._config||!this.hass)return V;const t=this._config,e=this._extractCustomStyle(),i=!(!t.show_add_input||!t.entity),s=t.add_input_position??"bottom";return B`
-      <ha-card class="sl-card">
-        ${t.show_header?this._renderHeader():V}
-        ${this._error?B`<div class="sl-error">${this._error}</div>`:V}
-        ${i&&"top"===s?this._renderAddRow("top"):V} ${this._renderBody()}
-        ${i&&"top"!==s?this._renderAddRow("bottom"):V}
+  `, Ze);
+Y([H({ attribute: !1 })], X.prototype, "hass", void 0), Y([U()], X.prototype, "_config", void 0), X = Y([Te(Ve)], X);
+//#endregion
+//#region src/shopping-list-card.ts
+var Z, nt = "__general__", Q = window;
+Q.customCards = Q.customCards || [], Q.customCards.find((e) => e.type === "shopping-list-card") || Q.customCards.push({
+	type: Be,
+	name: "Shopping List Card",
+	description: "A shopping-style list view for any todo entity, with categories, quantities, offline support, and drag-and-drop reorder.",
+	preview: !0,
+	documentationURL: "https://github.com/MCuello17/ha-shopping-list"
+}), console.info(`%c SHOPPING-LIST-CARD %c v${ze} `, "color: white; background: #03a9f4; font-weight: 700;", "color: #03a9f4; background: white; font-weight: 700;");
+var $ = (Z = class extends V {
+	constructor(...e) {
+		super(...e), this._items = [], this._loading = !1, this._draft = "", this._completedExpanded = !1, this._editDraft = "", this._editQuantity = 1, this._addQuantity = 1, this._collapsedCategories = /* @__PURE__ */ new Set(), this._connected = !0, this._offlineQueue = [], this._draggedUid = null, this._focusEditOnUpdate = !1, this._connectionUnsubs = [], this._itemOrder = [], this._toggleCompletedExpanded = () => {
+			this._completedExpanded = !this._completedExpanded;
+		};
+	}
+	static getStubConfig() {
+		return { ...q };
+	}
+	static async getConfigElement() {
+		return document.createElement(Ve);
+	}
+	setConfig(e) {
+		if (!e) throw Error("Invalid configuration");
+		let t = { ...e };
+		t.completed === void 0 && t.show_completed !== void 0 && (t.completed = t.show_completed ? "inline" : "hide"), this._config = {
+			...q,
+			...t
+		}, this._loadItemOrder();
+	}
+	getCardSize() {
+		return (this._config?.show_header ? 2 : 1) + Math.min(this._items.length, 6);
+	}
+	disconnectedCallback() {
+		super.disconnectedCallback(), this._teardownSubscription(), this._teardownConnectionMonitoring();
+	}
+	updated(e) {
+		if (super.updated(e), this._focusEditOnUpdate) {
+			let e = this.renderRoot.querySelector(".sl-edit-input");
+			e && (e.focus(), e.select(), this._focusEditOnUpdate = !1);
+		}
+		e.has("_config") && this._config && (this._config.fill_screen ? this.style.setProperty("--shopping-list-host-height", "100%") : this.style.removeProperty("--shopping-list-host-height"));
+		let t = this._config?.entity;
+		!t || !this.hass || t !== this._lastEntity && (this._lastEntity = t, this._setupSubscription(t), this._setupConnectionMonitoring());
+	}
+	_setupConnectionMonitoring() {
+		this._teardownConnectionMonitoring();
+		let e = this.hass?.connection;
+		if (!e) return;
+		let t = "connected" in e ? !!e.connected : !0;
+		this._connected = t;
+		let n = () => {
+			this._connected = !0, this._flushOfflineQueue();
+		}, r = () => {
+			this._connected = !1;
+		};
+		typeof e.addEventListener == "function" && (e.addEventListener("ready", n), e.addEventListener("disconnected", r), this._connectionUnsubs.push(() => {
+			e.removeEventListener("ready", n), e.removeEventListener("disconnected", r);
+		})), window.addEventListener("online", n), window.addEventListener("offline", r), this._connectionUnsubs.push(() => {
+			window.removeEventListener("online", n), window.removeEventListener("offline", r);
+		});
+	}
+	_teardownConnectionMonitoring() {
+		for (let e of this._connectionUnsubs) try {
+			e();
+		} catch {}
+		this._connectionUnsubs = [];
+	}
+	async _executeService(e, t, n) {
+		if (this.hass) {
+			if (!this._connected) {
+				this._offlineQueue = [...this._offlineQueue, {
+					domain: e,
+					service: t,
+					serviceData: n
+				}];
+				return;
+			}
+			try {
+				await this.hass.callService(e, t, n);
+			} catch (r) {
+				this._isConnectionError(r) ? (this._connected = !1, this._offlineQueue = [...this._offlineQueue, {
+					domain: e,
+					service: t,
+					serviceData: n
+				}]) : this._error = r instanceof Error ? r.message : String(r);
+			}
+		}
+	}
+	_isConnectionError(e) {
+		if (e instanceof Error) {
+			let t = e.message.toLowerCase();
+			return t.includes("connection") || t.includes("network") || t.includes("fetch") || t.includes("websocket") || t.includes("closed") || t.includes("offline");
+		}
+		return !1;
+	}
+	async _flushOfflineQueue() {
+		if (!this.hass || this._offlineQueue.length === 0) return;
+		let e = [...this._offlineQueue];
+		this._offlineQueue = [];
+		for (let t of e) try {
+			await this.hass.callService(t.domain, t.service, t.serviceData);
+		} catch (e) {
+			if (this._isConnectionError(e)) {
+				this._offlineQueue = [t, ...this._offlineQueue], this._connected = !1;
+				return;
+			}
+		}
+		let t = this._config?.entity;
+		if (t) try {
+			let e = await this.hass.callWS({
+				type: "todo/item/list",
+				entity_id: t
+			});
+			this._items = e.items ?? [];
+		} catch {}
+	}
+	_getOrderKey() {
+		return `shopping_list_order_${this._config?.entity ?? "default"}`;
+	}
+	_loadItemOrder() {
+		try {
+			let e = localStorage.getItem(this._getOrderKey());
+			e ? this._itemOrder = JSON.parse(e) : this._itemOrder = [];
+		} catch {
+			this._itemOrder = [];
+		}
+	}
+	_saveItemOrder() {
+		try {
+			this._itemOrder.length > 0 ? localStorage.setItem(this._getOrderKey(), JSON.stringify(this._itemOrder)) : localStorage.removeItem(this._getOrderKey());
+		} catch {}
+	}
+	_getOrderedItems(e) {
+		let t = this._config, n = t?.sort, r = t?.enable_reorder !== !1;
+		if (n === "manual" && r && this._itemOrder.length > 0) {
+			let t = new Set(e.map((e) => e.uid)), n = this._itemOrder.filter((e) => t.has(e)), r = e.filter((e) => !n.includes(e.uid));
+			return [...n.map((t) => e.find((e) => e.uid === t)).filter(Boolean), ...r];
+		}
+		return n === "alpha" ? [...e].sort((e, t) => e.summary.localeCompare(t.summary)) : e;
+	}
+	_onDragStart(e) {
+		let t = e.target.closest(".sl-item");
+		if (!t) return;
+		let n = t.dataset.uid;
+		n && (this._draggedUid = n, e.dataTransfer?.setData("text/plain", n), e.dataTransfer && (e.dataTransfer.effectAllowed = "move"), t.classList.add("sl-item--dragging"));
+	}
+	_onDragOver(e) {
+		if (e.preventDefault(), !e.dataTransfer) return;
+		e.dataTransfer.dropEffect = "move";
+		let t = e.target.closest(".sl-item");
+		!t || t.dataset.uid === this._draggedUid || (this.renderRoot.querySelectorAll(".sl-item--drag-over").forEach((e) => {
+			e.classList.remove("sl-item--drag-over");
+		}), t.classList.add("sl-item--drag-over"));
+	}
+	_onDragLeave(e) {
+		let t = e.target.closest(".sl-item");
+		t && t.classList.remove("sl-item--drag-over");
+	}
+	_onDrop(e) {
+		e.preventDefault(), this.renderRoot.querySelectorAll(".sl-item--drag-over, .sl-item--dragging").forEach((e) => {
+			e.classList.remove("sl-item--drag-over", "sl-item--dragging");
+		});
+		let t = e.target.closest(".sl-item");
+		if (!t) return;
+		let n = t.dataset.uid;
+		if (!n || !this._draggedUid || this._draggedUid === n) return;
+		let r = this._getOrderedItems(this._items), i = r.findIndex((e) => e.uid === this._draggedUid), a = r.findIndex((e) => e.uid === n);
+		if (i === -1 || a === -1) return;
+		let [o] = r.splice(i, 1), s = r.findIndex((e) => e.uid === n);
+		r.splice(s >= 0 ? s : a, 0, o);
+		let c = new Set(this._items.filter((e) => e.status !== "completed").map((e) => e.uid));
+		this._itemOrder = r.filter((e) => c.has(e.uid) || e.status === "needs_action").map((e) => e.uid), this._saveItemOrder(), this._draggedUid = null, this.requestUpdate();
+	}
+	_onDragEnd() {
+		this.renderRoot.querySelectorAll(".sl-item--drag-over, .sl-item--dragging").forEach((e) => {
+			e.classList.remove("sl-item--drag-over", "sl-item--dragging");
+		}), this._draggedUid = null;
+	}
+	async _setupSubscription(e) {
+		if (this._teardownSubscription(), this.hass) {
+			this._loading = !0, this._error = void 0;
+			try {
+				let t = await this.hass.callWS({
+					type: "todo/item/list",
+					entity_id: e
+				});
+				this._items = t.items ?? [], this._unsub = await this.hass.connection.subscribeMessage((e) => {
+					this._items = e.items ?? [];
+				}, {
+					type: "todo/item/subscribe",
+					entity_id: e
+				});
+			} catch (e) {
+				this._error = e instanceof Error ? e.message : String(e);
+			} finally {
+				this._loading = !1;
+			}
+		}
+	}
+	_teardownSubscription() {
+		if (this._unsub) {
+			try {
+				this._unsub();
+			} catch {}
+			this._unsub = void 0;
+		}
+	}
+	async _addItem() {
+		let e = this._config, t = e?.entity, n = this._draft.trim();
+		if (!t || !n || !this.hass) return;
+		let r = e.enable_quantity ?? !1, i = J(this._addQuantity, e.quantity_max ?? 0), a = r ? Ye(n, i) : n, o = `temp_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`, s = {
+			uid: o,
+			summary: a,
+			status: "needs_action"
+		};
+		this._connected || (this._items = [...this._items, s]);
+		try {
+			await this._executeService("todo", "add_item", {
+				entity_id: t,
+				item: a
+			}), this._draft = "", this._addQuantity = 1;
+		} catch {
+			this._items = this._items.filter((e) => e.uid !== o);
+		}
+	}
+	_adjustAddQuantity(e) {
+		let t = this._config?.quantity_max ?? 0;
+		this._addQuantity = J(this._addQuantity + e, t);
+	}
+	async _toggleItem(e) {
+		let t = this._config?.entity;
+		if (!t || !this.hass) return;
+		let n = e.status === "completed" ? "needs_action" : "completed";
+		this._connected || (this._items = this._items.map((t) => t.uid === e.uid ? {
+			...t,
+			status: n
+		} : t));
+		try {
+			await this._executeService("todo", "update_item", {
+				entity_id: t,
+				item: e.uid,
+				status: n
+			});
+		} catch {
+			this._items = this._items.map((t) => t.uid === e.uid ? {
+				...t,
+				status: e.status
+			} : t);
+		}
+	}
+	async _removeItem(e) {
+		let t = this._config?.entity;
+		if (!(!t || !this.hass)) {
+			this._connected || (this._items = this._items.filter((t) => t.uid !== e.uid));
+			try {
+				await this._executeService("todo", "remove_item", {
+					entity_id: t,
+					item: e.uid
+				});
+			} catch {
+				this._connected || (this._items = [...this._items, e]);
+			}
+		}
+	}
+	async _toggleCategoryAll(e, t) {
+		let n = this._config?.entity;
+		if (!n || !this.hass || e.length === 0) return;
+		let r = t ? "needs_action" : "completed";
+		if (!this._connected) {
+			let t = new Set(e.filter((e) => e.status !== r).map((e) => e.uid));
+			this._items = this._items.map((e) => t.has(e.uid) ? {
+				...e,
+				status: r
+			} : e);
+		}
+		let i = e.filter((e) => e.status !== r);
+		for (let e of i) try {
+			await this._executeService("todo", "update_item", {
+				entity_id: n,
+				item: e.uid,
+				status: r
+			});
+		} catch (e) {
+			this._error = e instanceof Error ? e.message : String(e);
+			return;
+		}
+	}
+	_toggleCategoryCollapse(e) {
+		let t = new Set(this._collapsedCategories);
+		t.has(e) ? t.delete(e) : t.add(e), this._collapsedCategories = t;
+	}
+	_categoryColor(e) {
+		let t = this._config;
+		return (t.category_colors === void 0 ? Ke : t.category_colors)[e];
+	}
+	_startEdit(e) {
+		if (this._config?.enable_quantity ?? !1) {
+			let { name: t, quantity: n } = Je(e.summary);
+			this._editDraft = t, this._editQuantity = n;
+		} else this._editDraft = e.summary, this._editQuantity = 1;
+		this._editingUid = e.uid, this._focusEditOnUpdate = !0;
+	}
+	_cancelEdit() {
+		this._editingUid = void 0, this._editDraft = "", this._editQuantity = 1;
+	}
+	async _saveEdit(e) {
+		if (this._editingUid !== e.uid) return;
+		let t = this._config;
+		if (!t) {
+			this._cancelEdit();
+			return;
+		}
+		let n = this._editDraft.trim();
+		if (!n) {
+			this._cancelEdit();
+			return;
+		}
+		let r = t.enable_quantity ?? !1 ? Ye(n, J(this._editQuantity, t.quantity_max ?? 0)) : n;
+		if (r === e.summary) {
+			this._cancelEdit();
+			return;
+		}
+		let i = t.entity;
+		if (!i || !this.hass) {
+			this._cancelEdit();
+			return;
+		}
+		this._cancelEdit(), this._connected || (this._items = this._items.map((t) => t.uid === e.uid ? {
+			...t,
+			summary: r
+		} : t));
+		try {
+			await this._executeService("todo", "update_item", {
+				entity_id: i,
+				item: e.uid,
+				rename: r
+			});
+		} catch {
+			this._items = this._items.map((t) => t.uid === e.uid ? {
+				...t,
+				summary: e.summary
+			} : t);
+		}
+	}
+	_adjustEditQuantity(e) {
+		let t = this._config?.quantity_max ?? 0;
+		this._editQuantity = J(this._editQuantity + e, t);
+	}
+	_sort(e) {
+		return this._getOrderedItems(e);
+	}
+	_splitItems() {
+		let e = [], t = [];
+		for (let n of this._items) n.status === "completed" ? t.push(n) : e.push(n);
+		return {
+			active: this._sort(e),
+			completed: this._sort(t)
+		};
+	}
+	_buildGroups() {
+		let e = this._config, t = e.general_category_label || "General", n = /* @__PURE__ */ new Map(), r = [];
+		for (let e of this._items) {
+			let { category: i } = Ue(e.summary), a = i ?? nt, o = n.get(a);
+			o || (o = {
+				key: a,
+				category: i,
+				displayName: i ?? t,
+				active: [],
+				completed: []
+			}, n.set(a, o), r.push(a)), e.status === "completed" ? o.completed.push(e) : o.active.push(e);
+		}
+		let i = r.map((e) => {
+			let t = n.get(e);
+			return {
+				...t,
+				active: this._sort(t.active),
+				completed: this._sort(t.completed)
+			};
+		});
+		return e.sort === "alpha" && i.sort((e, t) => e.displayName.localeCompare(t.displayName)), i;
+	}
+	render() {
+		if (!this._config || !this.hass) return P;
+		let e = this._config, t = this._extractCustomStyle(), n = !!(e.show_add_input && e.entity), r = e.fill_screen ?? !1, i = e.add_input_position ?? "bottom";
+		return M`
+      <ha-card class="sl-card ${r ? "sl-card--fill-screen" : ""}">
+        ${e.show_header ? this._renderHeader() : P}
+        ${this._error ? M`<div class="sl-error">${this._error}</div>` : P}
+        ${this._offlineQueue.length > 0 ? this._renderOfflineBanner() : P}
+        ${n && i === "top" ? this._renderAddRow("top") : P}
+        ${this._renderScrollWrapper()}
+        ${n && i !== "top" ? this._renderAddRow("bottom") : P}
       </ha-card>
-      ${e?B`<style>
-            ${e}
-          </style>`:V}
-    `}_renderBody(){const t=this._config;return t.entity?this._loading&&0===this._items.length?B`<div class="sl-empty">Loading…</div>`:t.enable_categories&&!1!==t.group_by_category?this._renderGrouped():this._renderFlat():B`<div class="sl-empty">
-        No todo entity selected. Open the editor to pick one.
-      </div>`}_renderFlat(){const t=this._config,e=t.completed??"bottom",{active:i,completed:s}=this._splitItems();let o,n=[],a=!1;return"hide"===e?o=i:"inline"===e?o=this._sort([...this._items]):"bottom"===e?(o=i,n=s):(o=i,a=s.length>0,this._completedExpanded&&(n=s)),0!==o.length||0!==n.length||a?B`
-      <ul class="sl-list">
-        ${Et(o,t=>t.uid,t=>this._renderItem(t))}
-        ${a?this._renderCompletedToggle(s.length):V}
-        ${Et(n,t=>t.uid,t=>this._renderItem(t))}
-      </ul>
-    `:B`<div class="sl-empty">${t.empty_message}</div>`}_renderGrouped(){const t=this._config,e=t.completed??"bottom",i=this._buildGroups();let s=[],o=!1;if("collapse"===e){const t=[];for(const e of i)t.push(...e.completed);s=this._sort(t),o=s.length>0}const n=i.filter(t=>"hide"===e||"collapse"===e?t.active.length>0:t.active.length+t.completed.length>0);return 0!==n.length||o?B`
-      <div class="sl-list sl-list--grouped">
-        ${Et(n,t=>t.key,t=>this._renderGroup(t))}
-        ${o?B`
-              <ul class="sl-list sl-grouped-completed">
-                ${this._renderCompletedToggle(s.length)}
-                ${this._completedExpanded?Et(s,t=>t.uid,t=>this._renderItem(t,{hidePrefix:!1})):V}
-              </ul>
-            `:V}
+      ${t ? M`<style>
+              ${t}
+            </style>` : P}
+    `;
+	}
+	_renderOfflineBanner() {
+		let e = this._offlineQueue.length;
+		return M`
+      <div class="sl-offline">
+        <ha-icon icon="mdi:cloud-off-outline"></ha-icon>
+        <span>Offline — ${e} pending change${e === 1 ? "" : "s"}</span>
       </div>
-    `:B`<div class="sl-empty">${t.empty_message}</div>`}_renderGroup(t){const e=this._config,i=e.completed??"bottom",s="collapse"===i?t.active:[...t.active,...t.completed],o=s.length>0&&s.every(t=>"completed"===t.status),n=!o&&s.some(t=>"completed"===t.status),a=!1!==e.category_check_all,r=!1!==e.category_collapsible,l=r&&this._collapsedCategories.has(t.key);let c;c="hide"===i||"collapse"===i?t.active:"inline"===i?this._sort([...t.active,...t.completed]):[...t.active,...t.completed];const p=this._categoryColor(t.displayName);return B`
-      <section class="sl-category" style=${p?`--shopping-list-category-color: ${p}`:""}>
+    `;
+	}
+	_renderScrollWrapper() {
+		return M` <div class="sl-list-scroll">${this._renderBody()}</div> `;
+	}
+	_renderBody() {
+		let e = this._config;
+		return e.entity ? this._loading && this._items.length === 0 ? M`<div class="sl-empty">Loading…</div>` : e.enable_categories && e.group_by_category !== !1 ? this._renderGrouped() : this._renderFlat() : M`<div class="sl-empty">
+        No todo entity selected. Open the editor to pick one.
+      </div>`;
+	}
+	_renderFlat() {
+		let e = this._config, t = e.completed ?? "bottom", { active: n, completed: r } = this._splitItems(), i, a = [], o = !1;
+		return t === "hide" ? i = n : t === "inline" ? i = this._sort([...this._items]) : t === "bottom" ? (i = n, a = r) : (i = n, o = r.length > 0, this._completedExpanded && (a = r)), i.length === 0 && a.length === 0 && !o ? M`<div class="sl-empty">${e.empty_message}</div>` : M`
+      <ul class="sl-list">
+        ${K(i, (e) => e.uid, (e) => this._renderItem(e))}
+        ${o ? this._renderCompletedToggle(r.length) : P}
+        ${K(a, (e) => e.uid, (e) => this._renderItem(e))}
+      </ul>
+    `;
+	}
+	_renderGrouped() {
+		let e = this._config, t = e.completed ?? "bottom", n = this._buildGroups(), r = [], i = !1;
+		if (t === "collapse") {
+			let e = [];
+			for (let t of n) e.push(...t.completed);
+			r = this._sort(e), i = r.length > 0;
+		}
+		let a = n.filter((e) => t === "hide" || t === "collapse" ? e.active.length > 0 : e.active.length + e.completed.length > 0);
+		return a.length === 0 && !i ? M`<div class="sl-empty">${e.empty_message}</div>` : M`
+      <div class="sl-list sl-list--grouped">
+        ${K(a, (e) => e.key, (e) => this._renderGroup(e))}
+        ${i ? M`
+                <ul class="sl-list sl-grouped-completed">
+                  ${this._renderCompletedToggle(r.length)}
+                  ${this._completedExpanded ? K(r, (e) => e.uid, (e) => this._renderItem(e, { hidePrefix: !1 })) : P}
+                </ul>
+              ` : P}
+      </div>
+    `;
+	}
+	_renderGroup(e) {
+		let t = this._config, n = t.completed ?? "bottom", r = n === "collapse" ? e.active : [...e.active, ...e.completed], i = r.length > 0 && r.every((e) => e.status === "completed"), a = !i && r.some((e) => e.status === "completed"), o = t.category_check_all !== !1, s = t.category_collapsible !== !1, c = s && this._collapsedCategories.has(e.key), l;
+		l = n === "hide" || n === "collapse" ? e.active : n === "inline" ? this._sort([...e.active, ...e.completed]) : [...e.active, ...e.completed];
+		let u = this._categoryColor(e.displayName);
+		return M`
+      <section class="sl-category" style=${u ? `--shopping-list-category-color: ${u}` : ""}>
         <div class="sl-category-header">
-          ${a?B`<ha-checkbox
-                class="sl-category-checkbox"
-                .checked=${o}
-                .indeterminate=${n}
-                @click=${t=>t.stopPropagation()}
-                @change=${()=>this._toggleCategoryAll(s,o)}
-              ></ha-checkbox>`:V}
+          ${o ? M`<ha-checkbox
+                  class="sl-category-checkbox"
+                  .checked=${i}
+                  .indeterminate=${a}
+                  @click=${(e) => e.stopPropagation()}
+                  @change=${() => this._toggleCategoryAll(r, i)}
+                ></ha-checkbox>` : P}
           <button
             class="sl-category-name"
             type="button"
-            ?disabled=${!r}
-            aria-expanded=${r&&l?"false":"true"}
-            @click=${r?()=>this._toggleCategoryCollapse(t.key):null}
+            ?disabled=${!s}
+            aria-expanded=${s && c ? "false" : "true"}
+            @click=${s ? () => this._toggleCategoryCollapse(e.key) : null}
           >
-            [${t.displayName}]${!1!==e.category_show_count&&t.active.length>0?B`<span class="sl-category-count" aria-label="active items"
-                  >(${t.active.length})</span
-                >`:V}
+            [${e.displayName}]${t.category_show_count !== !1 && e.active.length > 0 ? M`<span class="sl-category-count" aria-label="active items"
+                    >(${e.active.length})</span
+                  >` : P}
           </button>
-          ${r?B`<button
-                type="button"
-                class="sl-category-collapse"
-                aria-label=${l?"Expand category":"Collapse category"}
-                @click=${()=>this._toggleCategoryCollapse(t.key)}
-              >
-                <ha-icon .icon=${l?"mdi:chevron-down":"mdi:chevron-up"}></ha-icon>
-              </button>`:V}
+          ${s ? M`<button
+                  type="button"
+                  class="sl-category-collapse"
+                  aria-label=${c ? "Expand category" : "Collapse category"}
+                  @click=${() => this._toggleCategoryCollapse(e.key)}
+                >
+                  <ha-icon .icon=${c ? "mdi:chevron-down" : "mdi:chevron-up"}></ha-icon>
+                </button>` : P}
         </div>
-        ${l?V:B`<ul class="sl-category-items">
-              ${Et(c,t=>t.uid,t=>this._renderItem(t,{hidePrefix:!0}))}
-            </ul>`}
+        ${c ? P : M`<ul class="sl-category-items">
+                ${K(l, (e) => e.uid, (e) => this._renderItem(e, { hidePrefix: !0 }))}
+              </ul>`}
       </section>
-    `}_renderCompletedToggle(t){const e=this._completedExpanded,i=this._config?.completed_label||"Completed";return B`
+    `;
+	}
+	_renderCompletedToggle(e) {
+		let t = this._completedExpanded, n = this._config?.completed_label || "Completed";
+		return M`
       <li
-        class="sl-completed-toggle ${e?"sl-completed-toggle--expanded":""}"
+        class="sl-completed-toggle ${t ? "sl-completed-toggle--expanded" : ""}"
         role="button"
         tabindex="0"
-        aria-expanded=${e?"true":"false"}
+        aria-expanded=${t ? "true" : "false"}
         @click=${this._toggleCompletedExpanded}
-        @keydown=${t=>{"Enter"!==t.key&&" "!==t.key||(t.preventDefault(),this._toggleCompletedExpanded())}}
+        @keydown=${(e) => {
+			(e.key === "Enter" || e.key === " ") && (e.preventDefault(), this._toggleCompletedExpanded());
+		}}
       >
         <ha-icon
           class="sl-completed-toggle-icon"
-          .icon=${e?"mdi:chevron-up":"mdi:chevron-down"}
+          .icon=${t ? "mdi:chevron-up" : "mdi:chevron-down"}
         ></ha-icon>
-        <span class="sl-completed-toggle-label">${i} (${t})</span>
+        <span class="sl-completed-toggle-label">${n} (${e})</span>
       </li>
-    `}_renderHeader(){const t=this._config;return B`
+    `;
+	}
+	_renderHeader() {
+		let e = this._config;
+		return M`
       <div class="sl-header">
-        ${t.icon?B`<ha-icon class="sl-icon" .icon=${t.icon}></ha-icon>`:V}
-        <span class="sl-title">${t.title}</span>
+        ${e.icon ? M`<ha-icon class="sl-icon" .icon=${e.icon}></ha-icon>` : P}
+        <span class="sl-title">${e.title}</span>
       </div>
-    `}_renderItem(t,e){const i=this._config,s="completed"===t.status,o=this._editingUid===t.uid,n=!1!==i.enable_edit,a=!1!==i.enable_remove,r=i.enable_quantity??!1,l=i.quantity_max??0,c=!1!==i.click_to_check,p=i.enable_categories??!1;let d=t.summary,h=null;if(p){const e=Pt(t.summary);h=e.category,d=e.rest}const g=r?Ot(d):{name:d,quantity:1},u=r&&g.quantity>1,m=p&&!e?.hidePrefix&&!!h,y=h?this._categoryColor(h):void 0,_=y?`--shopping-list-category-color: ${y}`:"",f=this._editQuantity>1,b=l<=0||this._editQuantity<l,v=t=>t.preventDefault();return B`
+    `;
+	}
+	_renderItem(e, t) {
+		let n = this._config, r = e.status === "completed", i = this._editingUid === e.uid, a = n.enable_edit !== !1, o = n.enable_remove !== !1, s = n.enable_quantity ?? !1, c = n.quantity_max ?? 0, l = n.click_to_check !== !1, u = n.enable_categories ?? !1, d = n.enable_reorder !== !1 && (n.sort === "manual" || !n.sort) && !i, f = e.summary, p = null;
+		if (u) {
+			let t = Ue(e.summary);
+			p = t.category, f = t.rest;
+		}
+		let m = s ? Je(f) : {
+			name: f,
+			quantity: 1
+		}, h = s && m.quantity > 1, g = u && !t?.hidePrefix && !!p, ee = p ? this._categoryColor(p) : void 0, te = ee ? `--shopping-list-category-color: ${ee}` : "", _ = this._editQuantity > 1, v = c <= 0 || this._editQuantity < c, y = (e) => e.preventDefault();
+		return M`
       <li
-        class="sl-item ${s?"sl-item--completed":""} ${o?"sl-item--editing":""} ${c?"":"sl-item--no-row-click"}"
-        style=${_}
-        @click=${e=>{c&&(o||"HA-CHECKBOX"!==e.target.tagName&&this._toggleItem(t))}}
+        class="sl-item ${r ? "sl-item--completed" : ""} ${i ? "sl-item--editing" : ""} ${l ? "" : "sl-item--no-row-click"} ${this._draggedUid === e.uid ? "sl-item--dragging" : ""}"
+        style=${te}
+        data-uid=${e.uid}
+        @dragover=${d ? this._onDragOver : null}
+        @dragleave=${d ? this._onDragLeave : null}
+        @drop=${d ? this._onDrop : null}
+        @click=${(t) => {
+			l && (i || t.target.tagName !== "HA-CHECKBOX" && this._toggleItem(e));
+		}}
       >
+        ${d ? M`<ha-icon
+                class="sl-drag-handle"
+                draggable="true"
+                icon="mdi:drag"
+                @mousedown=${(e) => e.stopPropagation()}
+                @dragstart=${this._onDragStart}
+                @dragend=${this._onDragEnd}
+              ></ha-icon>` : P}
+
         <ha-checkbox
           class="sl-checkbox"
-          .checked=${s}
-          ?disabled=${o}
-          @change=${()=>this._toggleItem(t)}
+          .checked=${r}
+          ?disabled=${i}
+          @change=${() => this._toggleItem(e)}
         ></ha-checkbox>
 
-        ${o?B`<input
-              class="sl-edit-input"
-              type="text"
-              .value=${this._editDraft}
-              aria-label="Edit item"
-              @click=${t=>t.stopPropagation()}
-              @input=${t=>{this._editDraft=t.target.value}}
-              @keydown=${e=>{"Enter"===e.key?(e.preventDefault(),this._saveEdit(t)):"Escape"===e.key&&(e.preventDefault(),this._cancelEdit())}}
-              @blur=${()=>{this._editingUid===t.uid&&this._saveEdit(t)}}
-            />`:B`<span class="sl-summary">
-              ${m?B`<span class="sl-category-prefix">[${h}]</span> `:V}<span class="sl-name">${g.name}</span>${u?B`<span class="sl-quantity-badge">×${g.quantity}</span>`:V}
-            </span>`}
-        ${o&&r?B`
-              <div class="sl-quantity-stepper" aria-label="Item quantity">
-                <button
-                  type="button"
-                  class="sl-quantity-step sl-quantity-step--minus"
-                  ?disabled=${!f}
-                  aria-label="Decrease quantity"
-                  @mousedown=${v}
-                  @click=${t=>{t.stopPropagation(),this._adjustEditQuantity(-1)}}
-                >
-                  <ha-icon icon="mdi:minus"></ha-icon>
-                </button>
-                <span class="sl-quantity-value" aria-live="polite">${this._editQuantity}</span>
-                <button
-                  type="button"
-                  class="sl-quantity-step sl-quantity-step--plus"
-                  ?disabled=${!b}
-                  aria-label="Increase quantity"
-                  @mousedown=${v}
-                  @click=${t=>{t.stopPropagation(),this._adjustEditQuantity(1)}}
-                >
-                  <ha-icon icon="mdi:plus"></ha-icon>
-                </button>
-              </div>
-            `:V}
+        ${i ? M`<input
+                class="sl-edit-input"
+                type="text"
+                .value=${this._editDraft}
+                aria-label="Edit item"
+                @click=${(e) => e.stopPropagation()}
+                @input=${(e) => {
+			this._editDraft = e.target.value;
+		}}
+                @keydown=${(t) => {
+			t.key === "Enter" ? (t.preventDefault(), this._saveEdit(e)) : t.key === "Escape" && (t.preventDefault(), this._cancelEdit());
+		}}
+                @blur=${() => {
+			this._editingUid === e.uid && this._saveEdit(e);
+		}}
+              />` : M`<span class="sl-summary">
+                ${g ? M`<span class="sl-category-prefix">[${p}]</span> ` : P}<span class="sl-name">${m.name}</span>${h ? M`<span class="sl-quantity-badge">×${m.quantity}</span>` : P}
+              </span>`}
+        ${i && s ? M`
+                <div class="sl-quantity-stepper" aria-label="Item quantity">
+                  <button
+                    type="button"
+                    class="sl-quantity-step sl-quantity-step--minus"
+                    ?disabled=${!_}
+                    aria-label="Decrease quantity"
+                    @mousedown=${y}
+                    @click=${(e) => {
+			e.stopPropagation(), this._adjustEditQuantity(-1);
+		}}
+                  >
+                    <ha-icon icon="mdi:minus"></ha-icon>
+                  </button>
+                  <span class="sl-quantity-value" aria-live="polite">${this._editQuantity}</span>
+                  <button
+                    type="button"
+                    class="sl-quantity-step sl-quantity-step--plus"
+                    ?disabled=${!v}
+                    aria-label="Increase quantity"
+                    @mousedown=${y}
+                    @click=${(e) => {
+			e.stopPropagation(), this._adjustEditQuantity(1);
+		}}
+                  >
+                    <ha-icon icon="mdi:plus"></ha-icon>
+                  </button>
+                </div>
+              ` : P}
 
         <div class="sl-actions">
-          ${o?B`
-                <ha-icon-button
-                  class="sl-action-button sl-action-button-save"
-                  .label=${"Save"}
-                  @mousedown=${v}
-                  @click=${e=>{e.stopPropagation(),this._saveEdit(t)}}
-                >
-                  <ha-icon icon="mdi:check"></ha-icon>
-                </ha-icon-button>
-                <ha-icon-button
-                  class="sl-action-button sl-action-button-cancel"
-                  .label=${"Cancel"}
-                  @mousedown=${v}
-                  @click=${t=>{t.stopPropagation(),this._cancelEdit()}}
-                >
-                  <ha-icon icon="mdi:close"></ha-icon>
-                </ha-icon-button>
-              `:B`
-                ${n?B`<ha-icon-button
-                      class="sl-action-button sl-action-button-edit"
-                      .label=${"Edit"}
-                      @click=${e=>{e.stopPropagation(),this._startEdit(t)}}
-                    >
-                      <ha-icon icon="mdi:pencil"></ha-icon>
-                    </ha-icon-button>`:V}
-                ${a?B`<ha-icon-button
-                      class="sl-action-button sl-action-button-delete"
-                      .label=${"Remove"}
-                      @click=${e=>{e.stopPropagation(),this._removeItem(t)}}
-                    >
-                      <ha-icon icon="mdi:close"></ha-icon>
-                    </ha-icon-button>`:V}
-              `}
+          ${i ? M`
+                  <ha-icon-button
+                    class="sl-action-button sl-action-button-save"
+                    .label=${"Save"}
+                    @mousedown=${y}
+                    @click=${(t) => {
+			t.stopPropagation(), this._saveEdit(e);
+		}}
+                  >
+                    <ha-icon icon="mdi:check"></ha-icon>
+                  </ha-icon-button>
+                  <ha-icon-button
+                    class="sl-action-button sl-action-button-cancel"
+                    .label=${"Cancel"}
+                    @mousedown=${y}
+                    @click=${(e) => {
+			e.stopPropagation(), this._cancelEdit();
+		}}
+                  >
+                    <ha-icon icon="mdi:close"></ha-icon>
+                  </ha-icon-button>
+                ` : M`
+                  ${a ? M`<ha-icon-button
+                          class="sl-action-button sl-action-button-edit"
+                          .label=${"Edit"}
+                          @click=${(t) => {
+			t.stopPropagation(), this._startEdit(e);
+		}}
+                        >
+                          <ha-icon icon="mdi:pencil"></ha-icon>
+                        </ha-icon-button>` : P}
+                  ${o ? M`<ha-icon-button
+                          class="sl-action-button sl-action-button-delete"
+                          .label=${"Remove"}
+                          @click=${(t) => {
+			t.stopPropagation(), this._removeItem(e);
+		}}
+                        >
+                          <ha-icon icon="mdi:close"></ha-icon>
+                        </ha-icon-button>` : P}
+                `}
         </div>
       </li>
-    `}_renderAddRow(t){const e=this._config,i=this._draft.trim().length>0,s=e.enable_quantity??!1,o=e.quantity_max??0,n=this._addQuantity>1,a=o<=0||this._addQuantity<o,r=t=>t.preventDefault();return B`
-      <div class="sl-add-row sl-add-row--${t}">
+    `;
+	}
+	_renderAddRow(e) {
+		let t = this._config, n = this._draft.trim().length > 0, r = t.enable_quantity ?? !1, i = t.quantity_max ?? 0, a = this._addQuantity > 1, o = i <= 0 || this._addQuantity < i, s = (e) => e.preventDefault();
+		return M`
+      <div class="sl-add-row sl-add-row--${e}">
         <input
           class="sl-input"
           type="text"
           placeholder="Add an item…"
           .value=${this._draft}
-          @input=${t=>{this._draft=t.target.value}}
-          @keydown=${t=>{"Enter"===t.key&&(t.preventDefault(),this._addItem())}}
+          @input=${(e) => {
+			this._draft = e.target.value;
+		}}
+          @keydown=${(e) => {
+			e.key === "Enter" && (e.preventDefault(), this._addItem());
+		}}
         />
-        ${s?B`
-              <div
-                class="sl-quantity-stepper sl-quantity-stepper--add"
-                aria-label="Initial quantity for new item"
-              >
-                <button
-                  type="button"
-                  class="sl-quantity-step sl-quantity-step--minus"
-                  ?disabled=${!n}
-                  aria-label="Decrease quantity"
-                  @mousedown=${r}
-                  @click=${()=>this._adjustAddQuantity(-1)}
+        ${r ? M`
+                <div
+                  class="sl-quantity-stepper sl-quantity-stepper--add"
+                  aria-label="Initial quantity for new item"
                 >
-                  <ha-icon icon="mdi:minus"></ha-icon>
-                </button>
-                <span class="sl-quantity-value" aria-live="polite">${this._addQuantity}</span>
-                <button
-                  type="button"
-                  class="sl-quantity-step sl-quantity-step--plus"
-                  ?disabled=${!a}
-                  aria-label="Increase quantity"
-                  @mousedown=${r}
-                  @click=${()=>this._adjustAddQuantity(1)}
-                >
-                  <ha-icon icon="mdi:plus"></ha-icon>
-                </button>
-              </div>
-            `:V}
+                  <button
+                    type="button"
+                    class="sl-quantity-step sl-quantity-step--minus"
+                    ?disabled=${!a}
+                    aria-label="Decrease quantity"
+                    @mousedown=${s}
+                    @click=${() => this._adjustAddQuantity(-1)}
+                  >
+                    <ha-icon icon="mdi:minus"></ha-icon>
+                  </button>
+                  <span class="sl-quantity-value" aria-live="polite">${this._addQuantity}</span>
+                  <button
+                    type="button"
+                    class="sl-quantity-step sl-quantity-step--plus"
+                    ?disabled=${!o}
+                    aria-label="Increase quantity"
+                    @mousedown=${s}
+                    @click=${() => this._adjustAddQuantity(1)}
+                  >
+                    <ha-icon icon="mdi:plus"></ha-icon>
+                  </button>
+                </div>
+              ` : P}
         <button
           class="sl-add-button"
           type="button"
-          ?disabled=${!i}
-          @click=${()=>this._addItem()}
+          ?disabled=${!n}
+          @click=${() => this._addItem()}
         >
-          ${e.add_button_label}
+          ${t.add_button_label}
         </button>
       </div>
-    `}_extractCustomStyle(){const t=this._config;if(t){if("string"==typeof t.style&&t.style.trim())return t.style;if(t.card_mod){if("string"==typeof t.card_mod)return t.card_mod;if("object"==typeof t.card_mod&&t.card_mod.style)return t.card_mod.style}}}};Lt.styles=Nt,t([gt({attribute:!1})],Lt.prototype,"hass",void 0),t([ut()],Lt.prototype,"_config",void 0),t([ut()],Lt.prototype,"_items",void 0),t([ut()],Lt.prototype,"_loading",void 0),t([ut()],Lt.prototype,"_error",void 0),t([ut()],Lt.prototype,"_draft",void 0),t([ut()],Lt.prototype,"_completedExpanded",void 0),t([ut()],Lt.prototype,"_editingUid",void 0),t([ut()],Lt.prototype,"_editDraft",void 0),t([ut()],Lt.prototype,"_editQuantity",void 0),t([ut()],Lt.prototype,"_addQuantity",void 0),t([ut()],Lt.prototype,"_collapsedCategories",void 0),Lt=t([pt(Ct)],Lt);export{Lt as ShoppingListCard};
+    `;
+	}
+	_extractCustomStyle() {
+		let e = this._config;
+		if (e) {
+			if (typeof e.style == "string" && e.style.trim()) return e.style;
+			if (e.card_mod) {
+				if (typeof e.card_mod == "string") return e.card_mod;
+				if (typeof e.card_mod == "object" && e.card_mod.style) return e.card_mod.style;
+			}
+		}
+	}
+}, Z.styles = Xe, Z);
+Y([H({ attribute: !1 })], $.prototype, "hass", void 0), Y([U()], $.prototype, "_config", void 0), Y([U()], $.prototype, "_items", void 0), Y([U()], $.prototype, "_loading", void 0), Y([U()], $.prototype, "_error", void 0), Y([U()], $.prototype, "_draft", void 0), Y([U()], $.prototype, "_completedExpanded", void 0), Y([U()], $.prototype, "_editingUid", void 0), Y([U()], $.prototype, "_editDraft", void 0), Y([U()], $.prototype, "_editQuantity", void 0), Y([U()], $.prototype, "_addQuantity", void 0), Y([U()], $.prototype, "_collapsedCategories", void 0), Y([U()], $.prototype, "_connected", void 0), Y([U()], $.prototype, "_offlineQueue", void 0), Y([U()], $.prototype, "_draggedUid", void 0), $ = Y([Te(Be)], $);
+//#endregion
+export { $ as ShoppingListCard };

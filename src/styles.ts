@@ -1,93 +1,11 @@
 import { css } from "lit";
 
-/**
- * ════════════════════════════════════════════════════════════════════════
- *  Shopping List Card · Styles
- * ════════════════════════════════════════════════════════════════════════
- *
- * Every visual property is routed through a CSS custom property so the
- * card can be restyled via:
- *   - HA themes (theme YAML)
- *   - the `style:` config option
- *   - `card_mod:` style block
- *   - parent cards (Bubble Card "custom" slot, etc.)
- *
- * ── Light / dark mode strategy ────────────────────────────────────────
- *
- * We never hard-code colors. Instead we lean on HA's `--rgb-*` theme
- * variables (e.g. `--rgb-primary-text-color`) and alpha-blend them. The
- * same rule reads as "subtle white tint" in dark mode and "subtle black
- * tint" in light mode automatically:
- *
- *     background: rgba(var(--rgb-primary-text-color), 0.05);
- *
- * ── Class namespace ───────────────────────────────────────────────────
- *
- * Every targetable element has an `sl-*` class so users can write:
- *
- *     style: |
- *       .sl-item { ... }
- *       .sl-input:focus { ... }
- *
- * Class list:
- *   .sl-card                — root <ha-card>
- *   .sl-header              — header row
- *   .sl-icon                — header icon
- *   .sl-title               — header title text
- *   .sl-error               — error message banner
- *   .sl-empty               — empty / loading message
- *   .sl-list                — <ul> wrapping items
- *   .sl-item                — single item row
- *   .sl-item--completed     — modifier on completed items
- *   .sl-item--editing       — modifier on item being inline-edited
- *   .sl-item--no-row-click  — modifier when click_to_check is false
- *   .sl-checkbox            — item checkbox
- *   .sl-summary             — item label text (read-only mode)
- *   .sl-edit-input          — inline rename input (edit mode)
- *   .sl-actions             — wrapper for per-item action buttons
- *   .sl-action-button       — every per-item action button (base class)
- *   .sl-action-button-edit  — pencil button to enter edit mode
- *   .sl-action-button-delete — per-item delete button
- *   .sl-action-button-save  — confirm rename (edit mode)
- *   .sl-action-button-cancel — abort rename (edit mode)
- *   .sl-quantity-badge      — "×N" badge shown on items with quantity > 1
- *   .sl-quantity-stepper    — −/N/+ wrapper shown in edit mode
- *     .sl-quantity-stepper--add — modifier when used in the add row
- *   .sl-quantity-step       — single − or + button in the stepper
- *     .sl-quantity-step--minus / --plus
- *   .sl-quantity-value      — the numeric label between the −/+ buttons
- *   .sl-add-row             — add-item row (with position modifier)
- *     .sl-add-row--top      — modifier when rendered above the list
- *     .sl-add-row--bottom   — modifier when rendered below the list
- *   .sl-input               — add-item text input
- *   .sl-add-button          — add-item submit button
- *   .sl-completed-toggle    — "Completed (N)" expandable header row
- *     .sl-completed-toggle--expanded — modifier when section is open
- *   .sl-completed-toggle-icon  — chevron icon inside the toggle row
- *   .sl-completed-toggle-label — text label inside the toggle row
- *   .sl-list--grouped       — modifier on root list when grouping is on
- *   .sl-category            — single category section in grouped layout
- *   .sl-category-header     — header row of a category (checkbox + label + chevron)
- *   .sl-category-checkbox   — check-all checkbox in a category header
- *   .sl-category-name       — clickable [Category] label in the header
- *   .sl-category-count      — `(N)` active-items badge in the header
- *   .sl-category-collapse   — chevron toggle in the header
- *   .sl-category-items      — <ul> of items inside a category
- *   .sl-category-prefix     — inline [Category] tag shown on flat-mode items
- *   .sl-name                — wrapper around the item's parsed name
- *   .sl-grouped-completed   — global completed bucket shown below all
- *                             groups when completed mode is "collapse"
- */
 export const cardStyles = css`
-  /* ─── Tokens ─────────────────────────────────────────────────── */
   :host {
-    /* Surface tokens — alpha-blended foreground for subtle pills /
-       dividers / hover states. Works in both dark and light themes. */
     --shopping-list-pill-bg: rgba(var(--rgb-primary-text-color, 33, 33, 33), 0.04);
     --shopping-list-pill-bg-hover: rgba(var(--rgb-primary-text-color, 33, 33, 33), 0.08);
     --shopping-list-pill-border: 1px solid rgba(var(--rgb-primary-text-color, 33, 33, 33), 0.06);
 
-    /* Card chrome */
     --shopping-list-bg: var(--ha-card-background, var(--card-background-color, white));
     --shopping-list-fg: var(--primary-text-color, #212121);
     --shopping-list-muted: var(--secondary-text-color, #727272);
@@ -97,13 +15,8 @@ export const cardStyles = css`
     --shopping-list-padding: 16px;
     --shopping-list-gap: 4px;
 
-    /* Shared "inner element" radius — used by items, input, button so
-       they all relate to each other and to the outer card. Override
-       this single variable to retune the whole interior at once.
-       Use 999px here for the full-pill aesthetic. */
     --shopping-list-inner-radius: 14px;
 
-    /* Header */
     --shopping-list-header-gap: 10px;
     --shopping-list-header-padding: 4px 8px 8px;
     --shopping-list-header-icon-size: 22px;
@@ -111,7 +24,6 @@ export const cardStyles = css`
     --shopping-list-header-font-size: 1.1rem;
     --shopping-list-header-font-weight: 500;
 
-    /* Items */
     --shopping-list-item-bg: var(--shopping-list-pill-bg);
     --shopping-list-item-bg-hover: var(--shopping-list-pill-bg-hover);
     --shopping-list-item-radius: var(--shopping-list-inner-radius);
@@ -119,18 +31,11 @@ export const cardStyles = css`
     --shopping-list-item-gap: 12px;
     --shopping-list-list-gap: 4px;
 
-    /* Per-item actions (edit / delete / save / cancel).
-       Sized down from the original 32 px touch target so a row with
-       actions isn't visibly taller than one without. The negative
-       --shopping-list-action-margin below pulls the wrapper out of the
-       row's height calculation, so the surrounding text still drives
-       row height. */
     --shopping-list-actions-gap: 0px;
     --shopping-list-action-size: 28px;
     --shopping-list-action-icon-size: 16px;
     --shopping-list-action-margin: -4px 0;
 
-    /* Quantity badge (display) */
     --shopping-list-quantity-badge-bg: rgba(var(--rgb-primary-color, 3, 169, 244), 0.14);
     --shopping-list-quantity-badge-fg: var(--shopping-list-accent);
     --shopping-list-quantity-badge-padding: 1px 8px;
@@ -139,7 +44,6 @@ export const cardStyles = css`
     --shopping-list-quantity-badge-font-weight: 600;
     --shopping-list-quantity-badge-margin: 0 0 0 6px;
 
-    /* Quantity stepper (edit mode) */
     --shopping-list-quantity-stepper-gap: 2px;
     --shopping-list-quantity-step-size: 28px;
     --shopping-list-quantity-step-icon-size: 16px;
@@ -149,11 +53,9 @@ export const cardStyles = css`
     --shopping-list-quantity-step-radius: 999px;
     --shopping-list-quantity-value-min-width: 22px;
 
-    /* Completed items */
     --shopping-list-completed-fg: var(--disabled-text-color, #bdbdbd);
     --shopping-list-completed-decoration: line-through;
 
-    /* Completed-section toggle (collapse mode) */
     --shopping-list-completed-toggle-bg: transparent;
     --shopping-list-completed-toggle-bg-hover: var(--shopping-list-pill-bg);
     --shopping-list-completed-toggle-fg: var(--shopping-list-muted);
@@ -164,7 +66,6 @@ export const cardStyles = css`
     --shopping-list-completed-toggle-icon-size: 18px;
     --shopping-list-completed-toggle-margin: 6px 0 0;
 
-    /* Input */
     --shopping-list-input-bg: var(--shopping-list-pill-bg);
     --shopping-list-input-bg-focus: var(--shopping-list-pill-bg-hover);
     --shopping-list-input-fg: var(--shopping-list-fg);
@@ -175,7 +76,6 @@ export const cardStyles = css`
     --shopping-list-input-padding: 10px 14px;
     --shopping-list-input-font-size: 0.95rem;
 
-    /* Add button */
     --shopping-list-button-bg: var(--shopping-list-accent);
     --shopping-list-button-fg: var(--text-primary-color, white);
     --shopping-list-button-radius: var(--shopping-list-inner-radius);
@@ -183,17 +83,9 @@ export const cardStyles = css`
     --shopping-list-button-font-size: 0.95rem;
     --shopping-list-button-font-weight: 500;
 
-    /* Empty / loading */
     --shopping-list-empty-fg: var(--shopping-list-muted);
     --shopping-list-empty-padding: 16px 8px;
 
-    /* Categories — grouped layout + flat-mode prefix.
-
-       The color shown for a category is read from
-       --shopping-list-category-color. Per-category overrides are set
-       inline by the card itself when the user provides
-       category_colors: { Veggies: green }; otherwise this falls back
-       to currentColor so the label adopts the surrounding text color. */
     --shopping-list-category-color: currentColor;
 
     --shopping-list-category-gap: 12px;
@@ -218,18 +110,25 @@ export const cardStyles = css`
     --shopping-list-category-prefix-font-weight: 600;
     --shopping-list-category-prefix-opacity: 0.85;
 
-    /* Layout */
     --shopping-list-add-row-gap: 8px;
-    /* Breathing room between the add row and the list. Applied to the
-       side facing the list so it works for both top and bottom placement
-       (margin-top when the row sits at the bottom, margin-bottom when it
-       sits at the top). */
     --shopping-list-add-row-spacing: 8px;
 
+    --shopping-list-drag-handle-size: 24px;
+    --shopping-list-drag-handle-icon-size: 18px;
+    --shopping-list-drag-handle-color: var(--shopping-list-muted);
+    --shopping-list-drag-handle-active-color: var(--shopping-list-accent);
+    --shopping-list-drag-over-bg: rgba(var(--rgb-primary-color, 3, 169, 244), 0.1);
+    --shopping-list-drag-over-border-color: var(--shopping-list-accent);
+
+    --shopping-list-offline-bg: rgba(var(--rgb-error-color, 219, 68, 55), 0.1);
+    --shopping-list-offline-fg: var(--shopping-list-error);
+    --shopping-list-offline-padding: 6px 12px;
+    --shopping-list-offline-font-size: 0.85rem;
+
     display: block;
+    height: var(--shopping-list-host-height, auto);
   }
 
-  /* ─── Card chrome ─────────────────────────────────────────────── */
   .sl-card {
     background: var(--shopping-list-bg);
     color: var(--shopping-list-fg);
@@ -238,9 +137,16 @@ export const cardStyles = css`
     display: flex;
     flex-direction: column;
     gap: var(--shopping-list-gap);
+    height: var(--shopping-list-card-height, auto);
+    max-height: var(--shopping-list-card-max-height, none);
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .sl-card--fill-screen {
+    height: 100%;
+    max-height: 100%;
   }
 
-  /* ─── Header ──────────────────────────────────────────────────── */
   .sl-header {
     display: flex;
     align-items: center;
@@ -248,6 +154,7 @@ export const cardStyles = css`
     padding: var(--shopping-list-header-padding);
     font-size: var(--shopping-list-header-font-size);
     font-weight: var(--shopping-list-header-font-weight);
+    flex-shrink: 0;
   }
 
   .sl-icon {
@@ -255,7 +162,6 @@ export const cardStyles = css`
     color: var(--shopping-list-header-icon-color);
   }
 
-  /* ─── Banners (empty / error) ─────────────────────────────────── */
   .sl-empty {
     color: var(--shopping-list-empty-fg);
     font-style: italic;
@@ -269,9 +175,35 @@ export const cardStyles = css`
     border-radius: var(--shopping-list-inner-radius);
     padding: 8px 12px;
     font-size: 0.9rem;
+    flex-shrink: 0;
   }
 
-  /* ─── List + items ────────────────────────────────────────────── */
+  .sl-offline {
+    color: var(--shopping-list-offline-fg);
+    background: var(--shopping-list-offline-bg);
+    border-radius: var(--shopping-list-inner-radius);
+    padding: var(--shopping-list-offline-padding);
+    font-size: var(--shopping-list-offline-font-size);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .sl-list-scroll {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sl-list-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  .sl-list-scroll::-webkit-scrollbar-thumb {
+    background: var(--shopping-list-pill-bg-hover);
+    border-radius: 2px;
+  }
+
   .sl-list {
     list-style: none;
     margin: 0;
@@ -300,15 +232,19 @@ export const cardStyles = css`
   .sl-item:active {
     transform: scale(0.99);
   }
-  /* Dial back affordances that hint at "press to act" when row click is
-     disabled. The hover background is preserved — it still reads as
-     "this is the row I'm pointing at" without falsely promising an
-     action. */
   .sl-item--no-row-click {
     cursor: default;
   }
   .sl-item--no-row-click:active {
     transform: none;
+  }
+
+  .sl-item--dragging {
+    opacity: 0.5;
+  }
+  .sl-item--drag-over {
+    background: var(--shopping-list-drag-over-bg);
+    border-radius: var(--shopping-list-item-radius);
   }
 
   .sl-item--completed .sl-summary {
@@ -320,23 +256,41 @@ export const cardStyles = css`
     --mdc-checkbox-unchecked-color: var(--shopping-list-muted);
     --mdc-theme-secondary: var(--shopping-list-accent);
     margin: -8px 0 -8px -8px;
+    flex-shrink: 0;
   }
 
   .sl-summary {
     flex: 1;
     word-break: break-word;
+    min-width: 0;
   }
 
-  /* ─── Per-item action buttons (edit / delete / save / cancel) ─── */
+  .sl-drag-handle {
+    width: var(--shopping-list-drag-handle-size);
+    height: var(--shopping-list-drag-handle-size);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--shopping-list-drag-handle-color);
+    cursor: grab;
+    --mdc-icon-size: var(--shopping-list-drag-handle-icon-size);
+    border-radius: 4px;
+    transition: color 120ms ease;
+  }
+  .sl-drag-handle:hover {
+    color: var(--shopping-list-drag-handle-active-color);
+  }
+  .sl-drag-handle:active {
+    cursor: grabbing;
+    color: var(--shopping-list-drag-handle-active-color);
+  }
+
   .sl-actions {
     display: flex;
     align-items: center;
     gap: var(--shopping-list-actions-gap);
     flex-shrink: 0;
-    /* Hidden by default; revealed on hover or focus on devices that
-       support hover. The @media (hover: none) block below makes them
-       always visible on touch devices (phones, tablets, HA's mobile
-       dashboards) where hover is not a viable affordance. */
     opacity: 0;
     transition: opacity 120ms ease;
   }
@@ -352,18 +306,10 @@ export const cardStyles = css`
   }
 
   .sl-action-button {
-    /* HA's modern <ha-icon-button> reads --ha-icon-button-size for the
-       hit area; the old --mdc-icon-button-size token is a no-op on
-       current HA. We set both so the card still works on older HA
-       versions that still honour the MDC token. --mdc-icon-size is
-       consumed by <ha-svg-icon>/<ha-icon> for the glyph itself. */
     --ha-icon-button-size: var(--shopping-list-action-size);
     --mdc-icon-button-size: var(--shopping-list-action-size);
     --mdc-icon-size: var(--shopping-list-action-icon-size);
     color: var(--shopping-list-muted);
-    /* Negative vertical margin: the buttons render full-size visually
-       but contribute less height to the row's flex layout, so the row
-       is sized by the text/checkbox instead of the action buttons. */
     margin: var(--shopping-list-action-margin);
   }
   .sl-action-button-save {
@@ -385,7 +331,6 @@ export const cardStyles = css`
     background: rgba(var(--rgb-primary-color, 3, 169, 244), 0.35);
   }
 
-  /* ─── Quantity (badge + stepper) ────────────────────────────── */
   .sl-quantity-badge {
     display: inline-block;
     margin: var(--shopping-list-quantity-badge-margin);
@@ -398,8 +343,6 @@ export const cardStyles = css`
     vertical-align: middle;
     white-space: nowrap;
   }
-  /* Inherit the muted/strikethrough treatment of completed items so the
-     badge fades along with the rest of the row. */
   .sl-item--completed .sl-quantity-badge {
     color: var(--shopping-list-completed-fg);
     background: rgba(var(--rgb-primary-text-color, 33, 33, 33), 0.06);
@@ -442,7 +385,6 @@ export const cardStyles = css`
     color: var(--shopping-list-fg);
   }
 
-  /* ─── Completed section toggle (collapse mode) ─────────────────── */
   .sl-completed-toggle {
     list-style: none;
     display: flex;
@@ -473,11 +415,6 @@ export const cardStyles = css`
     flex: 1;
   }
 
-  /* ─── Category (grouped layout) ──────────────────────────────── */
-  /* When categories are grouped, the root <div> swaps from .sl-list to
-     .sl-list.sl-list--grouped and contains <section class="sl-category">
-     children. Each section keeps its own internal <ul> of items so the
-     existing item styles apply unchanged. */
   .sl-list--grouped {
     gap: var(--shopping-list-category-gap);
   }
@@ -524,11 +461,6 @@ export const cardStyles = css`
     background: var(--shopping-list-category-header-bg-hover);
   }
 
-  /* Active-item count rendered inside .sl-category-name. The cursor is
-     inherited from the parent button so clicking the count still
-     toggles the collapse, and the color is muted even when the parent
-     has a custom category color (the count is meta, not part of the
-     label). */
   .sl-category-count {
     color: var(--shopping-list-category-count-color);
     font-weight: var(--shopping-list-category-count-font-weight);
@@ -566,18 +498,11 @@ export const cardStyles = css`
     gap: var(--shopping-list-category-items-gap);
   }
 
-  /* Global completed bucket below all categories (collapse mode).
-     Sits as a peer of the .sl-category sections. The list's own gap
-     handles spacing — this rule just suppresses the default <ul>
-     padding/margin since this is a nested .sl-list. */
   .sl-grouped-completed {
     margin: 0;
     padding: 0;
   }
 
-  /* Flat-mode prefix shown directly on each item when categories are on
-     but grouping is off. Adopts the same color variable as the group
-     header so a single user-provided color theme covers both layouts. */
   .sl-category-prefix {
     color: var(--shopping-list-category-color);
     font-weight: var(--shopping-list-category-prefix-font-weight);
@@ -588,13 +513,12 @@ export const cardStyles = css`
     color: var(--shopping-list-completed-fg);
   }
 
-  /* ─── Add row (input + button) ────────────────────────────────── */
   .sl-add-row {
     display: flex;
     gap: var(--shopping-list-add-row-gap);
     align-items: center;
+    flex-shrink: 0;
   }
-  /* Position-aware spacing: push away from the list, not from the edge. */
   .sl-add-row--bottom {
     margin-top: var(--shopping-list-add-row-spacing);
   }

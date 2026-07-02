@@ -159,6 +159,7 @@
         border-radius: 10px;
         padding: 14px;
         overflow: auto;
+        min-height: 0;
       }
       .panel h2 {
         margin: 0 0 10px;
@@ -169,17 +170,23 @@
       }
       .stage {
         display: flex;
-        align-items: flex-start;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
         padding: 24px;
         background: var(--stage-bg);
         border: 1px solid var(--panel-border);
         border-radius: 10px;
         position: relative;
+        min-height: 0;
+        overflow: hidden;
+        height: 100%;
       }
       .stage > shopping-list-card {
         width: 100%;
         max-width: 420px;
+        min-height: 0;
+        flex: 1 1 auto;
         transition:
           width 200ms ease,
           max-width 200ms ease;
@@ -316,6 +323,12 @@
           <button id="seed-categories">Seed categories</button>
         </div>
 
+        <h2 style="margin-top: 18px">Connection</h2>
+        <div class="row">
+          <button id="go-online">Go Online</button>
+          <button id="go-offline">Go Offline</button>
+        </div>
+
         <div class="footer-note">
           This harness mocks <code>hass</code> in-memory. Reload to reset everything. The
           <code>ha-*</code> stubs are minimal — use real HA for visual fidelity.
@@ -342,7 +355,7 @@
 
     <script type="module">
       import { createMockHass } from "./mock-hass.js";
-      import "../dist/ha-shopping-list-card.js";
+      import "../src/shopping-list-card.ts";
 
       const PRESETS = {
         Default: {
@@ -704,6 +717,17 @@
         ];
         mock = createMockHass({ initialItems: items });
         mountCard(structuredClone(activeConfig));
+      });
+
+      document.getElementById("go-online").addEventListener("click", () => {
+        mock.setState("online");
+        mock.hass.connection._connected = true;
+        mock.hass.connection._eventTarget.dispatchEvent(new Event("ready"));
+      });
+      document.getElementById("go-offline").addEventListener("click", () => {
+        mock.setState("offline");
+        mock.hass.connection._connected = false;
+        mock.hass.connection._eventTarget.dispatchEvent(new Event("disconnected"));
       });
 
       renderPresetButtons();

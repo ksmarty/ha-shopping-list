@@ -1,4 +1,4 @@
-export const CARD_VERSION = "0.1.0";
+export const CARD_VERSION = "0.2.0";
 
 export const CARD_TAG = "shopping-list-card";
 export const EDITOR_TAG = "shopping-list-card-editor";
@@ -23,9 +23,8 @@ export const DEFAULT_CONFIG = {
   category_check_all: true,
   category_show_count: true,
   general_category_label: "General",
-  // Note: `category_colors` intentionally omitted from defaults —
-  // including it as an empty object would reference-compare unequal
-  // against any user value and pollute saved YAML with `{}`.
   empty_message: "Nothing on the list",
   sort: "manual" as const,
+  fill_screen: false,
+  enable_reorder: true,
 };
