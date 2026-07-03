@@ -1777,7 +1777,7 @@ Q.customCards = Q.customCards || [], Q.customCards.find((e) => e.type === "shopp
 }), console.info(`%c SHOPPING-LIST-CARD %c v${ze} `, "color: white; background: #03a9f4; font-weight: 700;", "color: #03a9f4; background: white; font-weight: 700;");
 var $ = (Z = class extends V {
 	constructor(...e) {
-		super(...e), this._items = [], this._loading = !1, this._draft = "", this._completedExpanded = !1, this._editDraft = "", this._editQuantity = 1, this._addQuantity = 1, this._collapsedCategories = /* @__PURE__ */ new Set(), this._connected = !0, this._offlineQueue = [], this._draggedUid = null, this._dropPosition = "above", this._focusEditOnUpdate = !1, this._connectionUnsubs = [], this._itemOrder = [], this._toggleCompletedExpanded = () => {
+		super(...e), this._items = [], this._loading = !1, this._draft = "", this._completedExpanded = !1, this._editDraft = "", this._editQuantity = 1, this._addQuantity = 1, this._collapsedCategories = /* @__PURE__ */ new Set(), this._connected = !0, this._offlineQueue = [], this._draggedUid = null, this._dropPosition = "above", this._resizeHandler = null, this._focusEditOnUpdate = !1, this._connectionUnsubs = [], this._itemOrder = [], this._toggleCompletedExpanded = () => {
 			this._completedExpanded = !this._completedExpanded;
 		};
 	}
@@ -1806,9 +1806,22 @@ var $ = (Z = class extends V {
 			let e = this.renderRoot.querySelector(".sl-edit-input");
 			e && (e.focus(), e.select(), this._focusEditOnUpdate = !1);
 		}
-		e.has("_config") && this._config && (this._config.fill_screen ? this.style.setProperty("--shopping-list-host-height", "100%") : this.style.removeProperty("--shopping-list-host-height"));
+		e.has("_config") && this._config && (this._config.fill_screen ? this._setupFillScreen() : this._teardownFillScreen()), this._config?.fill_screen && this._updateFillScreenHeight();
 		let t = this._config?.entity;
 		!t || !this.hass || t !== this._lastEntity && (this._lastEntity = t, this._setupSubscription(t), this._setupConnectionMonitoring());
+	}
+	_updateFillScreenHeight() {
+		let e = this.getBoundingClientRect();
+		if (e.top > 0) {
+			let t = window.innerHeight - e.top;
+			this.style.setProperty("--shopping-list-host-height", `${Math.max(200, t)}px`);
+		} else this.style.setProperty("--shopping-list-host-height", "100dvh");
+	}
+	_setupFillScreen() {
+		this._resizeHandler || (this._resizeHandler = () => this._updateFillScreenHeight(), window.addEventListener("resize", this._resizeHandler));
+	}
+	_teardownFillScreen() {
+		this._resizeHandler &&= (window.removeEventListener("resize", this._resizeHandler), null), this.style.removeProperty("--shopping-list-host-height");
 	}
 	_setupConnectionMonitoring() {
 		this._teardownConnectionMonitoring();

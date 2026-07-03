@@ -67,6 +67,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
   @state() private _offlineQueue: PendingOperation[] = [];
   @state() private _draggedUid: string | null = null;
   private _dropPosition: "above" | "below" = "above";
+  private _resizeHandler: (() => void) | null = null;
 
   private _unsub?: () => void;
   private _lastEntity?: string;
@@ -121,10 +122,14 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
 
     if (changed.has("_config") && this._config) {
       if (this._config.fill_screen) {
-        this.style.setProperty("--shopping-list-host-height", "100%");
+        this._setupFillScreen();
       } else {
-        this.style.removeProperty("--shopping-list-host-height");
+        this._teardownFillScreen();
       }
+    }
+
+    if (this._config?.fill_screen) {
+      this._updateFillScreenHeight();
     }
 
     const entity = this._config?.entity;
@@ -134,6 +139,32 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
       void this._setupSubscription(entity);
       this._setupConnectionMonitoring();
     }
+  }
+
+  /* --- Fill screen --- */
+
+  private _updateFillScreenHeight(): void {
+    const rect = this.getBoundingClientRect();
+    if (rect.top > 0) {
+      const available = window.innerHeight - rect.top;
+      this.style.setProperty("--shopping-list-host-height", `${Math.max(200, available)}px`);
+    } else {
+      this.style.setProperty("--shopping-list-host-height", "100dvh");
+    }
+  }
+
+  private _setupFillScreen(): void {
+    if (this._resizeHandler) return;
+    this._resizeHandler = () => this._updateFillScreenHeight();
+    window.addEventListener("resize", this._resizeHandler);
+  }
+
+  private _teardownFillScreen(): void {
+    if (this._resizeHandler) {
+      window.removeEventListener("resize", this._resizeHandler);
+      this._resizeHandler = null;
+    }
+    this.style.removeProperty("--shopping-list-host-height");
   }
 
   /* --- Offline support --- */
