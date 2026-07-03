@@ -129,10 +129,6 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
       }
     }
 
-    if (this._config?.fill_screen) {
-      this._updateFillScreenHeight();
-    }
-
     const entity = this._config?.entity;
     if (!entity || !this.hass) return;
     if (entity !== this._lastEntity) {
@@ -461,7 +457,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     const touch = ev.touches[0];
     if (!touch) return;
 
-    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    const el = (this.renderRoot as ShadowRoot).elementFromPoint(touch.clientX, touch.clientY);
     if (!el) return;
 
     const li = (el as HTMLElement).closest(".sl-item") as HTMLElement | null;

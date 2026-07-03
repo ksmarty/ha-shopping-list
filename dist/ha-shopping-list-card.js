@@ -1806,7 +1806,7 @@ var $ = (Z = class extends V {
 			let e = this.renderRoot.querySelector(".sl-edit-input");
 			e && (e.focus(), e.select(), this._focusEditOnUpdate = !1);
 		}
-		e.has("_config") && this._config && (this._config.fill_screen ? this._setupFillScreen() : this._teardownFillScreen()), this._config?.fill_screen && this._updateFillScreenHeight();
+		e.has("_config") && this._config && (this._config.fill_screen ? this._setupFillScreen() : this._teardownFillScreen());
 		let t = this._config?.entity;
 		!t || !this.hass || t !== this._lastEntity && (this._lastEntity = t, this._setupSubscription(t), this._setupConnectionMonitoring());
 	}
@@ -1975,7 +1975,7 @@ var $ = (Z = class extends V {
 		e.preventDefault();
 		let t = e.touches[0];
 		if (!t) return;
-		let n = document.elementFromPoint(t.clientX, t.clientY);
+		let n = this.renderRoot.elementFromPoint(t.clientX, t.clientY);
 		if (!n) return;
 		let r = n.closest(".sl-item");
 		if (this.renderRoot.querySelectorAll(".sl-item--drop-above, .sl-item--drop-below").forEach((e) => e.classList.remove("sl-item--drop-above", "sl-item--drop-below")), r && r.dataset.uid !== this._touchDragUid) {
