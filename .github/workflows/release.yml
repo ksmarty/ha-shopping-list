@@ -1,36 +1,47 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
 
 permissions:
   contents: write
 
 jobs:
-  build:
-    name: Build & attach to release
+  release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7
+      - uses: actions/checkout@v7
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@v6
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: "22"
           cache: "pnpm"
 
-      - name: Install dependencies
-        run: pnpm install
+      - run: pnpm install
 
-      - name: Build card
-        run: pnpm build
+      - run: pnpm build
 
-      - name: Upload built file to release
+      - name: Read version
+        id: version
+        run: |
+          VER=$(grep "CARD_VERSION = " src/const.ts | cut -d'"' -f2)
+          echo "v=v${VER}" >> "$GITHUB_OUTPUT"
+          echo "version=${VER}" >> "$GITHUB_OUTPUT"
+
+      - name: Delete existing release and tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete "${{ steps.version.outputs.v }}" --yes --cleanup-tag 2>/dev/null || true
+
+      - name: Create release
         uses: softprops/action-gh-release@v3
         with:
+          tag_name: ${{ steps.version.outputs.v }}
+          name: v${{ steps.version.outputs.version }}
+          body: "Auto-release from main@${{ github.sha }}"
           files: dist/ha-shopping-list-card.js
+          make_latest: true
