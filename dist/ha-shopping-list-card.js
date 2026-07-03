@@ -970,6 +970,7 @@ var Xe = o`
     background: var(--shopping-list-item-bg);
     cursor: pointer;
     user-select: none;
+    position: relative;
     transition:
       background 120ms ease,
       transform 80ms ease;
@@ -990,9 +991,29 @@ var Xe = o`
   .sl-item--dragging {
     opacity: 0.5;
   }
-  .sl-item--drag-over {
-    background: var(--shopping-list-drag-over-bg);
-    border-radius: var(--shopping-list-item-radius);
+
+  .sl-item--drop-above::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--shopping-list-accent);
+    border-radius: 1px;
+    z-index: 1;
+  }
+
+  .sl-item--drop-below::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--shopping-list-accent);
+    border-radius: 1px;
+    z-index: 1;
   }
 
   .sl-item--completed .sl-summary {
@@ -1756,7 +1777,7 @@ Q.customCards = Q.customCards || [], Q.customCards.find((e) => e.type === "shopp
 }), console.info(`%c SHOPPING-LIST-CARD %c v${ze} `, "color: white; background: #03a9f4; font-weight: 700;", "color: #03a9f4; background: white; font-weight: 700;");
 var $ = (Z = class extends V {
 	constructor(...e) {
-		super(...e), this._items = [], this._loading = !1, this._draft = "", this._completedExpanded = !1, this._editDraft = "", this._editQuantity = 1, this._addQuantity = 1, this._collapsedCategories = /* @__PURE__ */ new Set(), this._connected = !0, this._offlineQueue = [], this._draggedUid = null, this._focusEditOnUpdate = !1, this._connectionUnsubs = [], this._itemOrder = [], this._toggleCompletedExpanded = () => {
+		super(...e), this._items = [], this._loading = !1, this._draft = "", this._completedExpanded = !1, this._editDraft = "", this._editQuantity = 1, this._addQuantity = 1, this._collapsedCategories = /* @__PURE__ */ new Set(), this._connected = !0, this._offlineQueue = [], this._draggedUid = null, this._dropPosition = "above", this._focusEditOnUpdate = !1, this._connectionUnsubs = [], this._itemOrder = [], this._toggleCompletedExpanded = () => {
 			this._completedExpanded = !this._completedExpanded;
 		};
 	}
@@ -1893,35 +1914,42 @@ var $ = (Z = class extends V {
 	}
 	_onDragOver(e) {
 		if (e.preventDefault(), !e.dataTransfer) return;
-		e.dataTransfer.dropEffect = "move";
-		let t = e.target.closest(".sl-item");
-		!t || t.dataset.uid === this._draggedUid || (this.renderRoot.querySelectorAll(".sl-item--drag-over").forEach((e) => {
-			e.classList.remove("sl-item--drag-over");
-		}), t.classList.add("sl-item--drag-over"));
+		e.dataTransfer.dropEffect = "move", this.renderRoot.querySelectorAll(".sl-item--drop-above, .sl-item--drop-below").forEach((e) => e.classList.remove("sl-item--drop-above", "sl-item--drop-below"));
+		let t = this.renderRoot.querySelectorAll(".sl-item");
+		if (t.length === 0) return;
+		let n = e.clientY;
+		for (let e of t) {
+			if (e.dataset.uid === this._draggedUid) continue;
+			let t = e.getBoundingClientRect();
+			if (n <= t.top + t.height / 2) {
+				this._dropPosition = "above", e.classList.add("sl-item--drop-above");
+				return;
+			}
+		}
+		let r = t[t.length - 1];
+		this._dropPosition = "below", r.classList.add("sl-item--drop-below");
 	}
-	_onDragLeave(e) {
-		let t = e.target.closest(".sl-item");
-		t && t.classList.remove("sl-item--drag-over");
-	}
-	_onDrop(e) {
-		e.preventDefault(), this.renderRoot.querySelectorAll(".sl-item--drag-over, .sl-item--dragging").forEach((e) => {
-			e.classList.remove("sl-item--drag-over", "sl-item--dragging");
-		});
-		let t = e.target.closest(".sl-item");
-		if (!t) return;
-		let n = t.dataset.uid;
-		if (!n || !this._draggedUid || this._draggedUid === n) return;
+	_onDropWrapper(e) {
+		e.preventDefault();
+		let t = this.renderRoot.querySelector(".sl-item--drop-above, .sl-item--drop-below");
+		this.renderRoot.querySelectorAll(".sl-item--drop-above, .sl-item--drop-below, .sl-item--dragging").forEach((e) => e.classList.remove("sl-item--drop-above", "sl-item--drop-below", "sl-item--dragging"));
+		let n = t?.dataset.uid;
+		if (!n || !this._draggedUid || this._draggedUid === n) {
+			this._draggedUid = null, this._dropPosition = "above";
+			return;
+		}
 		let r = this._getOrderedItems(this._items), i = r.findIndex((e) => e.uid === this._draggedUid), a = r.findIndex((e) => e.uid === n);
-		if (i === -1 || a === -1) return;
-		let [o] = r.splice(i, 1), s = r.findIndex((e) => e.uid === n);
-		r.splice(s >= 0 ? s : a, 0, o);
-		let c = new Set(this._items.filter((e) => e.status !== "completed").map((e) => e.uid));
-		this._itemOrder = r.filter((e) => c.has(e.uid) || e.status === "needs_action").map((e) => e.uid), this._saveItemOrder(), this._draggedUid = null, this.requestUpdate();
+		if (i === -1 || a === -1) {
+			this._draggedUid = null, this._dropPosition = "above";
+			return;
+		}
+		let [o] = r.splice(i, 1), s = r.findIndex((e) => e.uid === n), c = s >= 0 ? this._dropPosition === "below" ? s + 1 : s : a > i ? a - 1 : a;
+		r.splice(c, 0, o);
+		let l = new Set(this._items.filter((e) => e.status !== "completed").map((e) => e.uid));
+		this._itemOrder = r.filter((e) => l.has(e.uid) || e.status === "needs_action").map((e) => e.uid), this._saveItemOrder(), this._draggedUid = null, this._dropPosition = "above", this.requestUpdate();
 	}
 	_onDragEnd() {
-		this.renderRoot.querySelectorAll(".sl-item--drag-over, .sl-item--dragging").forEach((e) => {
-			e.classList.remove("sl-item--drag-over", "sl-item--dragging");
-		}), this._draggedUid = null;
+		this.renderRoot.querySelectorAll(".sl-item--drop-above, .sl-item--drop-below, .sl-item--dragging").forEach((e) => e.classList.remove("sl-item--drop-above", "sl-item--drop-below", "sl-item--dragging")), this._draggedUid = null, this._dropPosition = "above";
 	}
 	async _setupSubscription(e) {
 		if (this._teardownSubscription(), this.hass) {
@@ -2153,7 +2181,16 @@ var $ = (Z = class extends V {
     `;
 	}
 	_renderScrollWrapper() {
-		return M` <div class="sl-list-scroll">${this._renderBody()}</div> `;
+		let e = this._config, t = e.enable_reorder !== !1 && (e.sort === "manual" || !e.sort);
+		return M`
+      <div
+        class="sl-list-scroll"
+        @dragover=${t ? this._onDragOver : null}
+        @drop=${t ? this._onDropWrapper : null}
+      >
+        ${this._renderBody()}
+      </div>
+    `;
 	}
 	_renderBody() {
 		let e = this._config;
@@ -2276,9 +2313,6 @@ var $ = (Z = class extends V {
         class="sl-item ${r ? "sl-item--completed" : ""} ${i ? "sl-item--editing" : ""} ${l ? "" : "sl-item--no-row-click"} ${this._draggedUid === e.uid ? "sl-item--dragging" : ""}"
         style=${te}
         data-uid=${e.uid}
-        @dragover=${d ? this._onDragOver : null}
-        @dragleave=${d ? this._onDragLeave : null}
-        @drop=${d ? this._onDrop : null}
         @click=${(t) => {
 			l && (i || t.target.tagName !== "HA-CHECKBOX" && this._toggleItem(e));
 		}}

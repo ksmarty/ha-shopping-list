@@ -66,6 +66,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
   @state() private _connected = true;
   @state() private _offlineQueue: PendingOperation[] = [];
   @state() private _draggedUid: string | null = null;
+  private _dropPosition: "above" | "below" = "above";
 
   private _unsub?: () => void;
   private _lastEntity?: string;
@@ -323,37 +324,71 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     if (!ev.dataTransfer) return;
     ev.dataTransfer.dropEffect = "move";
 
-    const li = (ev.target as HTMLElement).closest(".sl-item") as HTMLElement | null;
-    if (!li || li.dataset.uid === this._draggedUid) return;
-    this.renderRoot.querySelectorAll(".sl-item--drag-over").forEach((el) => {
-      el.classList.remove("sl-item--drag-over");
-    });
-    li.classList.add("sl-item--drag-over");
+    this.renderRoot
+      .querySelectorAll(".sl-item--drop-above, .sl-item--drop-below")
+      .forEach((el) => el.classList.remove("sl-item--drop-above", "sl-item--drop-below"));
+
+    const items = this.renderRoot.querySelectorAll<HTMLElement>(".sl-item");
+    if (items.length === 0) return;
+
+    const cy = ev.clientY;
+
+    for (const item of items) {
+      if (item.dataset.uid === this._draggedUid) continue;
+      const rect = item.getBoundingClientRect();
+      const mid = rect.top + rect.height / 2;
+      if (cy <= mid) {
+        this._dropPosition = "above";
+        item.classList.add("sl-item--drop-above");
+        return;
+      }
+    }
+
+    const last = items[items.length - 1];
+    this._dropPosition = "below";
+    last.classList.add("sl-item--drop-below");
   }
 
-  private _onDragLeave(ev: DragEvent): void {
-    const li = (ev.target as HTMLElement).closest(".sl-item") as HTMLElement | null;
-    if (li) li.classList.remove("sl-item--drag-over");
-  }
-
-  private _onDrop(ev: DragEvent): void {
+  private _onDropWrapper(ev: DragEvent): void {
     ev.preventDefault();
-    this.renderRoot.querySelectorAll(".sl-item--drag-over, .sl-item--dragging").forEach((el) => {
-      el.classList.remove("sl-item--drag-over", "sl-item--dragging");
-    });
-    const targetLi = (ev.target as HTMLElement).closest(".sl-item") as HTMLElement | null;
-    if (!targetLi) return;
-    const targetUid = targetLi.dataset.uid;
-    if (!targetUid || !this._draggedUid || this._draggedUid === targetUid) return;
+
+    const indicator = this.renderRoot.querySelector<HTMLElement>(
+      ".sl-item--drop-above, .sl-item--drop-below",
+    );
+
+    this.renderRoot
+      .querySelectorAll(".sl-item--drop-above, .sl-item--drop-below, .sl-item--dragging")
+      .forEach((el) =>
+        el.classList.remove("sl-item--drop-above", "sl-item--drop-below", "sl-item--dragging"),
+      );
+
+    const targetUid = indicator?.dataset.uid;
+    if (!targetUid || !this._draggedUid || this._draggedUid === targetUid) {
+      this._draggedUid = null;
+      this._dropPosition = "above";
+      return;
+    }
 
     const items = this._getOrderedItems(this._items);
     const fromIdx = items.findIndex((i) => i.uid === this._draggedUid);
     const toIdx = items.findIndex((i) => i.uid === targetUid);
-    if (fromIdx === -1 || toIdx === -1) return;
+    if (fromIdx === -1 || toIdx === -1) {
+      this._draggedUid = null;
+      this._dropPosition = "above";
+      return;
+    }
 
     const [moved] = items.splice(fromIdx, 1);
     const adjustedTo = items.findIndex((i) => i.uid === targetUid);
-    items.splice(adjustedTo >= 0 ? adjustedTo : toIdx, 0, moved);
+    const insertAt =
+      adjustedTo >= 0
+        ? this._dropPosition === "below"
+          ? adjustedTo + 1
+          : adjustedTo
+        : toIdx > fromIdx
+          ? toIdx - 1
+          : toIdx;
+    items.splice(insertAt, 0, moved);
 
     const activeUids = new Set(
       this._items.filter((i) => i.status !== "completed").map((i) => i.uid),
@@ -363,14 +398,18 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
       .map((i) => i.uid);
     this._saveItemOrder();
     this._draggedUid = null;
+    this._dropPosition = "above";
     this.requestUpdate();
   }
 
   private _onDragEnd(): void {
-    this.renderRoot.querySelectorAll(".sl-item--drag-over, .sl-item--dragging").forEach((el) => {
-      el.classList.remove("sl-item--drag-over", "sl-item--dragging");
-    });
+    this.renderRoot
+      .querySelectorAll(".sl-item--drop-above, .sl-item--drop-below, .sl-item--dragging")
+      .forEach((el) =>
+        el.classList.remove("sl-item--drop-above", "sl-item--drop-below", "sl-item--dragging"),
+      );
     this._draggedUid = null;
+    this._dropPosition = "above";
   }
 
   /* --- HA Todo API plumbing --- */
@@ -705,7 +744,17 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
   }
 
   private _renderScrollWrapper(): TemplateResult {
-    return html` <div class="sl-list-scroll">${this._renderBody()}</div> `;
+    const cfg = this._config!;
+    const enableReorder = cfg.enable_reorder !== false && (cfg.sort === "manual" || !cfg.sort);
+    return html`
+      <div
+        class="sl-list-scroll"
+        @dragover=${enableReorder ? this._onDragOver : null}
+        @drop=${enableReorder ? this._onDropWrapper : null}
+      >
+        ${this._renderBody()}
+      </div>
+    `;
   }
 
   private _renderBody(): TemplateResult {
@@ -986,9 +1035,6 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
         }"
         style=${itemStyle}
         data-uid=${item.uid}
-        @dragover=${enableReorder ? this._onDragOver : null}
-        @dragleave=${enableReorder ? this._onDragLeave : null}
-        @drop=${enableReorder ? this._onDrop : null}
         @click=${(ev: MouseEvent) => {
           if (!clickToCheck) return;
           if (isEditing) return;

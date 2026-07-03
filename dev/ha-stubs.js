@@ -8,7 +8,6 @@
 
 class HaCard extends HTMLElement {
   connectedCallback() {
-    this.style.display = "block";
     this.style.background = "var(--ha-card-background, var(--card-background-color, #1f1f1f))";
     this.style.color = "var(--primary-text-color, #e1e1e1)";
     this.style.borderRadius = "12px";

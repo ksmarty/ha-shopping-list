@@ -222,6 +222,7 @@ export const cardStyles = css`
     background: var(--shopping-list-item-bg);
     cursor: pointer;
     user-select: none;
+    position: relative;
     transition:
       background 120ms ease,
       transform 80ms ease;
@@ -242,9 +243,29 @@ export const cardStyles = css`
   .sl-item--dragging {
     opacity: 0.5;
   }
-  .sl-item--drag-over {
-    background: var(--shopping-list-drag-over-bg);
-    border-radius: var(--shopping-list-item-radius);
+
+  .sl-item--drop-above::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--shopping-list-accent);
+    border-radius: 1px;
+    z-index: 1;
+  }
+
+  .sl-item--drop-below::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--shopping-list-accent);
+    border-radius: 1px;
+    z-index: 1;
   }
 
   .sl-item--completed .sl-summary {
