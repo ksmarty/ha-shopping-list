@@ -667,7 +667,7 @@ var Oe = {
 		}
 		return this.ut = o, Fe(e, c), N;
 	}
-}), ze = "0.4.3", Be = "shopping-list-card-improved", Ve = "shopping-list-card-improved-editor", q = {
+}), ze = "0.4.4", Be = "shopping-list-card-improved", Ve = "shopping-list-card-improved-editor", q = {
 	type: `custom:${Be}`,
 	title: "Shopping List",
 	show_header: !0,
