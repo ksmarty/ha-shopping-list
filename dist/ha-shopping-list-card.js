@@ -1785,7 +1785,7 @@ var $ = (Z = class extends V {
 	constructor(...e) {
 		super(...e), this._items = [], this._loading = !1, this._draft = "", this._completedExpanded = !1, this._editDraft = "", this._editQuantity = 1, this._addQuantity = 1, this._collapsedCategories = /* @__PURE__ */ new Set(), this._connected = !0, this._offlineQueue = [], this._draggedUid = null, this._dropPosition = "above", this._resizeHandler = null, this._touchDragUid = null, this._focusEditOnUpdate = !1, this._connectionUnsubs = [], this._itemOrder = [], this._fillScreenWheelHandler = (e) => {
 			let t = this.renderRoot.querySelector(".sl-list-scroll");
-			t && !t.contains(e.target) && e.preventDefault();
+			(!t || !t.contains(e.target) || t.scrollHeight <= t.clientHeight) && e.preventDefault();
 		}, this._toggleCompletedExpanded = () => {
 			this._completedExpanded = !this._completedExpanded;
 		};
@@ -1857,7 +1857,7 @@ var $ = (Z = class extends V {
 	}
 	async _executeService(e, t, n) {
 		if (this.hass) {
-			if (!this._connected) {
+			if (this._error = void 0, !this._connected) {
 				this._offlineQueue = [...this._offlineQueue, {
 					domain: e,
 					service: t,

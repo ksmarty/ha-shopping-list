@@ -149,7 +149,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
 
   private _fillScreenWheelHandler = (e: Event): void => {
     const list = this.renderRoot.querySelector(".sl-list-scroll");
-    if (list && !list.contains(e.target as Node)) {
+    if (!list || !list.contains(e.target as Node) || list.scrollHeight <= list.clientHeight) {
       e.preventDefault();
     }
   };
@@ -233,6 +233,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     serviceData: Record<string, unknown>,
   ): Promise<void> {
     if (!this.hass) return;
+    this._error = undefined;
 
     if (!this._connected) {
       this._offlineQueue = [...this._offlineQueue, { domain, service, serviceData }];
