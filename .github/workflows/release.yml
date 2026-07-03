@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # Need full history and token to push back
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v6
 
@@ -22,26 +25,41 @@ jobs:
 
       - run: pnpm install
 
+      - name: Bump patch version
+        id: bump
+        run: |
+          OLD=$(grep "CARD_VERSION = " src/const.ts | cut -d'"' -f2)
+          MAJOR=$(echo "$OLD" | cut -d. -f1)
+          MINOR=$(echo "$OLD" | cut -d. -f2)
+          PATCH=$(echo "$OLD" | cut -d. -f3)
+          NEW_PATCH=$((PATCH + 1))
+          NEW="${MAJOR}.${MINOR}.${NEW_PATCH}"
+          sed -i "s/CARD_VERSION = \"$OLD\"/CARD_VERSION = \"$NEW\"/" src/const.ts
+          echo "old=${OLD}" >> "$GITHUB_OUTPUT"
+          echo "new=${NEW}" >> "$GITHUB_OUTPUT"
+          echo "v=v${NEW}" >> "$GITHUB_OUTPUT"
+
       - run: pnpm build
 
-      - name: Read version
-        id: version
+      - name: Commit version bump
         run: |
-          VER=$(grep "CARD_VERSION = " src/const.ts | cut -d'"' -f2)
-          echo "v=v${VER}" >> "$GITHUB_OUTPUT"
-          echo "version=${VER}" >> "$GITHUB_OUTPUT"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/const.ts dist/ha-shopping-list-card.js
+          git commit -m "Bump version to ${{ steps.bump.outputs.new }} [skip ci]"
+          git push
 
       - name: Delete existing release and tag
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release delete "${{ steps.version.outputs.v }}" --yes --cleanup-tag 2>/dev/null || true
+          gh release delete "${{ steps.bump.outputs.v }}" --yes --cleanup-tag 2>/dev/null || true
 
       - name: Create release
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: ${{ steps.version.outputs.v }}
-          name: v${{ steps.version.outputs.version }}
+          tag_name: ${{ steps.bump.outputs.v }}
+          name: v${{ steps.bump.outputs.new }}
           body: "Auto-release from main@${{ github.sha }}"
           files: dist/ha-shopping-list-card.js
           make_latest: true
