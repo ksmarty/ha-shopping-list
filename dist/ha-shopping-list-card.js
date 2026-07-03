@@ -1777,7 +1777,7 @@ Q.customCards = Q.customCards || [], Q.customCards.find((e) => e.type === "shopp
 }), console.info(`%c SHOPPING-LIST-CARD %c v${ze} `, "color: white; background: #03a9f4; font-weight: 700;", "color: #03a9f4; background: white; font-weight: 700;");
 var $ = (Z = class extends V {
 	constructor(...e) {
-		super(...e), this._items = [], this._loading = !1, this._draft = "", this._completedExpanded = !1, this._editDraft = "", this._editQuantity = 1, this._addQuantity = 1, this._collapsedCategories = /* @__PURE__ */ new Set(), this._connected = !0, this._offlineQueue = [], this._draggedUid = null, this._dropPosition = "above", this._resizeHandler = null, this._focusEditOnUpdate = !1, this._connectionUnsubs = [], this._itemOrder = [], this._toggleCompletedExpanded = () => {
+		super(...e), this._items = [], this._loading = !1, this._draft = "", this._completedExpanded = !1, this._editDraft = "", this._editQuantity = 1, this._addQuantity = 1, this._collapsedCategories = /* @__PURE__ */ new Set(), this._connected = !0, this._offlineQueue = [], this._draggedUid = null, this._dropPosition = "above", this._resizeHandler = null, this._touchDragUid = null, this._focusEditOnUpdate = !1, this._connectionUnsubs = [], this._itemOrder = [], this._toggleCompletedExpanded = () => {
 			this._completedExpanded = !this._completedExpanded;
 		};
 	}
@@ -1811,11 +1811,8 @@ var $ = (Z = class extends V {
 		!t || !this.hass || t !== this._lastEntity && (this._lastEntity = t, this._setupSubscription(t), this._setupConnectionMonitoring());
 	}
 	_updateFillScreenHeight() {
-		let e = this.getBoundingClientRect();
-		if (e.top > 0) {
-			let t = window.innerHeight - e.top;
-			this.style.setProperty("--shopping-list-host-height", `${Math.max(200, t)}px`);
-		} else this.style.setProperty("--shopping-list-host-height", "100dvh");
+		let e = this.getBoundingClientRect(), t = window.innerHeight - e.top;
+		this.style.setProperty("--shopping-list-host-height", `${Math.max(200, t)}px`);
 	}
 	_setupFillScreen() {
 		this._resizeHandler || (this._resizeHandler = () => this._updateFillScreenHeight(), window.addEventListener("resize", this._resizeHandler));
@@ -1859,11 +1856,12 @@ var $ = (Z = class extends V {
 			try {
 				await this.hass.callService(e, t, n);
 			} catch (r) {
-				this._isConnectionError(r) ? (this._connected = !1, this._offlineQueue = [...this._offlineQueue, {
+				if (this._isConnectionError(r)) this._connected = !1, this._offlineQueue = [...this._offlineQueue, {
 					domain: e,
 					service: t,
 					serviceData: n
-				}]) : this._error = r instanceof Error ? r.message : String(r);
+				}];
+				else throw this._error = r instanceof Error ? r.message : String(r), r;
 			}
 		}
 	}
@@ -1963,6 +1961,43 @@ var $ = (Z = class extends V {
 	}
 	_onDragEnd() {
 		this.renderRoot.querySelectorAll(".sl-item--drop-above, .sl-item--drop-below, .sl-item--dragging").forEach((e) => e.classList.remove("sl-item--drop-above", "sl-item--drop-below", "sl-item--dragging")), this._draggedUid = null, this._dropPosition = "above";
+	}
+	_onTouchStart(e) {
+		let t = e.target.closest(".sl-drag-handle");
+		if (!t) return;
+		let n = t.closest(".sl-item");
+		if (!n) return;
+		let r = n.dataset.uid;
+		r && (this._touchDragUid = r, n.classList.add("sl-item--dragging"));
+	}
+	_onTouchMove(e) {
+		if (!this._touchDragUid) return;
+		e.preventDefault();
+		let t = e.touches[0];
+		if (!t) return;
+		let n = document.elementFromPoint(t.clientX, t.clientY);
+		if (!n) return;
+		let r = n.closest(".sl-item");
+		if (this.renderRoot.querySelectorAll(".sl-item--drop-above, .sl-item--drop-below").forEach((e) => e.classList.remove("sl-item--drop-above", "sl-item--drop-below")), r && r.dataset.uid !== this._touchDragUid) {
+			let e = r.getBoundingClientRect();
+			this._dropPosition = t.clientY < e.top + e.height / 2 ? "above" : "below", r.classList.add(this._dropPosition === "above" ? "sl-item--drop-above" : "sl-item--drop-below");
+		}
+	}
+	_onTouchEnd(e) {
+		if (!this._touchDragUid) return;
+		let t = this.renderRoot.querySelector(".sl-item--drop-above, .sl-item--drop-below");
+		this.renderRoot.querySelectorAll(".sl-item--drop-above, .sl-item--drop-below, .sl-item--dragging").forEach((e) => e.classList.remove("sl-item--drop-above", "sl-item--drop-below", "sl-item--dragging"));
+		let n = t?.dataset.uid;
+		if (n && this._touchDragUid !== n) {
+			let e = this._getOrderedItems(this._items), t = e.findIndex((e) => e.uid === this._touchDragUid), r = e.findIndex((e) => e.uid === n);
+			if (t !== -1 && r !== -1) {
+				let [i] = e.splice(t, 1), a = e.findIndex((e) => e.uid === n), o = a >= 0 ? this._dropPosition === "below" ? a + 1 : a : r > t ? r - 1 : r;
+				e.splice(o, 0, i);
+				let s = new Set(this._items.filter((e) => e.status !== "completed").map((e) => e.uid));
+				this._itemOrder = e.filter((e) => s.has(e.uid) || e.status === "needs_action").map((e) => e.uid), this._saveItemOrder(), this.requestUpdate();
+			}
+		}
+		this._touchDragUid = null, this._dropPosition = "above";
 	}
 	async _setupSubscription(e) {
 		if (this._teardownSubscription(), this.hass) {
@@ -2337,6 +2372,9 @@ var $ = (Z = class extends V {
                 @mousedown=${(e) => e.stopPropagation()}
                 @dragstart=${this._onDragStart}
                 @dragend=${this._onDragEnd}
+                @touchstart=${this._onTouchStart}
+                @touchmove=${this._onTouchMove}
+                @touchend=${this._onTouchEnd}
               ></ha-icon>` : P}
 
         <ha-checkbox

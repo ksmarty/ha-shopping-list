@@ -68,6 +68,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
   @state() private _draggedUid: string | null = null;
   private _dropPosition: "above" | "below" = "above";
   private _resizeHandler: (() => void) | null = null;
+  private _touchDragUid: string | null = null;
 
   private _unsub?: () => void;
   private _lastEntity?: string;
@@ -145,12 +146,8 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
 
   private _updateFillScreenHeight(): void {
     const rect = this.getBoundingClientRect();
-    if (rect.top > 0) {
-      const available = window.innerHeight - rect.top;
-      this.style.setProperty("--shopping-list-host-height", `${Math.max(200, available)}px`);
-    } else {
-      this.style.setProperty("--shopping-list-host-height", "100dvh");
-    }
+    const available = window.innerHeight - rect.top;
+    this.style.setProperty("--shopping-list-host-height", `${Math.max(200, available)}px`);
   }
 
   private _setupFillScreen(): void {
@@ -233,6 +230,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
         this._offlineQueue = [...this._offlineQueue, { domain, service, serviceData }];
       } else {
         this._error = err instanceof Error ? err.message : String(err);
+        throw err;
       }
     }
   }
@@ -440,6 +438,90 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
         el.classList.remove("sl-item--drop-above", "sl-item--drop-below", "sl-item--dragging"),
       );
     this._draggedUid = null;
+    this._dropPosition = "above";
+  }
+
+  /* --- Touch drag-and-drop (mobile) --- */
+
+  private _onTouchStart(ev: TouchEvent): void {
+    const handle = (ev.target as HTMLElement).closest(".sl-drag-handle") as HTMLElement | null;
+    if (!handle) return;
+    const li = handle.closest(".sl-item") as HTMLElement | null;
+    if (!li) return;
+    const uid = li.dataset.uid;
+    if (!uid) return;
+    this._touchDragUid = uid;
+    li.classList.add("sl-item--dragging");
+  }
+
+  private _onTouchMove(ev: TouchEvent): void {
+    if (!this._touchDragUid) return;
+    ev.preventDefault();
+
+    const touch = ev.touches[0];
+    if (!touch) return;
+
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (!el) return;
+
+    const li = (el as HTMLElement).closest(".sl-item") as HTMLElement | null;
+
+    this.renderRoot
+      .querySelectorAll(".sl-item--drop-above, .sl-item--drop-below")
+      .forEach((el) => el.classList.remove("sl-item--drop-above", "sl-item--drop-below"));
+
+    if (li && li.dataset.uid !== this._touchDragUid) {
+      const rect = li.getBoundingClientRect();
+      this._dropPosition = touch.clientY < rect.top + rect.height / 2 ? "above" : "below";
+      li.classList.add(
+        this._dropPosition === "above" ? "sl-item--drop-above" : "sl-item--drop-below",
+      );
+    }
+  }
+
+  private _onTouchEnd(_ev: TouchEvent): void {
+    if (!this._touchDragUid) return;
+
+    const indicator = this.renderRoot.querySelector<HTMLElement>(
+      ".sl-item--drop-above, .sl-item--drop-below",
+    );
+
+    this.renderRoot
+      .querySelectorAll(".sl-item--drop-above, .sl-item--drop-below, .sl-item--dragging")
+      .forEach((el) =>
+        el.classList.remove("sl-item--drop-above", "sl-item--drop-below", "sl-item--dragging"),
+      );
+
+    const targetUid = indicator?.dataset.uid;
+    if (targetUid && this._touchDragUid !== targetUid) {
+      const items = this._getOrderedItems(this._items);
+      const fromIdx = items.findIndex((i) => i.uid === this._touchDragUid);
+      const toIdx = items.findIndex((i) => i.uid === targetUid);
+      if (fromIdx !== -1 && toIdx !== -1) {
+        const [moved] = items.splice(fromIdx, 1);
+        const adjustedTo = items.findIndex((i) => i.uid === targetUid);
+        const insertAt =
+          adjustedTo >= 0
+            ? this._dropPosition === "below"
+              ? adjustedTo + 1
+              : adjustedTo
+            : toIdx > fromIdx
+              ? toIdx - 1
+              : toIdx;
+        items.splice(insertAt, 0, moved);
+
+        const activeUids = new Set(
+          this._items.filter((i) => i.status !== "completed").map((i) => i.uid),
+        );
+        this._itemOrder = items
+          .filter((i) => activeUids.has(i.uid) || i.status === "needs_action")
+          .map((i) => i.uid);
+        this._saveItemOrder();
+        this.requestUpdate();
+      }
+    }
+
+    this._touchDragUid = null;
     this._dropPosition = "above";
   }
 
@@ -1082,6 +1164,9 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
                 @mousedown=${(ev: MouseEvent) => ev.stopPropagation()}
                 @dragstart=${this._onDragStart}
                 @dragend=${this._onDragEnd}
+                @touchstart=${this._onTouchStart}
+                @touchmove=${this._onTouchMove}
+                @touchend=${this._onTouchEnd}
               ></ha-icon>`
             : nothing
         }
