@@ -147,6 +147,13 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
 
   /* --- Fill screen --- */
 
+  private _fillScreenWheelHandler = (e: Event): void => {
+    const list = this.renderRoot.querySelector(".sl-list-scroll");
+    if (list && !list.contains(e.target as Node)) {
+      e.preventDefault();
+    }
+  };
+
   private _updateFillScreenHeight(): void {
     const rect = this.getBoundingClientRect();
     const available = window.innerHeight - rect.top;
@@ -156,12 +163,16 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
   private _setupFillScreen(): void {
     this._updateFillScreenHeight();
     this.style.overflow = "hidden";
+    this.classList.add("sl-host--fill-screen");
+    this.addEventListener("wheel", this._fillScreenWheelHandler, { passive: false });
     if (this._resizeHandler) return;
     this._resizeHandler = () => this._updateFillScreenHeight();
     window.addEventListener("resize", this._resizeHandler);
   }
 
   private _teardownFillScreen(): void {
+    this.classList.remove("sl-host--fill-screen");
+    this.removeEventListener("wheel", this._fillScreenWheelHandler);
     if (this._resizeHandler) {
       window.removeEventListener("resize", this._resizeHandler);
       this._resizeHandler = null;

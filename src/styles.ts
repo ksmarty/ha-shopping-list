@@ -128,6 +128,12 @@ export const cardStyles = css`
     display: block;
     height: var(--shopping-list-host-height, auto);
   }
+  :host(.sl-host--fill-screen) .sl-card {
+    touch-action: none;
+  }
+  :host(.sl-host--fill-screen) .sl-list-scroll {
+    touch-action: pan-y;
+  }
 
   .sl-card {
     background: var(--shopping-list-bg);

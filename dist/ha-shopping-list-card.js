@@ -876,6 +876,12 @@ var Xe = o`
     display: block;
     height: var(--shopping-list-host-height, auto);
   }
+  :host(.sl-host--fill-screen) .sl-card {
+    touch-action: none;
+  }
+  :host(.sl-host--fill-screen) .sl-list-scroll {
+    touch-action: pan-y;
+  }
 
   .sl-card {
     background: var(--shopping-list-bg);
@@ -1777,7 +1783,10 @@ Q.customCards = Q.customCards || [], Q.customCards.find((e) => e.type === "shopp
 }), console.info(`%c SHOPPING-LIST-CARD %c v${ze} `, "color: white; background: #03a9f4; font-weight: 700;", "color: #03a9f4; background: white; font-weight: 700;");
 var $ = (Z = class extends V {
 	constructor(...e) {
-		super(...e), this._items = [], this._loading = !1, this._draft = "", this._completedExpanded = !1, this._editDraft = "", this._editQuantity = 1, this._addQuantity = 1, this._collapsedCategories = /* @__PURE__ */ new Set(), this._connected = !0, this._offlineQueue = [], this._draggedUid = null, this._dropPosition = "above", this._resizeHandler = null, this._touchDragUid = null, this._focusEditOnUpdate = !1, this._connectionUnsubs = [], this._itemOrder = [], this._toggleCompletedExpanded = () => {
+		super(...e), this._items = [], this._loading = !1, this._draft = "", this._completedExpanded = !1, this._editDraft = "", this._editQuantity = 1, this._addQuantity = 1, this._collapsedCategories = /* @__PURE__ */ new Set(), this._connected = !0, this._offlineQueue = [], this._draggedUid = null, this._dropPosition = "above", this._resizeHandler = null, this._touchDragUid = null, this._focusEditOnUpdate = !1, this._connectionUnsubs = [], this._itemOrder = [], this._fillScreenWheelHandler = (e) => {
+			let t = this.renderRoot.querySelector(".sl-list-scroll");
+			t && !t.contains(e.target) && e.preventDefault();
+		}, this._toggleCompletedExpanded = () => {
 			this._completedExpanded = !this._completedExpanded;
 		};
 	}
@@ -1818,10 +1827,10 @@ var $ = (Z = class extends V {
 		this.style.setProperty("--shopping-list-host-height", `${Math.max(200, t)}px`);
 	}
 	_setupFillScreen() {
-		this._updateFillScreenHeight(), this.style.overflow = "hidden", !this._resizeHandler && (this._resizeHandler = () => this._updateFillScreenHeight(), window.addEventListener("resize", this._resizeHandler));
+		this._updateFillScreenHeight(), this.style.overflow = "hidden", this.classList.add("sl-host--fill-screen"), this.addEventListener("wheel", this._fillScreenWheelHandler, { passive: !1 }), !this._resizeHandler && (this._resizeHandler = () => this._updateFillScreenHeight(), window.addEventListener("resize", this._resizeHandler));
 	}
 	_teardownFillScreen() {
-		this._resizeHandler &&= (window.removeEventListener("resize", this._resizeHandler), null), this.style.removeProperty("--shopping-list-host-height"), this.style.overflow = "";
+		this.classList.remove("sl-host--fill-screen"), this.removeEventListener("wheel", this._fillScreenWheelHandler), this._resizeHandler &&= (window.removeEventListener("resize", this._resizeHandler), null), this.style.removeProperty("--shopping-list-host-height"), this.style.overflow = "";
 	}
 	_setupConnectionMonitoring() {
 		this._teardownConnectionMonitoring();
