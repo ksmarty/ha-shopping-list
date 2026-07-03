@@ -155,6 +155,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
 
   private _setupFillScreen(): void {
     this._updateFillScreenHeight();
+    this.style.overflow = "hidden";
     if (this._resizeHandler) return;
     this._resizeHandler = () => this._updateFillScreenHeight();
     window.addEventListener("resize", this._resizeHandler);
@@ -166,6 +167,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
       this._resizeHandler = null;
     }
     this.style.removeProperty("--shopping-list-host-height");
+    this.style.overflow = "";
   }
 
   /* --- Offline support --- */

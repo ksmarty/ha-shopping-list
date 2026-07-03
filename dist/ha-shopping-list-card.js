@@ -1818,10 +1818,10 @@ var $ = (Z = class extends V {
 		this.style.setProperty("--shopping-list-host-height", `${Math.max(200, t)}px`);
 	}
 	_setupFillScreen() {
-		this._updateFillScreenHeight(), !this._resizeHandler && (this._resizeHandler = () => this._updateFillScreenHeight(), window.addEventListener("resize", this._resizeHandler));
+		this._updateFillScreenHeight(), this.style.overflow = "hidden", !this._resizeHandler && (this._resizeHandler = () => this._updateFillScreenHeight(), window.addEventListener("resize", this._resizeHandler));
 	}
 	_teardownFillScreen() {
-		this._resizeHandler &&= (window.removeEventListener("resize", this._resizeHandler), null), this.style.removeProperty("--shopping-list-host-height");
+		this._resizeHandler &&= (window.removeEventListener("resize", this._resizeHandler), null), this.style.removeProperty("--shopping-list-host-height"), this.style.overflow = "";
 	}
 	_setupConnectionMonitoring() {
 		this._teardownConnectionMonitoring();
