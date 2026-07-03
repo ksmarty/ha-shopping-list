@@ -109,6 +109,13 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     this._teardownConnectionMonitoring();
   }
 
+  protected firstUpdated(changed: PropertyValues): void {
+    super.firstUpdated(changed);
+    if (this._config?.fill_screen) {
+      this._setupFillScreen();
+    }
+  }
+
   protected updated(changed: PropertyValues): void {
     super.updated(changed);
 
@@ -147,6 +154,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
   }
 
   private _setupFillScreen(): void {
+    this._updateFillScreenHeight();
     if (this._resizeHandler) return;
     this._resizeHandler = () => this._updateFillScreenHeight();
     window.addEventListener("resize", this._resizeHandler);

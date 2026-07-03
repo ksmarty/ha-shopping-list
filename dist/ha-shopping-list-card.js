@@ -1801,6 +1801,9 @@ var $ = (Z = class extends V {
 	disconnectedCallback() {
 		super.disconnectedCallback(), this._teardownSubscription(), this._teardownConnectionMonitoring();
 	}
+	firstUpdated(e) {
+		super.firstUpdated(e), this._config?.fill_screen && this._setupFillScreen();
+	}
 	updated(e) {
 		if (super.updated(e), this._focusEditOnUpdate) {
 			let e = this.renderRoot.querySelector(".sl-edit-input");
@@ -1815,7 +1818,7 @@ var $ = (Z = class extends V {
 		this.style.setProperty("--shopping-list-host-height", `${Math.max(200, t)}px`);
 	}
 	_setupFillScreen() {
-		this._resizeHandler || (this._resizeHandler = () => this._updateFillScreenHeight(), window.addEventListener("resize", this._resizeHandler));
+		this._updateFillScreenHeight(), !this._resizeHandler && (this._resizeHandler = () => this._updateFillScreenHeight(), window.addEventListener("resize", this._resizeHandler));
 	}
 	_teardownFillScreen() {
 		this._resizeHandler &&= (window.removeEventListener("resize", this._resizeHandler), null), this.style.removeProperty("--shopping-list-host-height");
