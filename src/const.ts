@@ -1,4 +1,4 @@
-export const CARD_VERSION = "0.4.2";
+export const CARD_VERSION = "0.4.3";
 
 export const CARD_TAG = "shopping-list-card-improved";
 export const EDITOR_TAG = "shopping-list-card-improved-editor";
