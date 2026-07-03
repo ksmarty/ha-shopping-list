@@ -25,11 +25,11 @@
     "shopping-list",
     "card"
   ],
-  "author": "MCuello17",
+  "author": "ksmarty",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MCuello17/ha-shopping-list.git"
+    "url": "git+https://github.com/ksmarty/ha-shopping-list.git"
   },
   "dependencies": {
     "lit": "^3.3.2"

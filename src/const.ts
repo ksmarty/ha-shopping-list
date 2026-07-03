@@ -1,7 +1,7 @@
 export const CARD_VERSION = "0.2.0";
 
-export const CARD_TAG = "shopping-list-card";
-export const EDITOR_TAG = "shopping-list-card-editor";
+export const CARD_TAG = "shopping-list-card-improved";
+export const EDITOR_TAG = "shopping-list-card-improved-editor";
 
 export const DEFAULT_CONFIG = {
   type: `custom:${CARD_TAG}`,

@@ -667,7 +667,7 @@ var Oe = {
 		}
 		return this.ut = o, Fe(e, c), N;
 	}
-}), ze = "0.2.0", Be = "shopping-list-card", Ve = "shopping-list-card-editor", q = {
+}), ze = "0.2.0", Be = "shopping-list-card-improved", Ve = "shopping-list-card-improved-editor", q = {
 	type: `custom:${Be}`,
 	title: "Shopping List",
 	show_header: !0,
@@ -1768,12 +1768,12 @@ Y([H({ attribute: !1 })], X.prototype, "hass", void 0), Y([U()], X.prototype, "_
 //#endregion
 //#region src/shopping-list-card.ts
 var Z, nt = "__general__", Q = window;
-Q.customCards = Q.customCards || [], Q.customCards.find((e) => e.type === "shopping-list-card") || Q.customCards.push({
+Q.customCards = Q.customCards || [], Q.customCards.find((e) => e.type === "shopping-list-card-improved") || Q.customCards.push({
 	type: Be,
 	name: "Shopping List Card",
 	description: "A shopping-style list view for any todo entity, with categories, quantities, offline support, and drag-and-drop reorder.",
 	preview: !0,
-	documentationURL: "https://github.com/MCuello17/ha-shopping-list"
+	documentationURL: "https://github.com/ksmarty/ha-shopping-list"
 }), console.info(`%c SHOPPING-LIST-CARD %c v${ze} `, "color: white; background: #03a9f4; font-weight: 700;", "color: #03a9f4; background: white; font-weight: 700;");
 var $ = (Z = class extends V {
 	constructor(...e) {

@@ -183,7 +183,7 @@
         overflow: hidden;
         height: 100%;
       }
-      .stage > shopping-list-card {
+      .stage > shopping-list-card-improved {
         width: 100%;
         max-width: 420px;
         min-height: 0;
@@ -197,7 +197,7 @@
          own @media (hover: none) rule can't be triggered from JS, so we
          inject a small style sheet into the card's shadow root from
          dev/index.html — see applyDeviceMode(). */
-      .stage.mobile-mode > shopping-list-card {
+      .stage.mobile-mode > shopping-list-card-improved {
         width: 390px;
         max-width: 390px;
         box-shadow:
@@ -338,7 +338,7 @@
 
       <!-- Center: live card --------------------------------------- -->
       <section class="panel stage" id="stage">
-        <!-- shopping-list-card injected here -->
+        <!-- shopping-list-card-improved injected here -->
       </section>
 
       <!-- Right: editor + config view ----------------------------- -->
@@ -360,7 +360,7 @@
 
       const PRESETS = {
         Default: {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Shopping List",
           icon: "mdi:cart",
@@ -372,12 +372,12 @@
           sort: "manual",
         },
         "No header": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           show_header: false,
         },
         "Completed: inline + alpha sort": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "All items",
           icon: "mdi:cart",
@@ -385,21 +385,21 @@
           sort: "alpha",
         },
         "Completed: collapsed section": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Groceries",
           icon: "mdi:basket",
           completed: "collapse",
         },
         "Completed: hidden": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "To buy",
           icon: "mdi:cart",
           completed: "hide",
         },
         "Add bar at top": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Quick add",
           icon: "mdi:cart",
@@ -407,20 +407,20 @@
           completed: "collapse",
         },
         "Read-only (no add input)": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Groceries",
           show_add_input: false,
         },
         "Edit only (no remove)": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Groceries",
           icon: "mdi:cart",
           enable_remove: false,
         },
         "View only (no edit, no remove)": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Read-only list",
           icon: "mdi:cart",
@@ -428,14 +428,14 @@
           enable_remove: false,
         },
         "Strict checkbox (no row click)": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Strict",
           icon: "mdi:cart",
           click_to_check: false,
         },
         "Quantities enabled": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Groceries",
           icon: "mdi:cart",
@@ -443,7 +443,7 @@
           quantity_max: 99,
         },
         "Quantities (max 5)": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Limited",
           icon: "mdi:cart",
@@ -451,7 +451,7 @@
           quantity_max: 5,
         },
         "Categories: grouped": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Groceries",
           icon: "mdi:cart",
@@ -460,7 +460,7 @@
           quantity_max: 99,
         },
         "Categories: grouped + colors": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Groceries",
           icon: "mdi:cart",
@@ -475,7 +475,7 @@
           },
         },
         "Categories: flat with prefix": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Groceries",
           icon: "mdi:cart",
@@ -488,7 +488,7 @@
           },
         },
         "Categories: no collapse, no check-all": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Plain groups",
           icon: "mdi:cart",
@@ -497,7 +497,7 @@
           category_check_all: false,
         },
         "Custom CSS (theme-aware)": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Themed",
           icon: "mdi:basket",
@@ -511,14 +511,14 @@
           `.trim(),
         },
         "Legacy show_completed: true": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
           entity: "todo.shopping_list",
           title: "Legacy config",
           icon: "mdi:cart",
           show_completed: true,
         },
         "No entity selected": {
-          type: "custom:shopping-list-card",
+          type: "custom:shopping-list-card-improved",
         },
       };
 
@@ -574,7 +574,7 @@
         configView.textContent = yamlish(config);
 
         if (card) card.remove();
-        card = document.createElement("shopping-list-card");
+        card = document.createElement("shopping-list-card-improved");
         card.hass = mock.hass;
         card.setConfig(config);
         stage.appendChild(card);
@@ -589,7 +589,7 @@
         }
 
         editorHost.innerHTML = "";
-        editor = document.createElement("shopping-list-card-editor");
+        editor = document.createElement("shopping-list-card-improved-editor");
         editor.hass = mock.hass;
         editor.setConfig(config);
         editor.addEventListener("config-changed", (ev) => {

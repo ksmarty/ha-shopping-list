@@ -1,7 +1,7 @@
 # 🛒 Shopping List Card
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
-[![GitHub Release](https://img.shields.io/github/v/release/MCuello17/ha-shopping-list)](https://github.com/MCuello17/ha-shopping-list/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/ksmarty/ha-shopping-list)](https://github.com/ksmarty/ha-shopping-list/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A shopping-style list view for any Home Assistant `todo` entity. Tap to check items off, add new ones inline, edit or remove with hover actions, group by `[Category]`, set quantities, and theme everything down to per-category colors — all from the visual editor or YAML.
@@ -38,7 +38,7 @@ Works with the built-in [Local To-do](https://www.home-assistant.io/integrations
 
 1. Make sure [HACS](https://hacs.xyz/) is installed.
 2. In HACS, open the **⋮** menu in the top right → **Custom repositories**.
-3. Add `https://github.com/MCuello17/ha-shopping-list` with category **Dashboard** (formerly "Lovelace"), then **Add**.
+3. Add `https://github.com/ksmarty/ha-shopping-list` with category **Dashboard** (formerly "Lovelace"), then **Add**.
 4. Find **Shopping List Card** in the HACS list and click **Download**.
 5. Refresh your browser (hard reload — `Ctrl/Cmd + Shift + R`).
 6. Add the card to a dashboard — it appears as **Shopping List Card** in the card picker.
@@ -47,7 +47,7 @@ Works with the built-in [Local To-do](https://www.home-assistant.io/integrations
 
 ### Manual
 
-1. Download `ha-shopping-list-card.js` from the [latest release](https://github.com/MCuello17/ha-shopping-list/releases) (or from `dist/` on `main`).
+1. Download `ha-shopping-list-card.js` from the [latest release](https://github.com/ksmarty/ha-shopping-list/releases) (or from `dist/` on `main`).
 2. Copy it to `<config>/www/community/ha-shopping-list/` (any path under `<config>/www/` is fine).
 3. Register the resource: **Settings → Dashboards → ⋮ → Resources → Add Resource**:
    - **URL**: `/local/community/ha-shopping-list/ha-shopping-list-card.js`
@@ -63,7 +63,7 @@ The card ships with a full visual editor — add it to your dashboard, pick a `t
 If you'd rather edit YAML directly:
 
 ```yaml
-type: custom:shopping-list-card
+type: custom:shopping-list-card-improved
 entity: todo.shopping_list
 title: Groceries
 icon: mdi:cart
@@ -84,7 +84,7 @@ category_colors:
 
 | Name                     | Type    | Default                                        | Description                                                                                                   |
 | ------------------------ | ------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `type`                   | string  | —                                              | Must be `custom:shopping-list-card`.                                                                          |
+| `type`                   | string  | —                                              | Must be `custom:shopping-list-card-improved`.                                                                          |
 | `entity`                 | string  | —                                              | A `todo.<name>` entity. **Required.**                                                                         |
 | `title`                  | string  | `Shopping List`                                | Header title.                                                                                                 |
 | `icon`                   | string  | —                                              | Optional MDI icon shown next to the title.                                                                    |
@@ -171,7 +171,7 @@ Stored format: the quantity is appended to the item summary as `<quantity: N>`. 
 Every visual property is a CSS custom property — change one variable, restyle the whole card. The `style:` config option (and `card_mod`) is applied last so user CSS always wins:
 
 ```yaml
-type: custom:shopping-list-card
+type: custom:shopping-list-card-improved
 entity: todo.shopping_list
 style: |
   .sl-card {
@@ -219,4 +219,4 @@ The dev harness mocks `hass` in-memory and stubs the `ha-*` web components. It i
 
 ## 📄 License
 
-[MIT](LICENSE) © MCuello17
+[MIT](LICENSE) © ksmarty

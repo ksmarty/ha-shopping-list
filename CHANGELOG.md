@@ -65,5 +65,5 @@ fully themeable UI — all configurable from the visual editor.
 - **Git hooks** — `simple-git-hooks` with `pre-commit` (typecheck + format
   check) and `pre-push` (rebuild + verify `dist/` matches source).
 
-[Unreleased]: https://github.com/MCuello17/ha-shopping-list/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/MCuello17/ha-shopping-list/releases/tag/v0.1.0
+[Unreleased]: https://github.com/ksmarty/ha-shopping-list/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/ksmarty/ha-shopping-list/releases/tag/v0.1.0

@@ -38,7 +38,7 @@ if (!win.customCards.find((c) => c.type === CARD_TAG)) {
     description:
       "A shopping-style list view for any todo entity, with categories, quantities, offline support, and drag-and-drop reorder.",
     preview: true,
-    documentationURL: "https://github.com/MCuello17/ha-shopping-list",
+    documentationURL: "https://github.com/ksmarty/ha-shopping-list",
   });
 }
 
