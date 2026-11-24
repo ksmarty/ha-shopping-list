@@ -667,7 +667,7 @@ var ke = {
 		}
 		return this.ut = o, Ie(e, c), M;
 	}
-}), Be = "0.4.5", Ve = "shopping-list-card-improved", He = "shopping-list-card-improved-editor", K = {
+}), Be = "0.4.6", Ve = "shopping-list-card-improved", He = "shopping-list-card-improved-editor", K = {
 	type: `custom:${Ve}`,
 	title: "Shopping List",
 	show_header: !0,
