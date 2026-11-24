@@ -254,34 +254,34 @@ var b = class extends HTMLElement {
 b.elementStyles = [], b.shadowRootOptions = { mode: "open" }, b[_("elementProperties")] = /* @__PURE__ */ new Map(), b[_("finalized")] = /* @__PURE__ */ new Map(), te?.({ ReactiveElement: b }), (h.reactiveElementVersions ??= []).push("2.1.2");
 //#endregion
 //#region node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/lit-html.js
-var x = globalThis, re = (e) => e, S = x.trustedTypes, ie = S ? S.createPolicy("lit-html", { createHTML: (e) => e }) : void 0, ae = "$lit$", C = `lit$${Math.random().toFixed(9).slice(2)}$`, w = "?" + C, oe = `<${w}>`, T = document, E = () => T.createComment(""), D = (e) => e === null || typeof e != "object" && typeof e != "function", O = Array.isArray, se = (e) => O(e) || typeof e?.[Symbol.iterator] == "function", k = "[ 	\n\f\r]", A = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, ce = /-->/g, le = />/g, j = RegExp(`>|${k}(?:([^\\s"'>=/]+)(${k}*=${k}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), ue = /'/g, de = /"/g, fe = /^(?:script|style|textarea|title)$/i, M = ((e) => (t, ...n) => ({
+var x = globalThis, re = (e) => e, S = x.trustedTypes, ie = S ? S.createPolicy("lit-html", { createHTML: (e) => e }) : void 0, ae = "$lit$", C = `lit$${Math.random().toFixed(9).slice(2)}$`, w = "?" + C, oe = `<${w}>`, T = document, E = () => T.createComment(""), D = (e) => e === null || typeof e != "object" && typeof e != "function", O = Array.isArray, se = (e) => O(e) || typeof e?.[Symbol.iterator] == "function", ce = "[ 	\n\f\r]", k = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, le = /-->/g, ue = />/g, A = RegExp(`>|${ce}(?:([^\\s"'>=/]+)(${ce}*=${ce}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), de = /'/g, fe = /"/g, pe = /^(?:script|style|textarea|title)$/i, j = ((e) => (t, ...n) => ({
 	_$litType$: e,
 	strings: t,
 	values: n
-}))(1), N = Symbol.for("lit-noChange"), P = Symbol.for("lit-nothing"), pe = /* @__PURE__ */ new WeakMap(), F = T.createTreeWalker(T, 129);
-function me(e, t) {
+}))(1), M = Symbol.for("lit-noChange"), N = Symbol.for("lit-nothing"), me = /* @__PURE__ */ new WeakMap(), P = T.createTreeWalker(T, 129);
+function he(e, t) {
 	if (!O(e) || !e.hasOwnProperty("raw")) throw Error("invalid template strings array");
 	return ie === void 0 ? t : ie.createHTML(t);
 }
-var he = (e, t) => {
-	let n = e.length - 1, r = [], i, a = t === 2 ? "<svg>" : t === 3 ? "<math>" : "", o = A;
+var ge = (e, t) => {
+	let n = e.length - 1, r = [], i, a = t === 2 ? "<svg>" : t === 3 ? "<math>" : "", o = k;
 	for (let t = 0; t < n; t++) {
 		let n = e[t], s, c, l = -1, u = 0;
-		for (; u < n.length && (o.lastIndex = u, c = o.exec(n), c !== null);) u = o.lastIndex, o === A ? c[1] === "!--" ? o = ce : c[1] === void 0 ? c[2] === void 0 ? c[3] !== void 0 && (o = j) : (fe.test(c[2]) && (i = RegExp("</" + c[2], "g")), o = j) : o = le : o === j ? c[0] === ">" ? (o = i ?? A, l = -1) : c[1] === void 0 ? l = -2 : (l = o.lastIndex - c[2].length, s = c[1], o = c[3] === void 0 ? j : c[3] === "\"" ? de : ue) : o === de || o === ue ? o = j : o === ce || o === le ? o = A : (o = j, i = void 0);
-		let d = o === j && e[t + 1].startsWith("/>") ? " " : "";
-		a += o === A ? n + oe : l >= 0 ? (r.push(s), n.slice(0, l) + ae + n.slice(l) + C + d) : n + C + (l === -2 ? t : d);
+		for (; u < n.length && (o.lastIndex = u, c = o.exec(n), c !== null);) u = o.lastIndex, o === k ? c[1] === "!--" ? o = le : c[1] === void 0 ? c[2] === void 0 ? c[3] !== void 0 && (o = A) : (pe.test(c[2]) && (i = RegExp("</" + c[2], "g")), o = A) : o = ue : o === A ? c[0] === ">" ? (o = i ?? k, l = -1) : c[1] === void 0 ? l = -2 : (l = o.lastIndex - c[2].length, s = c[1], o = c[3] === void 0 ? A : c[3] === "\"" ? fe : de) : o === fe || o === de ? o = A : o === le || o === ue ? o = k : (o = A, i = void 0);
+		let d = o === A && e[t + 1].startsWith("/>") ? " " : "";
+		a += o === k ? n + oe : l >= 0 ? (r.push(s), n.slice(0, l) + ae + n.slice(l) + C + d) : n + C + (l === -2 ? t : d);
 	}
-	return [me(e, a + (e[n] || "<?>") + (t === 2 ? "</svg>" : t === 3 ? "</math>" : "")), r];
-}, I = class e {
+	return [he(e, a + (e[n] || "<?>") + (t === 2 ? "</svg>" : t === 3 ? "</math>" : "")), r];
+}, F = class e {
 	constructor({ strings: t, _$litType$: n }, r) {
 		let i;
 		this.parts = [];
-		let a = 0, o = 0, s = t.length - 1, c = this.parts, [l, u] = he(t, n);
-		if (this.el = e.createElement(l, r), F.currentNode = this.el.content, n === 2 || n === 3) {
+		let a = 0, o = 0, s = t.length - 1, c = this.parts, [l, u] = ge(t, n);
+		if (this.el = e.createElement(l, r), P.currentNode = this.el.content, n === 2 || n === 3) {
 			let e = this.el.content.firstChild;
 			e.replaceWith(...e.childNodes);
 		}
-		for (; (i = F.nextNode()) !== null && c.length < s;) {
+		for (; (i = P.nextNode()) !== null && c.length < s;) {
 			if (i.nodeType === 1) {
 				if (i.hasAttributes()) for (let e of i.getAttributeNames()) if (e.endsWith(ae)) {
 					let t = u[o++], n = i.getAttribute(e).split(C), r = /([.?@])?(.*)/.exec(t);
@@ -290,17 +290,17 @@ var he = (e, t) => {
 						index: a,
 						name: r[2],
 						strings: n,
-						ctor: r[1] === "." ? _e : r[1] === "?" ? ve : r[1] === "@" ? ye : z
+						ctor: r[1] === "." ? ve : r[1] === "?" ? ye : r[1] === "@" ? be : R
 					}), i.removeAttribute(e);
 				} else e.startsWith(C) && (c.push({
 					type: 6,
 					index: a
 				}), i.removeAttribute(e));
-				if (fe.test(i.tagName)) {
+				if (pe.test(i.tagName)) {
 					let e = i.textContent.split(C), t = e.length - 1;
 					if (t > 0) {
 						i.textContent = S ? S.emptyScript : "";
-						for (let n = 0; n < t; n++) i.append(e[n], E()), F.nextNode(), c.push({
+						for (let n = 0; n < t; n++) i.append(e[n], E()), P.nextNode(), c.push({
 							type: 2,
 							index: ++a
 						});
@@ -326,12 +326,12 @@ var he = (e, t) => {
 		return n.innerHTML = e, n;
 	}
 };
-function L(e, t, n = e, r) {
-	if (t === N) return t;
+function I(e, t, n = e, r) {
+	if (t === M) return t;
 	let i = r === void 0 ? n._$Cl : n._$Co?.[r], a = D(t) ? void 0 : t._$litDirective$;
-	return i?.constructor !== a && (i?._$AO?.(!1), a === void 0 ? i = void 0 : (i = new a(e), i._$AT(e, n, r)), r === void 0 ? n._$Cl = i : (n._$Co ??= [])[r] = i), i !== void 0 && (t = L(e, i._$AS(e, t.values), i, r)), t;
+	return i?.constructor !== a && (i?._$AO?.(!1), a === void 0 ? i = void 0 : (i = new a(e), i._$AT(e, n, r)), r === void 0 ? n._$Cl = i : (n._$Co ??= [])[r] = i), i !== void 0 && (t = I(e, i._$AS(e, t.values), i, r)), t;
 }
-var ge = class {
+var _e = class {
 	constructor(e, t) {
 		this._$AV = [], this._$AN = void 0, this._$AD = e, this._$AM = t;
 	}
@@ -343,27 +343,27 @@ var ge = class {
 	}
 	u(e) {
 		let { el: { content: t }, parts: n } = this._$AD, r = (e?.creationScope ?? T).importNode(t, !0);
-		F.currentNode = r;
-		let i = F.nextNode(), a = 0, o = 0, s = n[0];
+		P.currentNode = r;
+		let i = P.nextNode(), a = 0, o = 0, s = n[0];
 		for (; s !== void 0;) {
 			if (a === s.index) {
 				let t;
-				s.type === 2 ? t = new R(i, i.nextSibling, this, e) : s.type === 1 ? t = new s.ctor(i, s.name, s.strings, this, e) : s.type === 6 && (t = new be(i, this, e)), this._$AV.push(t), s = n[++o];
+				s.type === 2 ? t = new L(i, i.nextSibling, this, e) : s.type === 1 ? t = new s.ctor(i, s.name, s.strings, this, e) : s.type === 6 && (t = new xe(i, this, e)), this._$AV.push(t), s = n[++o];
 			}
-			a !== s?.index && (i = F.nextNode(), a++);
+			a !== s?.index && (i = P.nextNode(), a++);
 		}
-		return F.currentNode = T, r;
+		return P.currentNode = T, r;
 	}
 	p(e) {
 		let t = 0;
 		for (let n of this._$AV) n !== void 0 && (n.strings === void 0 ? n._$AI(e[t]) : (n._$AI(e, n, t), t += n.strings.length - 2)), t++;
 	}
-}, R = class e {
+}, L = class e {
 	get _$AU() {
 		return this._$AM?._$AU ?? this._$Cv;
 	}
 	constructor(e, t, n, r) {
-		this.type = 2, this._$AH = P, this._$AN = void 0, this._$AA = e, this._$AB = t, this._$AM = n, this.options = r, this._$Cv = r?.isConnected ?? !0;
+		this.type = 2, this._$AH = N, this._$AN = void 0, this._$AA = e, this._$AB = t, this._$AM = n, this.options = r, this._$Cv = r?.isConnected ?? !0;
 	}
 	get parentNode() {
 		let e = this._$AA.parentNode, t = this._$AM;
@@ -376,7 +376,7 @@ var ge = class {
 		return this._$AB;
 	}
 	_$AI(e, t = this) {
-		e = L(this, e, t), D(e) ? e === P || e == null || e === "" ? (this._$AH !== P && this._$AR(), this._$AH = P) : e !== this._$AH && e !== N && this._(e) : e._$litType$ === void 0 ? e.nodeType === void 0 ? se(e) ? this.k(e) : this._(e) : this.T(e) : this.$(e);
+		e = I(this, e, t), D(e) ? e === N || e == null || e === "" ? (this._$AH !== N && this._$AR(), this._$AH = N) : e !== this._$AH && e !== M && this._(e) : e._$litType$ === void 0 ? e.nodeType === void 0 ? se(e) ? this.k(e) : this._(e) : this.T(e) : this.$(e);
 	}
 	O(e) {
 		return this._$AA.parentNode.insertBefore(e, this._$AB);
@@ -385,19 +385,19 @@ var ge = class {
 		this._$AH !== e && (this._$AR(), this._$AH = this.O(e));
 	}
 	_(e) {
-		this._$AH !== P && D(this._$AH) ? this._$AA.nextSibling.data = e : this.T(T.createTextNode(e)), this._$AH = e;
+		this._$AH !== N && D(this._$AH) ? this._$AA.nextSibling.data = e : this.T(T.createTextNode(e)), this._$AH = e;
 	}
 	$(e) {
-		let { values: t, _$litType$: n } = e, r = typeof n == "number" ? this._$AC(e) : (n.el === void 0 && (n.el = I.createElement(me(n.h, n.h[0]), this.options)), n);
+		let { values: t, _$litType$: n } = e, r = typeof n == "number" ? this._$AC(e) : (n.el === void 0 && (n.el = F.createElement(he(n.h, n.h[0]), this.options)), n);
 		if (this._$AH?._$AD === r) this._$AH.p(t);
 		else {
-			let e = new ge(r, this), n = e.u(this.options);
+			let e = new _e(r, this), n = e.u(this.options);
 			e.p(t), this.T(n), this._$AH = e;
 		}
 	}
 	_$AC(e) {
-		let t = pe.get(e.strings);
-		return t === void 0 && pe.set(e.strings, t = new I(e)), t;
+		let t = me.get(e.strings);
+		return t === void 0 && me.set(e.strings, t = new F(e)), t;
 	}
 	k(t) {
 		O(this._$AH) || (this._$AH = [], this._$AR());
@@ -414,7 +414,7 @@ var ge = class {
 	setConnected(e) {
 		this._$AM === void 0 && (this._$Cv = e, this._$AP?.(e));
 	}
-}, z = class {
+}, R = class {
 	get tagName() {
 		return this.element.tagName;
 	}
@@ -422,47 +422,47 @@ var ge = class {
 		return this._$AM._$AU;
 	}
 	constructor(e, t, n, r, i) {
-		this.type = 1, this._$AH = P, this._$AN = void 0, this.element = e, this.name = t, this._$AM = r, this.options = i, n.length > 2 || n[0] !== "" || n[1] !== "" ? (this._$AH = Array(n.length - 1).fill(/* @__PURE__ */ new String()), this.strings = n) : this._$AH = P;
+		this.type = 1, this._$AH = N, this._$AN = void 0, this.element = e, this.name = t, this._$AM = r, this.options = i, n.length > 2 || n[0] !== "" || n[1] !== "" ? (this._$AH = Array(n.length - 1).fill(/* @__PURE__ */ new String()), this.strings = n) : this._$AH = N;
 	}
 	_$AI(e, t = this, n, r) {
 		let i = this.strings, a = !1;
-		if (i === void 0) e = L(this, e, t, 0), a = !D(e) || e !== this._$AH && e !== N, a && (this._$AH = e);
+		if (i === void 0) e = I(this, e, t, 0), a = !D(e) || e !== this._$AH && e !== M, a && (this._$AH = e);
 		else {
 			let r = e, o, s;
-			for (e = i[0], o = 0; o < i.length - 1; o++) s = L(this, r[n + o], t, o), s === N && (s = this._$AH[o]), a ||= !D(s) || s !== this._$AH[o], s === P ? e = P : e !== P && (e += (s ?? "") + i[o + 1]), this._$AH[o] = s;
+			for (e = i[0], o = 0; o < i.length - 1; o++) s = I(this, r[n + o], t, o), s === M && (s = this._$AH[o]), a ||= !D(s) || s !== this._$AH[o], s === N ? e = N : e !== N && (e += (s ?? "") + i[o + 1]), this._$AH[o] = s;
 		}
 		a && !r && this.j(e);
 	}
 	j(e) {
-		e === P ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
+		e === N ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
 	}
-}, _e = class extends z {
+}, ve = class extends R {
 	constructor() {
 		super(...arguments), this.type = 3;
 	}
 	j(e) {
-		this.element[this.name] = e === P ? void 0 : e;
+		this.element[this.name] = e === N ? void 0 : e;
 	}
-}, ve = class extends z {
+}, ye = class extends R {
 	constructor() {
 		super(...arguments), this.type = 4;
 	}
 	j(e) {
-		this.element.toggleAttribute(this.name, !!e && e !== P);
+		this.element.toggleAttribute(this.name, !!e && e !== N);
 	}
-}, ye = class extends z {
+}, be = class extends R {
 	constructor(e, t, n, r, i) {
 		super(e, t, n, r, i), this.type = 5;
 	}
 	_$AI(e, t = this) {
-		if ((e = L(this, e, t, 0) ?? P) === N) return;
-		let n = this._$AH, r = e === P && n !== P || e.capture !== n.capture || e.once !== n.once || e.passive !== n.passive, i = e !== P && (n === P || r);
+		if ((e = I(this, e, t, 0) ?? N) === M) return;
+		let n = this._$AH, r = e === N && n !== N || e.capture !== n.capture || e.once !== n.once || e.passive !== n.passive, i = e !== N && (n === N || r);
 		r && this.element.removeEventListener(this.name, this, n), i && this.element.addEventListener(this.name, this, e), this._$AH = e;
 	}
 	handleEvent(e) {
 		typeof this._$AH == "function" ? this._$AH.call(this.options?.host ?? this.element, e) : this._$AH.handleEvent(e);
 	}
-}, be = class {
+}, xe = class {
 	constructor(e, t, n) {
 		this.element = e, this.type = 6, this._$AN = void 0, this._$AM = t, this.options = n;
 	}
@@ -470,33 +470,33 @@ var ge = class {
 		return this._$AM._$AU;
 	}
 	_$AI(e) {
-		L(this, e);
+		I(this, e);
 	}
-}, xe = {
+}, Se = {
 	M: ae,
 	P: C,
 	A: w,
 	C: 1,
-	L: he,
-	R: ge,
+	L: ge,
+	R: _e,
 	D: se,
-	V: L,
-	I: R,
-	H: z,
-	N: ve,
-	U: ye,
-	B: _e,
-	F: be
-}, Se = x.litHtmlPolyfillSupport;
-Se?.(I, R), (x.litHtmlVersions ??= []).push("3.3.3");
-var Ce = (e, t, n) => {
+	V: I,
+	I: L,
+	H: R,
+	N: ye,
+	U: be,
+	B: ve,
+	F: xe
+}, Ce = x.litHtmlPolyfillSupport;
+Ce?.(F, L), (x.litHtmlVersions ??= []).push("3.3.3");
+var we = (e, t, n) => {
 	let r = n?.renderBefore ?? t, i = r._$litPart$;
 	if (i === void 0) {
 		let e = n?.renderBefore ?? null;
-		r._$litPart$ = i = new R(t.insertBefore(E(), e), e, void 0, n ?? {});
+		r._$litPart$ = i = new L(t.insertBefore(E(), e), e, void 0, n ?? {});
 	}
 	return i._$AI(e), i;
-}, B = globalThis, V = class extends b {
+}, z = globalThis, B = class extends b {
 	constructor() {
 		super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
 	}
@@ -506,7 +506,7 @@ var Ce = (e, t, n) => {
 	}
 	update(e) {
 		let t = this.render();
-		this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = Ce(t, this.renderRoot, this.renderOptions);
+		this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = we(t, this.renderRoot, this.renderOptions);
 	}
 	connectedCallback() {
 		super.connectedCallback(), this._$Do?.setConnected(!0);
@@ -515,25 +515,25 @@ var Ce = (e, t, n) => {
 		super.disconnectedCallback(), this._$Do?.setConnected(!1);
 	}
 	render() {
-		return N;
+		return M;
 	}
 };
-V._$litElement$ = !0, V.finalized = !0, B.litElementHydrateSupport?.({ LitElement: V });
-var we = B.litElementPolyfillSupport;
-we?.({ LitElement: V }), (B.litElementVersions ??= []).push("4.2.2");
+B._$litElement$ = !0, B.finalized = !0, z.litElementHydrateSupport?.({ LitElement: B });
+var Te = z.litElementPolyfillSupport;
+Te?.({ LitElement: B }), (z.litElementVersions ??= []).push("4.2.2");
 //#endregion
 //#region node_modules/.pnpm/@lit+reactive-element@2.1.2/node_modules/@lit/reactive-element/decorators/custom-element.js
-var Te = (e) => (t, n) => {
+var Ee = (e) => (t, n) => {
 	n === void 0 ? customElements.define(e, t) : n.addInitializer(() => {
 		customElements.define(e, t);
 	});
-}, Ee = {
+}, De = {
 	attribute: !0,
 	type: String,
 	converter: v,
 	reflect: !1,
 	hasChanged: y
-}, De = (e = Ee, t, n) => {
+}, Oe = (e = De, t, n) => {
 	let { kind: r, metadata: i } = n, a = globalThis.litPropertyMetadata.get(i);
 	if (a === void 0 && globalThis.litPropertyMetadata.set(i, a = /* @__PURE__ */ new Map()), r === "setter" && ((e = Object.create(e)).wrapped = !0), a.set(n.name, e), r === "accessor") {
 		let { name: r } = n;
@@ -556,16 +556,16 @@ var Te = (e) => (t, n) => {
 	}
 	throw Error("Unsupported decorator location: " + r);
 };
-function H(e) {
-	return (t, n) => typeof n == "object" ? De(e, t, n) : ((e, t, n) => {
+function V(e) {
+	return (t, n) => typeof n == "object" ? Oe(e, t, n) : ((e, t, n) => {
 		let r = t.hasOwnProperty(n);
 		return t.constructor.createProperty(n, e), r ? Object.getOwnPropertyDescriptor(t, n) : void 0;
 	})(e, t, n);
 }
 //#endregion
 //#region node_modules/.pnpm/@lit+reactive-element@2.1.2/node_modules/@lit/reactive-element/decorators/state.js
-function U(e) {
-	return H({
+function H(e) {
+	return V({
 		...e,
 		state: !0,
 		attribute: !1
@@ -573,17 +573,17 @@ function U(e) {
 }
 //#endregion
 //#region node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/directive.js
-var Oe = {
+var ke = {
 	ATTRIBUTE: 1,
 	CHILD: 2,
 	PROPERTY: 3,
 	BOOLEAN_ATTRIBUTE: 4,
 	EVENT: 5,
 	ELEMENT: 6
-}, ke = (e) => (...t) => ({
+}, Ae = (e) => (...t) => ({
 	_$litDirective$: e,
 	values: t
-}), Ae = class {
+}), je = class {
 	constructor(e) {}
 	get _$AU() {
 		return this._$AM._$AU;
@@ -597,9 +597,9 @@ var Oe = {
 	update(e, t) {
 		return this.render(...t);
 	}
-}, { I: je } = xe, Me = (e) => e, Ne = () => document.createComment(""), W = (e, t, n) => {
+}, { I: Me } = Se, Ne = (e) => e, Pe = () => document.createComment(""), U = (e, t, n) => {
 	let r = e._$AA.parentNode, i = t === void 0 ? e._$AB : t._$AA;
-	if (n === void 0) n = new je(r.insertBefore(Ne(), i), r.insertBefore(Ne(), i), e, e.options);
+	if (n === void 0) n = new Me(r.insertBefore(Pe(), i), r.insertBefore(Pe(), i), e, e.options);
 	else {
 		let t = n._$AB.nextSibling, a = n._$AM, o = a !== e;
 		if (o) {
@@ -609,21 +609,21 @@ var Oe = {
 		if (t !== i || o) {
 			let e = n._$AA;
 			for (; e !== t;) {
-				let t = Me(e).nextSibling;
-				Me(r).insertBefore(e, i), e = t;
+				let t = Ne(e).nextSibling;
+				Ne(r).insertBefore(e, i), e = t;
 			}
 		}
 	}
 	return n;
-}, G = (e, t, n = e) => (e._$AI(t, n), e), Pe = {}, Fe = (e, t = Pe) => e._$AH = t, Ie = (e) => e._$AH, Le = (e) => {
+}, W = (e, t, n = e) => (e._$AI(t, n), e), Fe = {}, Ie = (e, t = Fe) => e._$AH = t, Le = (e) => e._$AH, Re = (e) => {
 	e._$AR(), e._$AA.remove();
-}, Re = (e, t, n) => {
+}, ze = (e, t, n) => {
 	let r = /* @__PURE__ */ new Map();
 	for (let i = t; i <= n; i++) r.set(e[i], i);
 	return r;
-}, K = ke(class extends Ae {
+}, G = Ae(class extends je {
 	constructor(e) {
-		if (super(e), e.type !== Oe.CHILD) throw Error("repeat() can only be used in text expressions");
+		if (super(e), e.type !== ke.CHILD) throw Error("repeat() can only be used in text expressions");
 	}
 	dt(e, t, n) {
 		let r;
@@ -639,36 +639,36 @@ var Oe = {
 		return this.dt(e, t, n).values;
 	}
 	update(e, [t, n, r]) {
-		let i = Ie(e), { values: a, keys: o } = this.dt(t, n, r);
+		let i = Le(e), { values: a, keys: o } = this.dt(t, n, r);
 		if (!Array.isArray(i)) return this.ut = o, a;
 		let s = this.ut ??= [], c = [], l, u, d = 0, f = i.length - 1, p = 0, m = a.length - 1;
 		for (; d <= f && p <= m;) if (i[d] === null) d++;
 		else if (i[f] === null) f--;
-		else if (s[d] === o[p]) c[p] = G(i[d], a[p]), d++, p++;
-		else if (s[f] === o[m]) c[m] = G(i[f], a[m]), f--, m--;
-		else if (s[d] === o[m]) c[m] = G(i[d], a[m]), W(e, c[m + 1], i[d]), d++, m--;
-		else if (s[f] === o[p]) c[p] = G(i[f], a[p]), W(e, i[d], i[f]), f--, p++;
-		else if (l === void 0 && (l = Re(o, p, m), u = Re(s, d, f)), l.has(s[d])) if (l.has(s[f])) {
+		else if (s[d] === o[p]) c[p] = W(i[d], a[p]), d++, p++;
+		else if (s[f] === o[m]) c[m] = W(i[f], a[m]), f--, m--;
+		else if (s[d] === o[m]) c[m] = W(i[d], a[m]), U(e, c[m + 1], i[d]), d++, m--;
+		else if (s[f] === o[p]) c[p] = W(i[f], a[p]), U(e, i[d], i[f]), f--, p++;
+		else if (l === void 0 && (l = ze(o, p, m), u = ze(s, d, f)), l.has(s[d])) if (l.has(s[f])) {
 			let t = u.get(o[p]), n = t === void 0 ? null : i[t];
 			if (n === null) {
-				let t = W(e, i[d]);
-				G(t, a[p]), c[p] = t;
-			} else c[p] = G(n, a[p]), W(e, i[d], n), i[t] = null;
+				let t = U(e, i[d]);
+				W(t, a[p]), c[p] = t;
+			} else c[p] = W(n, a[p]), U(e, i[d], n), i[t] = null;
 			p++;
-		} else Le(i[f]), f--;
-		else Le(i[d]), d++;
+		} else Re(i[f]), f--;
+		else Re(i[d]), d++;
 		for (; p <= m;) {
-			let t = W(e, c[m + 1]);
-			G(t, a[p]), c[p++] = t;
+			let t = U(e, c[m + 1]);
+			W(t, a[p]), c[p++] = t;
 		}
 		for (; d <= f;) {
 			let e = i[d++];
-			e !== null && Le(e);
+			e !== null && Re(e);
 		}
-		return this.ut = o, Fe(e, c), N;
+		return this.ut = o, Ie(e, c), M;
 	}
-}), ze = "0.4.5", Be = "shopping-list-card-improved", Ve = "shopping-list-card-improved-editor", q = {
-	type: `custom:${Be}`,
+}), Be = "0.4.5", Ve = "shopping-list-card-improved", He = "shopping-list-card-improved-editor", K = {
+	type: `custom:${Ve}`,
 	title: "Shopping List",
 	show_header: !0,
 	completed: "bottom",
@@ -691,9 +691,9 @@ var Oe = {
 	sort: "manual",
 	fill_screen: !1,
 	enable_reorder: !0
-}, He = /^\s*\[([^\]]+)\]\s*/;
-function Ue(e) {
-	let t = e.match(He);
+}, Ue = /^\s*\[([^\]]+)\]\s*/;
+function q(e) {
+	let t = e.match(Ue);
 	if (!t) return {
 		category: null,
 		rest: e
@@ -759,7 +759,8 @@ var Xe = o`
     --shopping-list-muted: var(--secondary-text-color, #727272);
     --shopping-list-accent: var(--primary-color, #03a9f4);
     --shopping-list-error: var(--error-color, #db4437);
-    --shopping-list-radius: 20px;
+    /* Square card corners by default — set a radius to round them again. */
+    --shopping-list-radius: 0;
     --shopping-list-padding: 16px;
     --shopping-list-gap: 4px;
 
@@ -876,8 +877,12 @@ var Xe = o`
     display: block;
     height: var(--shopping-list-host-height, auto);
   }
+  /* touch-action is intersected down the whole ancestor chain, so the card
+     must not set it to none — that would also disable panning inside the
+     scroll list and leave mobile scrolling stuck. pan-y keeps the page from
+     zooming or panning sideways while the list still pans vertically. */
   :host(.sl-host--fill-screen) .sl-card {
-    touch-action: none;
+    touch-action: pan-y;
   }
   :host(.sl-host--fill-screen) .sl-list-scroll {
     touch-action: pan-y;
@@ -895,6 +900,9 @@ var Xe = o`
     max-height: var(--shopping-list-card-max-height, none);
     box-sizing: border-box;
     overflow: hidden;
+    /* Keep swipe gestures inside the card: without this a swipe at the end of
+       the list chains to the page and triggers pull-to-refresh. */
+    overscroll-behavior: contain;
   }
   .sl-card--fill-screen {
     height: 100%;
@@ -949,6 +957,10 @@ var Xe = o`
     overflow-y: auto;
     min-height: 0;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    /* Stop scroll chaining: reaching the top/bottom of the list must not
+       scroll (or pull-to-refresh) the dashboard behind it. */
+    overscroll-behavior-y: contain;
   }
   .sl-list-scroll::-webkit-scrollbar {
     width: 4px;
@@ -1049,6 +1061,9 @@ var Xe = o`
     flex-shrink: 0;
     color: var(--shopping-list-drag-handle-color);
     cursor: grab;
+    /* The handle owns its gestures so a touch drag reorders instead of
+       scrolling the list underneath. */
+    touch-action: none;
     --mdc-icon-size: var(--shopping-list-drag-handle-icon-size);
     border-radius: 4px;
     transition: color 120ms ease;
@@ -1555,7 +1570,7 @@ var Ze, Qe = "yaml", $e = 8, et = [
 		name: "general_category_label",
 		selector: { text: {} }
 	}
-], X = (Ze = class extends V {
+], X = (Ze = class extends B {
 	constructor(...e) {
 		super(...e), this._labelFor = (e) => "type" in e && e.type === "expandable" ? e.title ?? e.name : {
 			entity: "Todo Entity (required)",
@@ -1599,12 +1614,12 @@ var Ze, Qe = "yaml", $e = 8, et = [
 		}
 	}
 	render() {
-		if (!this.hass || !this._config) return M``;
+		if (!this.hass || !this._config) return j``;
 		let e = {
-			...q,
+			...K,
 			...this._config
 		};
-		return M`
+		return j`
       <ha-form
         .hass=${this.hass}
         .data=${e}
@@ -1670,7 +1685,7 @@ var Ze, Qe = "yaml", $e = 8, et = [
 	}
 	_formValueChanged(e) {
 		if (e.stopPropagation(), !this._config) return;
-		let t = e.detail.value, n = this._config, r = q, i = { ...this._config };
+		let t = e.detail.value, n = this._config, r = K, i = { ...this._config };
 		for (let [e, a] of Object.entries(t)) {
 			let t = e in n, o = a === r[e];
 			(t || !o) && (i[e] = a);
@@ -1770,37 +1785,39 @@ var Ze, Qe = "yaml", $e = 8, et = [
       --code-mirror-max-height: 240px;
     }
   `, Ze);
-Y([H({ attribute: !1 })], X.prototype, "hass", void 0), Y([U()], X.prototype, "_config", void 0), X = Y([Te(Ve)], X);
+Y([V({ attribute: !1 })], X.prototype, "hass", void 0), Y([H()], X.prototype, "_config", void 0), X = Y([Ee(He)], X);
 //#endregion
 //#region src/shopping-list-card.ts
 var Z, nt = "__general__", Q = window;
 Q.customCards = Q.customCards || [], Q.customCards.find((e) => e.type === "shopping-list-card-improved") || Q.customCards.push({
-	type: Be,
+	type: Ve,
 	name: "Shopping List Card",
 	description: "A shopping-style list view for any todo entity, with categories, quantities, offline support, and drag-and-drop reorder.",
 	preview: !0,
 	documentationURL: "https://github.com/ksmarty/ha-shopping-list"
-}), console.info(`%c SHOPPING-LIST-CARD %c v${ze} `, "color: white; background: #03a9f4; font-weight: 700;", "color: #03a9f4; background: white; font-weight: 700;");
-var $ = (Z = class extends V {
+}), console.info(`%c SHOPPING-LIST-CARD %c v${Be} `, "color: white; background: #03a9f4; font-weight: 700;", "color: #03a9f4; background: white; font-weight: 700;");
+var $ = (Z = class extends B {
 	constructor(...e) {
-		super(...e), this._items = [], this._loading = !1, this._draft = "", this._completedExpanded = !1, this._editDraft = "", this._editQuantity = 1, this._addQuantity = 1, this._collapsedCategories = /* @__PURE__ */ new Set(), this._connected = !0, this._offlineQueue = [], this._draggedUid = null, this._dropPosition = "above", this._resizeHandler = null, this._touchDragUid = null, this._focusEditOnUpdate = !1, this._connectionUnsubs = [], this._itemOrder = [], this._fillScreenWheelHandler = (e) => {
+		super(...e), this._items = [], this._loading = !1, this._draft = "", this._completedExpanded = !1, this._editDraft = "", this._editQuantity = 1, this._addQuantity = 1, this._adding = !1, this._collapsedCategories = /* @__PURE__ */ new Set(), this._connected = !0, this._offlineQueue = [], this._draggedUid = null, this._dropPosition = "above", this._resizeHandler = null, this._touchDragUid = null, this._focusEditOnUpdate = !1, this._connectionUnsubs = [], this._itemOrder = [], this._fillScreenWheelHandler = (e) => {
 			let t = this.renderRoot.querySelector(".sl-list-scroll");
 			(!t || !t.contains(e.target) || t.scrollHeight <= t.clientHeight) && e.preventDefault();
+		}, this._onTouchCancel = () => {
+			this._clearTouchDragState();
 		}, this._toggleCompletedExpanded = () => {
 			this._completedExpanded = !this._completedExpanded;
 		};
 	}
 	static getStubConfig() {
-		return { ...q };
+		return { ...K };
 	}
 	static async getConfigElement() {
-		return document.createElement(Ve);
+		return document.createElement(He);
 	}
 	setConfig(e) {
 		if (!e) throw Error("Invalid configuration");
 		let t = { ...e };
 		t.completed === void 0 && t.show_completed !== void 0 && (t.completed = t.show_completed ? "inline" : "hide"), this._config = {
-			...q,
+			...K,
 			...t
 		}, this._loadItemOrder();
 	}
@@ -2011,6 +2028,9 @@ var $ = (Z = class extends V {
 		}
 		this._touchDragUid = null, this._dropPosition = "above";
 	}
+	_clearTouchDragState() {
+		this._touchDragUid = null, this._dropPosition = "above", this.renderRoot.querySelectorAll(".sl-item--drop-above, .sl-item--drop-below, .sl-item--dragging").forEach((e) => e.classList.remove("sl-item--drop-above", "sl-item--drop-below", "sl-item--dragging"));
+	}
 	async _setupSubscription(e) {
 		if (this._teardownSubscription(), this.hass) {
 			this._loading = !0, this._error = void 0;
@@ -2040,22 +2060,45 @@ var $ = (Z = class extends V {
 			this._unsub = void 0;
 		}
 	}
+	_itemKey(e) {
+		let t = this._config?.enable_categories ?? !1, n = t ? q(e) : {
+			category: null,
+			rest: e
+		}, r = Je(n.rest).name.toLowerCase().replace(/\s+/g, " ").trim();
+		return t ? `${(n.category ?? "").toLowerCase()}\u0000${r}` : r;
+	}
+	_findDuplicates(e) {
+		let t = this._itemKey(e);
+		return this._items.filter((e) => this._itemKey(e.summary) === t);
+	}
 	async _addItem() {
 		let e = this._config, t = e?.entity, n = this._draft.trim();
-		if (!t || !n || !this.hass) return;
-		let r = e.enable_quantity ?? !1, i = J(this._addQuantity, e.quantity_max ?? 0), a = r ? Ye(n, i) : n, o = `temp_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`, s = {
-			uid: o,
-			summary: a,
-			status: "needs_action"
-		};
-		this._connected || (this._items = [...this._items, s]);
+		if (!t || !n || !this.hass || this._adding) return;
+		let r = e.enable_quantity ?? !1, i = J(this._addQuantity, e.quantity_max ?? 0), a = r ? Ye(n, i) : n, o = this._draft, s = this._addQuantity;
+		this._adding = !0, this._draft = "", this._addQuantity = 1;
+		let c = this._findDuplicates(a), l = [], u;
 		try {
+			for (let e of c) await this._executeService("todo", "remove_item", {
+				entity_id: t,
+				item: e.uid
+			}), l.push(e), this._items = this._items.filter((t) => t.uid !== e.uid);
+			if (!this._connected) {
+				u = `temp_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+				let e = {
+					uid: u,
+					summary: a,
+					status: "needs_action"
+				};
+				this._items = [...this._items, e];
+			}
 			await this._executeService("todo", "add_item", {
 				entity_id: t,
 				item: a
-			}), this._draft = "", this._addQuantity = 1;
+			});
 		} catch {
-			this._items = this._items.filter((e) => e.uid !== o);
+			u && (this._items = this._items.filter((e) => e.uid !== u)), l.length > 0 && (this._items = [...this._items, ...l]), this._draft || (this._draft = o, this._addQuantity = s);
+		} finally {
+			this._adding = !1;
 		}
 	}
 	_adjustAddQuantity(e) {
@@ -2195,7 +2238,7 @@ var $ = (Z = class extends V {
 	_buildGroups() {
 		let e = this._config, t = e.general_category_label || "General", n = /* @__PURE__ */ new Map(), r = [];
 		for (let e of this._items) {
-			let { category: i } = Ue(e.summary), a = i ?? nt, o = n.get(a);
+			let { category: i } = q(e.summary), a = i ?? nt, o = n.get(a);
 			o || (o = {
 				key: a,
 				category: i,
@@ -2215,25 +2258,25 @@ var $ = (Z = class extends V {
 		return e.sort === "alpha" && i.sort((e, t) => e.displayName.localeCompare(t.displayName)), i;
 	}
 	render() {
-		if (!this._config || !this.hass) return P;
+		if (!this._config || !this.hass) return N;
 		let e = this._config, t = this._extractCustomStyle(), n = !!(e.show_add_input && e.entity), r = e.fill_screen ?? !1, i = e.add_input_position ?? "bottom";
-		return M`
+		return j`
       <ha-card class="sl-card ${r ? "sl-card--fill-screen" : ""}">
-        ${e.show_header ? this._renderHeader() : P}
-        ${this._error ? M`<div class="sl-error">${this._error}</div>` : P}
-        ${this._offlineQueue.length > 0 ? this._renderOfflineBanner() : P}
-        ${n && i === "top" ? this._renderAddRow("top") : P}
+        ${e.show_header ? this._renderHeader() : N}
+        ${this._error ? j`<div class="sl-error">${this._error}</div>` : N}
+        ${this._offlineQueue.length > 0 ? this._renderOfflineBanner() : N}
+        ${n && i === "top" ? this._renderAddRow("top") : N}
         ${this._renderScrollWrapper()}
-        ${n && i !== "top" ? this._renderAddRow("bottom") : P}
+        ${n && i !== "top" ? this._renderAddRow("bottom") : N}
       </ha-card>
-      ${t ? M`<style>
+      ${t ? j`<style>
               ${t}
-            </style>` : P}
+            </style>` : N}
     `;
 	}
 	_renderOfflineBanner() {
 		let e = this._offlineQueue.length;
-		return M`
+		return j`
       <div class="sl-offline">
         <ha-icon icon="mdi:cloud-off-outline"></ha-icon>
         <span>Offline — ${e} pending change${e === 1 ? "" : "s"}</span>
@@ -2242,7 +2285,7 @@ var $ = (Z = class extends V {
 	}
 	_renderScrollWrapper() {
 		let e = this._config, t = e.enable_reorder !== !1 && (e.sort === "manual" || !e.sort);
-		return M`
+		return j`
       <div
         class="sl-list-scroll"
         @dragover=${t ? this._onDragOver : null}
@@ -2254,17 +2297,17 @@ var $ = (Z = class extends V {
 	}
 	_renderBody() {
 		let e = this._config;
-		return e.entity ? this._loading && this._items.length === 0 ? M`<div class="sl-empty">Loading…</div>` : e.enable_categories && e.group_by_category !== !1 ? this._renderGrouped() : this._renderFlat() : M`<div class="sl-empty">
+		return e.entity ? this._loading && this._items.length === 0 ? j`<div class="sl-empty">Loading…</div>` : e.enable_categories && e.group_by_category !== !1 ? this._renderGrouped() : this._renderFlat() : j`<div class="sl-empty">
         No todo entity selected. Open the editor to pick one.
       </div>`;
 	}
 	_renderFlat() {
 		let e = this._config, t = e.completed ?? "bottom", { active: n, completed: r } = this._splitItems(), i, a = [], o = !1;
-		return t === "hide" ? i = n : t === "inline" ? i = this._sort([...this._items]) : t === "bottom" ? (i = n, a = r) : (i = n, o = r.length > 0, this._completedExpanded && (a = r)), i.length === 0 && a.length === 0 && !o ? M`<div class="sl-empty">${e.empty_message}</div>` : M`
+		return t === "hide" ? i = n : t === "inline" ? i = this._sort([...this._items]) : t === "bottom" ? (i = n, a = r) : (i = n, o = r.length > 0, this._completedExpanded && (a = r)), i.length === 0 && a.length === 0 && !o ? j`<div class="sl-empty">${e.empty_message}</div>` : j`
       <ul class="sl-list">
-        ${K(i, (e) => e.uid, (e) => this._renderItem(e))}
-        ${o ? this._renderCompletedToggle(r.length) : P}
-        ${K(a, (e) => e.uid, (e) => this._renderItem(e))}
+        ${G(i, (e) => e.uid, (e) => this._renderItem(e))}
+        ${o ? this._renderCompletedToggle(r.length) : N}
+        ${G(a, (e) => e.uid, (e) => this._renderItem(e))}
       </ul>
     `;
 	}
@@ -2276,15 +2319,15 @@ var $ = (Z = class extends V {
 			r = this._sort(e), i = r.length > 0;
 		}
 		let a = n.filter((e) => t === "hide" || t === "collapse" ? e.active.length > 0 : e.active.length + e.completed.length > 0);
-		return a.length === 0 && !i ? M`<div class="sl-empty">${e.empty_message}</div>` : M`
+		return a.length === 0 && !i ? j`<div class="sl-empty">${e.empty_message}</div>` : j`
       <div class="sl-list sl-list--grouped">
-        ${K(a, (e) => e.key, (e) => this._renderGroup(e))}
-        ${i ? M`
+        ${G(a, (e) => e.key, (e) => this._renderGroup(e))}
+        ${i ? j`
                 <ul class="sl-list sl-grouped-completed">
                   ${this._renderCompletedToggle(r.length)}
-                  ${this._completedExpanded ? K(r, (e) => e.uid, (e) => this._renderItem(e, { hidePrefix: !1 })) : P}
+                  ${this._completedExpanded ? G(r, (e) => e.uid, (e) => this._renderItem(e, { hidePrefix: !1 })) : N}
                 </ul>
-              ` : P}
+              ` : N}
       </div>
     `;
 	}
@@ -2292,16 +2335,16 @@ var $ = (Z = class extends V {
 		let t = this._config, n = t.completed ?? "bottom", r = n === "collapse" ? e.active : [...e.active, ...e.completed], i = r.length > 0 && r.every((e) => e.status === "completed"), a = !i && r.some((e) => e.status === "completed"), o = t.category_check_all !== !1, s = t.category_collapsible !== !1, c = s && this._collapsedCategories.has(e.key), l;
 		l = n === "hide" || n === "collapse" ? e.active : n === "inline" ? this._sort([...e.active, ...e.completed]) : [...e.active, ...e.completed];
 		let u = this._categoryColor(e.displayName);
-		return M`
+		return j`
       <section class="sl-category" style=${u ? `--shopping-list-category-color: ${u}` : ""}>
         <div class="sl-category-header">
-          ${o ? M`<ha-checkbox
+          ${o ? j`<ha-checkbox
                   class="sl-category-checkbox"
                   .checked=${i}
                   .indeterminate=${a}
                   @click=${(e) => e.stopPropagation()}
                   @change=${() => this._toggleCategoryAll(r, i)}
-                ></ha-checkbox>` : P}
+                ></ha-checkbox>` : N}
           <button
             class="sl-category-name"
             type="button"
@@ -2309,28 +2352,28 @@ var $ = (Z = class extends V {
             aria-expanded=${s && c ? "false" : "true"}
             @click=${s ? () => this._toggleCategoryCollapse(e.key) : null}
           >
-            [${e.displayName}]${t.category_show_count !== !1 && e.active.length > 0 ? M`<span class="sl-category-count" aria-label="active items"
+            [${e.displayName}]${t.category_show_count !== !1 && e.active.length > 0 ? j`<span class="sl-category-count" aria-label="active items"
                     >(${e.active.length})</span
-                  >` : P}
+                  >` : N}
           </button>
-          ${s ? M`<button
+          ${s ? j`<button
                   type="button"
                   class="sl-category-collapse"
                   aria-label=${c ? "Expand category" : "Collapse category"}
                   @click=${() => this._toggleCategoryCollapse(e.key)}
                 >
                   <ha-icon .icon=${c ? "mdi:chevron-down" : "mdi:chevron-up"}></ha-icon>
-                </button>` : P}
+                </button>` : N}
         </div>
-        ${c ? P : M`<ul class="sl-category-items">
-                ${K(l, (e) => e.uid, (e) => this._renderItem(e, { hidePrefix: !0 }))}
+        ${c ? N : j`<ul class="sl-category-items">
+                ${G(l, (e) => e.uid, (e) => this._renderItem(e, { hidePrefix: !0 }))}
               </ul>`}
       </section>
     `;
 	}
 	_renderCompletedToggle(e) {
 		let t = this._completedExpanded, n = this._config?.completed_label || "Completed";
-		return M`
+		return j`
       <li
         class="sl-completed-toggle ${t ? "sl-completed-toggle--expanded" : ""}"
         role="button"
@@ -2351,9 +2394,9 @@ var $ = (Z = class extends V {
 	}
 	_renderHeader() {
 		let e = this._config;
-		return M`
+		return j`
       <div class="sl-header">
-        ${e.icon ? M`<ha-icon class="sl-icon" .icon=${e.icon}></ha-icon>` : P}
+        ${e.icon ? j`<ha-icon class="sl-icon" .icon=${e.icon}></ha-icon>` : N}
         <span class="sl-title">${e.title}</span>
       </div>
     `;
@@ -2361,14 +2404,14 @@ var $ = (Z = class extends V {
 	_renderItem(e, t) {
 		let n = this._config, r = e.status === "completed", i = this._editingUid === e.uid, a = n.enable_edit !== !1, o = n.enable_remove !== !1, s = n.enable_quantity ?? !1, c = n.quantity_max ?? 0, l = n.click_to_check !== !1, u = n.enable_categories ?? !1, d = n.enable_reorder !== !1 && (n.sort === "manual" || !n.sort) && !i, f = e.summary, p = null;
 		if (u) {
-			let t = Ue(e.summary);
+			let t = q(e.summary);
 			p = t.category, f = t.rest;
 		}
 		let m = s ? Je(f) : {
 			name: f,
 			quantity: 1
 		}, h = s && m.quantity > 1, g = u && !t?.hidePrefix && !!p, ee = p ? this._categoryColor(p) : void 0, te = ee ? `--shopping-list-category-color: ${ee}` : "", _ = this._editQuantity > 1, v = c <= 0 || this._editQuantity < c, y = (e) => e.preventDefault();
-		return M`
+		return j`
       <li
         class="sl-item ${r ? "sl-item--completed" : ""} ${i ? "sl-item--editing" : ""} ${l ? "" : "sl-item--no-row-click"} ${this._draggedUid === e.uid ? "sl-item--dragging" : ""}"
         style=${te}
@@ -2377,7 +2420,7 @@ var $ = (Z = class extends V {
 			l && (i || t.target.tagName !== "HA-CHECKBOX" && this._toggleItem(e));
 		}}
       >
-        ${d ? M`<ha-icon
+        ${d ? j`<ha-icon
                 class="sl-drag-handle"
                 draggable="true"
                 icon="mdi:drag"
@@ -2387,7 +2430,8 @@ var $ = (Z = class extends V {
                 @touchstart=${this._onTouchStart}
                 @touchmove=${this._onTouchMove}
                 @touchend=${this._onTouchEnd}
-              ></ha-icon>` : P}
+                @touchcancel=${this._onTouchCancel}
+              ></ha-icon>` : N}
 
         <ha-checkbox
           class="sl-checkbox"
@@ -2396,7 +2440,7 @@ var $ = (Z = class extends V {
           @change=${() => this._toggleItem(e)}
         ></ha-checkbox>
 
-        ${i ? M`<input
+        ${i ? j`<input
                 class="sl-edit-input"
                 type="text"
                 .value=${this._editDraft}
@@ -2411,10 +2455,10 @@ var $ = (Z = class extends V {
                 @blur=${() => {
 			this._editingUid === e.uid && this._saveEdit(e);
 		}}
-              />` : M`<span class="sl-summary">
-                ${g ? M`<span class="sl-category-prefix">[${p}]</span> ` : P}<span class="sl-name">${m.name}</span>${h ? M`<span class="sl-quantity-badge">×${m.quantity}</span>` : P}
+              />` : j`<span class="sl-summary">
+                ${g ? j`<span class="sl-category-prefix">[${p}]</span> ` : N}<span class="sl-name">${m.name}</span>${h ? j`<span class="sl-quantity-badge">×${m.quantity}</span>` : N}
               </span>`}
-        ${i && s ? M`
+        ${i && s ? j`
                 <div class="sl-quantity-stepper" aria-label="Item quantity">
                   <button
                     type="button"
@@ -2442,10 +2486,10 @@ var $ = (Z = class extends V {
                     <ha-icon icon="mdi:plus"></ha-icon>
                   </button>
                 </div>
-              ` : P}
+              ` : N}
 
         <div class="sl-actions">
-          ${i ? M`
+          ${i ? j`
                   <ha-icon-button
                     class="sl-action-button sl-action-button-save"
                     .label=${"Save"}
@@ -2466,8 +2510,8 @@ var $ = (Z = class extends V {
                   >
                     <ha-icon icon="mdi:close"></ha-icon>
                   </ha-icon-button>
-                ` : M`
-                  ${a ? M`<ha-icon-button
+                ` : j`
+                  ${a ? j`<ha-icon-button
                           class="sl-action-button sl-action-button-edit"
                           .label=${"Edit"}
                           @click=${(t) => {
@@ -2475,8 +2519,8 @@ var $ = (Z = class extends V {
 		}}
                         >
                           <ha-icon icon="mdi:pencil"></ha-icon>
-                        </ha-icon-button>` : P}
-                  ${o ? M`<ha-icon-button
+                        </ha-icon-button>` : N}
+                  ${o ? j`<ha-icon-button
                           class="sl-action-button sl-action-button-delete"
                           .label=${"Remove"}
                           @click=${(t) => {
@@ -2484,15 +2528,15 @@ var $ = (Z = class extends V {
 		}}
                         >
                           <ha-icon icon="mdi:close"></ha-icon>
-                        </ha-icon-button>` : P}
+                        </ha-icon-button>` : N}
                 `}
         </div>
       </li>
     `;
 	}
 	_renderAddRow(e) {
-		let t = this._config, n = this._draft.trim().length > 0, r = t.enable_quantity ?? !1, i = t.quantity_max ?? 0, a = this._addQuantity > 1, o = i <= 0 || this._addQuantity < i, s = (e) => e.preventDefault();
-		return M`
+		let t = this._config, n = this._draft.trim().length > 0 && !this._adding, r = t.enable_quantity ?? !1, i = t.quantity_max ?? 0, a = this._addQuantity > 1, o = i <= 0 || this._addQuantity < i, s = (e) => e.preventDefault();
+		return j`
       <div class="sl-add-row sl-add-row--${e}">
         <input
           class="sl-input"
@@ -2506,7 +2550,7 @@ var $ = (Z = class extends V {
 			e.key === "Enter" && (e.preventDefault(), this._addItem());
 		}}
         />
-        ${r ? M`
+        ${r ? j`
                 <div
                   class="sl-quantity-stepper sl-quantity-stepper--add"
                   aria-label="Initial quantity for new item"
@@ -2533,7 +2577,7 @@ var $ = (Z = class extends V {
                     <ha-icon icon="mdi:plus"></ha-icon>
                   </button>
                 </div>
-              ` : P}
+              ` : N}
         <button
           class="sl-add-button"
           type="button"
@@ -2556,6 +2600,6 @@ var $ = (Z = class extends V {
 		}
 	}
 }, Z.styles = Xe, Z);
-Y([H({ attribute: !1 })], $.prototype, "hass", void 0), Y([U()], $.prototype, "_config", void 0), Y([U()], $.prototype, "_items", void 0), Y([U()], $.prototype, "_loading", void 0), Y([U()], $.prototype, "_error", void 0), Y([U()], $.prototype, "_draft", void 0), Y([U()], $.prototype, "_completedExpanded", void 0), Y([U()], $.prototype, "_editingUid", void 0), Y([U()], $.prototype, "_editDraft", void 0), Y([U()], $.prototype, "_editQuantity", void 0), Y([U()], $.prototype, "_addQuantity", void 0), Y([U()], $.prototype, "_collapsedCategories", void 0), Y([U()], $.prototype, "_connected", void 0), Y([U()], $.prototype, "_offlineQueue", void 0), Y([U()], $.prototype, "_draggedUid", void 0), $ = Y([Te(Be)], $);
+Y([V({ attribute: !1 })], $.prototype, "hass", void 0), Y([H()], $.prototype, "_config", void 0), Y([H()], $.prototype, "_items", void 0), Y([H()], $.prototype, "_loading", void 0), Y([H()], $.prototype, "_error", void 0), Y([H()], $.prototype, "_draft", void 0), Y([H()], $.prototype, "_completedExpanded", void 0), Y([H()], $.prototype, "_editingUid", void 0), Y([H()], $.prototype, "_editDraft", void 0), Y([H()], $.prototype, "_editQuantity", void 0), Y([H()], $.prototype, "_addQuantity", void 0), Y([H()], $.prototype, "_adding", void 0), Y([H()], $.prototype, "_collapsedCategories", void 0), Y([H()], $.prototype, "_connected", void 0), Y([H()], $.prototype, "_offlineQueue", void 0), Y([H()], $.prototype, "_draggedUid", void 0), $ = Y([Ee(Ve)], $);
 //#endregion
 export { $ as ShoppingListCard };

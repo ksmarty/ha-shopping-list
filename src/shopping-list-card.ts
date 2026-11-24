@@ -62,6 +62,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
   @state() private _editDraft = "";
   @state() private _editQuantity = 1;
   @state() private _addQuantity = 1;
+  @state() private _adding = false;
   @state() private _collapsedCategories: Set<string> = new Set();
   @state() private _connected = true;
   @state() private _offlineQueue: PendingOperation[] = [];
@@ -543,6 +544,26 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     this._dropPosition = "above";
   }
 
+  /**
+   * A cancelled touch (the browser takes the gesture for scrolling, a call
+   * comes in, the finger leaves the screen...) never fires `touchend`. Without
+   * this reset the drag state stayed stuck and every later `touchmove` was
+   * preventDefault-ed, which froze list scrolling until a reload.
+   */
+  private _onTouchCancel = (): void => {
+    this._clearTouchDragState();
+  };
+
+  private _clearTouchDragState(): void {
+    this._touchDragUid = null;
+    this._dropPosition = "above";
+    this.renderRoot
+      .querySelectorAll(".sl-item--drop-above, .sl-item--drop-below, .sl-item--dragging")
+      .forEach((el) =>
+        el.classList.remove("sl-item--drop-above", "sl-item--drop-below", "sl-item--dragging"),
+      );
+  }
+
   /* --- HA Todo API plumbing --- */
 
   private async _setupSubscription(entity: string): Promise<void> {
@@ -581,33 +602,85 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
     }
   }
 
+  /**
+   * Identity of an item for duplicate detection: name + category, ignoring
+   * case, extra whitespace and the `<quantity: N>` marker (a different
+   * quantity is still the same shopping-list entry).
+   */
+  private _itemKey(summary: string): string {
+    const categories = this._config?.enable_categories ?? false;
+    const parsedCategory = categories ? parseCategory(summary) : { category: null, rest: summary };
+    const name = parseQuantity(parsedCategory.rest).name.toLowerCase().replace(/\s+/g, " ").trim();
+    return categories ? `${(parsedCategory.category ?? "").toLowerCase()}\u0000${name}` : name;
+  }
+
+  private _findDuplicates(summary: string): TodoItem[] {
+    const key = this._itemKey(summary);
+    return this._items.filter((item) => this._itemKey(item.summary) === key);
+  }
+
   private async _addItem(): Promise<void> {
     const cfg = this._config;
     const entity = cfg?.entity;
     const trimmed = this._draft.trim();
-    if (!entity || !trimmed || !this.hass) return;
+    // _adding guards against a second submit (click, held Enter, double tap)
+    // while the first one is still in flight.
+    if (!entity || !trimmed || !this.hass || this._adding) return;
 
     const enableQuantity = cfg.enable_quantity ?? false;
     const quantity = clampQuantity(this._addQuantity, cfg.quantity_max ?? 0);
     const itemSummary = enableQuantity ? formatQuantity(trimmed, quantity) : trimmed;
 
-    const tempUid = `temp_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-    const tempItem: TodoItem = {
-      uid: tempUid,
-      summary: itemSummary,
-      status: "needs_action",
-    };
+    const previousDraft = this._draft;
+    const previousQuantity = this._addQuantity;
 
-    if (!this._connected) {
-      this._items = [...this._items, tempItem];
-    }
+    this._adding = true;
+    // Clear the input before awaiting so repeated taps have nothing to submit.
+    this._draft = "";
+    this._addQuantity = 1;
+
+    const duplicates = this._findDuplicates(itemSummary);
+    const removed: TodoItem[] = [];
+    let tempUid: string | undefined;
 
     try {
+      // Re-adding an item that is already on the list replaces it: the old
+      // entry is removed first, so the list never holds two of the same thing.
+      for (const duplicate of duplicates) {
+        await this._executeService("todo", "remove_item", {
+          entity_id: entity,
+          item: duplicate.uid,
+        });
+        removed.push(duplicate);
+        this._items = this._items.filter((i) => i.uid !== duplicate.uid);
+      }
+
+      if (!this._connected) {
+        tempUid = `temp_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+        const tempItem: TodoItem = {
+          uid: tempUid,
+          summary: itemSummary,
+          status: "needs_action",
+        };
+        this._items = [...this._items, tempItem];
+      }
+
       await this._executeService("todo", "add_item", { entity_id: entity, item: itemSummary });
-      this._draft = "";
-      this._addQuantity = 1;
     } catch {
-      this._items = this._items.filter((i) => i.uid !== tempUid);
+      if (tempUid) {
+        this._items = this._items.filter((i) => i.uid !== tempUid);
+      }
+      if (removed.length > 0) {
+        this._items = [...this._items, ...removed];
+      }
+      // Put the text back so the user can retry — unless they already typed
+      // something else into the (now empty) input meanwhile.
+      if (!this._draft) {
+        this._draft = previousDraft;
+        this._addQuantity = previousQuantity;
+      }
+    } finally {
+      this._adding = false;
     }
   }
 
@@ -1185,6 +1258,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
                 @touchstart=${this._onTouchStart}
                 @touchmove=${this._onTouchMove}
                 @touchend=${this._onTouchEnd}
+                @touchcancel=${this._onTouchCancel}
               ></ha-icon>`
             : nothing
         }
@@ -1335,7 +1409,7 @@ export class ShoppingListCard extends LitElement implements LovelaceCard {
 
   private _renderAddRow(position: "top" | "bottom"): TemplateResult {
     const cfg = this._config!;
-    const canAdd = this._draft.trim().length > 0;
+    const canAdd = this._draft.trim().length > 0 && !this._adding;
     const enableQuantity = cfg.enable_quantity ?? false;
     const quantityMax = cfg.quantity_max ?? 0;
     const canAddDecrement = this._addQuantity > 1;

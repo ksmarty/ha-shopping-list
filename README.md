@@ -21,6 +21,7 @@ Works with the built-in [Local To-do](https://www.home-assistant.io/integrations
 - **Configurable completed display** — show completed items at the bottom (default), inline with active items, in a collapsible "Completed (N)" section, or hide them entirely.
 - **Sorting** — manual (HA's order), alphabetical, or by created date. Sort applies inside groups when categories are on.
 - **Add-bar position** — top (under the header) or bottom (below the list). Toggleable click-to-check on rows.
+- **Touch-friendly scrolling** — the list owns its own scroll area: reaching the end of the list never scrolls or pull-to-refreshes the dashboard behind it, and a cancelled touch drag can no longer leave the list stuck.
 - **Theme-aware styling** — every color and dimension is a CSS custom property routed through HA's `--rgb-*` variables, so it follows light/dark themes automatically.
 - **Customization slots** — drop-in custom CSS via `style:` or `card_mod:`, plus a YAML editor for category colors. All `.sl-*` class names are stable.
 - **Visual editor** — collapsible sections for Header / To-do items / Quantities / Completed items / Add items / Categories / Customization. Every option has a label and a sensible default.
@@ -111,6 +112,20 @@ category_colors:
 | `style`                  | string  | —                                              | Custom CSS appended to the card. See [Customization](#-customization).                                        |
 | `card_mod`               | object  | —                                              | `card-mod` compatibility — `card_mod: { style: ... }` is also accepted.                                       |
 
+## ➕ Adding items
+
+The add row supports click and keyboard entry. A few behaviours are worth knowing:
+
+- **Re-adding a duplicate moves it.** Typing an item that is already on the list
+  removes the existing entry and adds the new one, so the item comes back with the
+  quantity you just typed instead of stacking up twice. Matching ignores case,
+  extra whitespace, and the `<quantity: N>` marker; when `enable_categories` is on,
+  the category is part of the match, so `Lettuce` and `[Veggies] Lettuce` are
+  different entries.
+- **Repeated clicks add once.** While an add is in flight the button is disabled and
+  the input is cleared, so holding down Enter or hammering *Add* cannot create
+  duplicate rows.
+
 ## 🏷️ Categories
 
 Type a `[Category]` prefix in front of any item to bucket it:
@@ -168,7 +183,7 @@ Stored format: the quantity is appended to the item summary as `<quantity: N>`. 
 
 ## 🎨 Customization
 
-Every visual property is a CSS custom property — change one variable, restyle the whole card. The `style:` config option (and `card_mod`) is applied last so user CSS always wins:
+Every visual property is a CSS custom property — change one variable, restyle the whole card. The `style:` config option (and `card_mod`) is applied last so user CSS always wins (the card is square by default; the example below rounds it again):
 
 ```yaml
 type: custom:shopping-list-card-improved
@@ -186,7 +201,7 @@ style: |
 
 Notable hooks (full list of `.sl-*` classes and `--shopping-list-*` variables in [`src/styles.ts`](src/styles.ts)):
 
-- `--shopping-list-radius`, `--shopping-list-inner-radius` — corner roundness
+- `--shopping-list-radius`, `--shopping-list-inner-radius` — corner roundness. The card ships **square** (`--shopping-list-radius: 0`); set it to round the outer corners again while item rows, inputs and buttons keep the inner radius.
 - `--shopping-list-accent`, `--shopping-list-button-bg` — primary actions
 - `--shopping-list-item-bg`, `--shopping-list-item-bg-hover` — item rows
 - `--shopping-list-category-color` — category label color (set inline by `category_colors`)

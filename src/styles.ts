@@ -11,7 +11,8 @@ export const cardStyles = css`
     --shopping-list-muted: var(--secondary-text-color, #727272);
     --shopping-list-accent: var(--primary-color, #03a9f4);
     --shopping-list-error: var(--error-color, #db4437);
-    --shopping-list-radius: 20px;
+    /* Square card corners by default — set a radius to round them again. */
+    --shopping-list-radius: 0;
     --shopping-list-padding: 16px;
     --shopping-list-gap: 4px;
 
@@ -128,8 +129,12 @@ export const cardStyles = css`
     display: block;
     height: var(--shopping-list-host-height, auto);
   }
+  /* touch-action is intersected down the whole ancestor chain, so the card
+     must not set it to none — that would also disable panning inside the
+     scroll list and leave mobile scrolling stuck. pan-y keeps the page from
+     zooming or panning sideways while the list still pans vertically. */
   :host(.sl-host--fill-screen) .sl-card {
-    touch-action: none;
+    touch-action: pan-y;
   }
   :host(.sl-host--fill-screen) .sl-list-scroll {
     touch-action: pan-y;
@@ -147,6 +152,9 @@ export const cardStyles = css`
     max-height: var(--shopping-list-card-max-height, none);
     box-sizing: border-box;
     overflow: hidden;
+    /* Keep swipe gestures inside the card: without this a swipe at the end of
+       the list chains to the page and triggers pull-to-refresh. */
+    overscroll-behavior: contain;
   }
   .sl-card--fill-screen {
     height: 100%;
@@ -201,6 +209,10 @@ export const cardStyles = css`
     overflow-y: auto;
     min-height: 0;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    /* Stop scroll chaining: reaching the top/bottom of the list must not
+       scroll (or pull-to-refresh) the dashboard behind it. */
+    overscroll-behavior-y: contain;
   }
   .sl-list-scroll::-webkit-scrollbar {
     width: 4px;
@@ -301,6 +313,9 @@ export const cardStyles = css`
     flex-shrink: 0;
     color: var(--shopping-list-drag-handle-color);
     cursor: grab;
+    /* The handle owns its gestures so a touch drag reorders instead of
+       scrolling the list underneath. */
+    touch-action: none;
     --mdc-icon-size: var(--shopping-list-drag-handle-icon-size);
     border-radius: 4px;
     transition: color 120ms ease;

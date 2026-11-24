@@ -10,7 +10,12 @@ class HaCard extends HTMLElement {
   connectedCallback() {
     this.style.background = "var(--ha-card-background, var(--card-background-color, #1f1f1f))";
     this.style.color = "var(--primary-text-color, #e1e1e1)";
-    this.style.borderRadius = "12px";
+    // Deliberately NO corner radius here. Real <ha-card> rounds itself from
+    // its own shadow root (`:host { border-radius: var(--ha-card-border-radius) }`),
+    // which loses to a card's rule targeting the element from the card's shadow
+    // root — that is how `.sl-card` sets `--shopping-list-radius`. An inline
+    // style in this stub would outrank every card rule and hide exactly the
+    // corner styling the harness is supposed to preview.
     this.style.padding = "0";
     this.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
   }

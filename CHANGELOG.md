@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Re-adding an item that is already on the list now moves it: the previous
+  entry is removed before the new one is added, so the item picks up the
+  quantity you just typed instead of appearing twice. Matching ignores case,
+  whitespace and the `<quantity: N>` marker; the category only counts when
+  `enable_categories` is on.
+
+### Changed
+
+- The card is square by default — `--shopping-list-radius` now defaults to `0`
+  instead of `20px`. Set it in `style:` / `card_mod:` to bring rounded corners
+  back; item rows, inputs and buttons keep `--shopping-list-inner-radius`.
+
+### Fixed
+
+- Holding Enter or tapping **Add** repeatedly no longer creates duplicate
+  entries: an add is guarded while in flight and the draft is cleared before
+  the service call resolves.
+- Mobile scrolling could get stuck after an interrupted drag, and swiping at
+  the end of the list chained to the dashboard (pull-to-refresh). A cancelled
+  touch now clears the drag state, the drag handle owns its gestures, and the
+  card / scroll area stop scroll chaining with `overscroll-behavior`.
+
 ## [0.1.0] - 2026-05-08
 
 First public release. A custom dashboard card that turns any Home Assistant
